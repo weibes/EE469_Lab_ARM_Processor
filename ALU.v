@@ -217,36 +217,36 @@ endmodule
 
 
 
-
-
-module ALU_testbench ();
-
-
-reg [3:0] cond;
-reg [31:0] data1, data2;
-reg [4:0] operation;
-reg reset,clk;
-wire [31:0] result;  //either logical or signed
-
-
-ALU dut (.cond(cond), .data1(data1), .data2(data2), .operation(operation), .result(result), .reset(reset), .clk(clk));
-
-  
- // Set up the clock.
- parameter CLOCK_PERIOD=100;
- initial begin
-	clk <= 0;
-	forever #(CLOCK_PERIOD/2) clk <= ~clk;
- end
-
- 
- 
- // Set up the inputs to the design. Each line is a clock cycle.
- initial begin
-													@(posedge clk);
-		reset	<= 1;								@(posedge clk);
-		reset	<= 0;								@(posedge clk);
-													@(posedge clk);
+//
+//
+//module ALU_testbench ();
+//
+//
+//reg [3:0] cond;
+//reg [31:0] data1, data2;
+//reg [4:0] operation;
+//reg reset,clk;
+//wire [31:0] result;  //either logical or signed
+//
+//
+//ALU dut (.cond(cond), .data1(data1), .data2(data2), .operation(operation), .result(result), .reset(reset), .clk(clk));
+//
+//  
+// // Set up the clock.
+// parameter CLOCK_PERIOD=100;
+// initial begin
+//	clk <= 0;
+//	forever #(CLOCK_PERIOD/2) clk <= ~clk;
+// end
+//
+// 
+// 
+// // Set up the inputs to the design. Each line is a clock cycle.
+// initial begin
+//													@(posedge clk);
+//		reset	<= 1;								@(posedge clk);
+//		reset	<= 0;								@(posedge clk);
+//													@(posedge clk);
 //		operation	<= 5'b00100; 			@(posedge clk); 	// ADD
 //		data1 <= 3;								@(posedge clk); /// 3+7 = 10
 //		data2 <= 7;								@(posedge clk);   
@@ -426,12 +426,12 @@ ALU dut (.cond(cond), .data1(data1), .data2(data2), .operation(operation), .resu
 //													@(posedge clk);
 //													@(posedge clk);
 //													@(posedge clk);
-
-
-							
-		$stop; // End the simulation.
- 
- end
-endmodule 
-
-
+//
+//
+//							
+//		$stop; // End the simulation.
+// 
+// end
+//endmodule 
+//
+//
