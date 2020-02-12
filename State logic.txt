@@ -1,0 +1,68 @@
+
+ // State variables.
+
+parameter instructionFetch = 3'b000,
+			registerFetch = 3'b001,
+			execute = 3'b010,
+			dataMemory = 3'b011,
+			writeback = 3'b100;
+
+reg [2:0] ps, ns;
+
+ // State logic
+always @* begin
+	case (ps)
+	
+	instructionFetch: 	begin
+	//read R15
+	//compute pc value
+	//write R15 and make it the new PC value
+	
+//send the pc value to instruction memory
+//get the instruction from instruction memory
+	
+			ns = registerFetch;
+			end
+			
+	registerFetch: 		begin
+	
+	//read instruction and send values to register file
+	//read registers
+	
+	
+			ns = execute;
+			end
+	
+	execute:					begin 
+	
+	//send values from registers to the ALU
+	//get value of computation from ALU
+	
+			ns = dataMemory;
+			end
+			
+	dataMemory: 			begin
+	
+	// load or store values into memory
+	
+			ns = writeback;
+			end
+			
+	writeback: 				begin
+	
+	// write to the registers
+	
+			ns = instructionFetch;
+			end
+			
+	endcase
+ end
+
+
+ // DFFs
+ always @(posedge clk) begin
+	if (nreset)
+		ps <= instructionFetch;
+	else
+		ps <= ns;
+	end
