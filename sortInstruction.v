@@ -160,7 +160,7 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 
 
 	/*
-		instruction [31:28] 	//cond
+
 		instruction [24] 		//link
 		instruction [23:0] 	//offset
 	*/

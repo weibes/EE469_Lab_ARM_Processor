@@ -15,13 +15,16 @@ module cpu(
   wire linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack,
                loadStore, isBranch;
 
-	 reg readWrite;
+  reg readWrite;
   wire [3:0] rd, rn, rm, opcode, cond, rotateVal;
   wire [7:0] rm_shift, immediateVal;
   wire [11:0] immediateOffset;
   wire [23:0] branchImmediate;
 
   wire [31:0] instrLoc, nextInstr;
+  
+  wire conditionalExecute;
+  wire [3:0] CPSR;
 
   // Controls the LED on the board.
   assign led = 1'b1;
@@ -44,26 +47,34 @@ module cpu(
 
 
 
-  programCounter PC(.Branch(isBranch), .Reset(nreset), .currData(instrLoc),
+	programCounter PC(.Branch(isBranch), .Reset(nreset), .currData(instrLoc),
                     .branchImmediate(branchImmediate), .clk(clk));
 
-  instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstr));
+	instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstr));
 
-  sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBit), .prePostAddOffset(prePostAddOffset), .upDownOffset(upDownOffset),
+	sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBit), .prePostAddOffset(prePostAddOffset), .upDownOffset(upDownOffset),
   												.byteOrWord(byteOrWord), .writeBack(writeBack), .loadStore(loadStore), .rd(rd), .rn(rn), .rm(rm), .opcode(opcode),
   												.cond(cond), .rotateVal(rotateVal), .rm_shift(rm_shift), .immediateVal(immediateVal), .immediateOffset(immediateOffset),
   												.branchImmediate(branchImmediate), .reset(nreset), .clk(clk), .isBranch(isBranch));
 
-  registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
+	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
                          .writeData(writeData), .readData1(rmData), .readData2(rnData), .reset(nreset), .clk(clk));
+								 					 
+	conditionTest condTest (.cond(cond), .CPSRIn(), .conditionalExecute(conditionalExecute), .reset(nreset), .clk(clk));
+
+	ALU numberCrunch (.cond(), .data1(), .data2(), .operation(), .result(), .flags(), .reset(nreset), .clk(clk));
+
+	flagRegister CPSRegister(.flags(), .CPSRwrite(), .CPSRstatus(), .reset(nreset), .clk(clk));
+	
+	
 
 // State variables.
 
-parameter instructionFetch = 3'b000,
-			registerFetch = 3'b001,
-			execute = 3'b010,
-			dataMemory = 3'b011,
-			writeback = 3'b100;
+parameter 	instructionFetch = 3'b000,
+				registerFetch = 3'b001,
+				execute = 3'b010,
+				dataMemory = 3'b011,
+				writeback = 3'b100;
 
 reg [2:0] ps, ns;
 

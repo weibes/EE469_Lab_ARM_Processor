@@ -1,0 +1,512 @@
+Analysis & Synthesis report for cpu
+Wed Feb 12 17:03:12 2020
+Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. State Machine - |cpu|ps
+  9. Registers Removed During Synthesis
+ 10. Removed Registers Triggering Further Register Optimizations
+ 11. General Register Statistics
+ 12. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 13. Parameter Settings for User Entity Instance: Top-level Entity: |cpu
+ 14. Port Connectivity Checks: "flagRegister:CPSRegister"
+ 15. Port Connectivity Checks: "ALU:numberCrunch"
+ 16. Port Connectivity Checks: "conditionTest:condTest"
+ 17. Port Connectivity Checks: "registerFile:reg_file"
+ 18. Port Connectivity Checks: "sortInstruction:sortInstr"
+ 19. Post-Synthesis Netlist Statistics for Top Partition
+ 20. Elapsed Time Per Partition
+ 21. Analysis & Synthesis Messages
+ 22. Analysis & Synthesis Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2017  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel MegaCore Function License Agreement, or other 
+applicable license agreement, including, without limitation, 
+that your use is for the sole purpose of programming logic 
+devices manufactured by Intel and sold by Intel or its 
+authorized distributors.  Please refer to the applicable 
+agreement for further details.
+
+
+
++-------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                  ;
++---------------------------------+---------------------------------------------+
+; Analysis & Synthesis Status     ; Successful - Wed Feb 12 17:03:12 2020       ;
+; Quartus Prime Version           ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
+; Revision Name                   ; cpu                                         ;
+; Top-level Entity Name           ; cpu                                         ;
+; Family                          ; Cyclone V                                   ;
+; Logic utilization (in ALMs)     ; N/A                                         ;
+; Total registers                 ; 8                                           ;
+; Total pins                      ; 59                                          ;
+; Total virtual pins              ; 0                                           ;
+; Total block memory bits         ; 0                                           ;
+; Total DSP Blocks                ; 0                                           ;
+; Total HSSI RX PCSs              ; 0                                           ;
+; Total HSSI PMA RX Deserializers ; 0                                           ;
+; Total HSSI TX PCSs              ; 0                                           ;
+; Total HSSI PMA TX Serializers   ; 0                                           ;
+; Total PLLs                      ; 0                                           ;
+; Total DLLs                      ; 0                                           ;
++---------------------------------+---------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                             ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                          ; Setting            ; Default Value      ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                          ; 5CGXFC7C7F23C8     ;                    ;
+; Top-level entity name                                                           ; cpu                ; cpu                ;
+; Family name                                                                     ; Cyclone V          ; Cyclone V          ;
+; Use smart compilation                                                           ; Off                ; Off                ;
+; Enable parallel Assembler and TimeQuest Timing Analyzer during compilation      ; On                 ; On                 ;
+; Enable compact report table                                                     ; Off                ; Off                ;
+; Restructure Multiplexers                                                        ; Auto               ; Auto               ;
+; MLAB Add Timing Constraints For Mixed-Port Feed-Through Mode Setting Don't Care ; Off                ; Off                ;
+; Create Debugging Nodes for IP Cores                                             ; Off                ; Off                ;
+; Preserve fewer node names                                                       ; On                 ; On                 ;
+; OpenCore Plus hardware evaluation                                               ; Enable             ; Enable             ;
+; Verilog Version                                                                 ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                                    ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                        ; Auto               ; Auto               ;
+; Safe State Machine                                                              ; Off                ; Off                ;
+; Extract Verilog State Machines                                                  ; On                 ; On                 ;
+; Extract VHDL State Machines                                                     ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                               ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                      ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                                  ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                         ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                       ; On                 ; On                 ;
+; Parallel Synthesis                                                              ; On                 ; On                 ;
+; DSP Block Balancing                                                             ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                              ; On                 ; On                 ;
+; Power-Up Don't Care                                                             ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                                    ; Off                ; Off                ;
+; Remove Duplicate Registers                                                      ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                            ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                          ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                           ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                       ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                            ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                             ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                                  ; Off                ; Off                ;
+; Optimization Technique                                                          ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                              ; 70                 ; 70                 ;
+; Auto Carry Chains                                                               ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                            ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                           ; Off                ; Off                ;
+; Auto ROM Replacement                                                            ; On                 ; On                 ;
+; Auto RAM Replacement                                                            ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                      ; On                 ; On                 ;
+; Auto Shift Register Replacement                                                 ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                                 ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                                   ; On                 ; On                 ;
+; Strict RAM Replacement                                                          ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                               ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                           ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                                   ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                             ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                               ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                         ; On                 ; On                 ;
+; Report Parameter Settings                                                       ; On                 ; On                 ;
+; Report Source Assignments                                                       ; On                 ; On                 ;
+; Report Connectivity Checks                                                      ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                              ; Off                ; Off                ;
+; Synchronization Register Chain Length                                           ; 3                  ; 3                  ;
+; PowerPlay Power Optimization During Synthesis                                   ; Normal compilation ; Normal compilation ;
+; HDL message level                                                               ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                                 ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                        ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                              ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                       ; 100                ; 100                ;
+; Clock MUX Protection                                                            ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                     ; Off                ; Off                ;
+; Block Design Naming                                                             ; Auto               ; Auto               ;
+; SDC constraint protection                                                       ; Off                ; Off                ;
+; Synthesis Effort                                                                ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal                    ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                            ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                              ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                     ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                          ; On                 ; On                 ;
+; Automatic Parallel Synthesis                                                    ; On                 ; On                 ;
+; Partial Reconfiguration Bitstream ID                                            ; Off                ; Off                ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 4           ;
+; Maximum allowed            ; 2           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 2           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
++----------------------------+-------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                    ;
++----------------------------------+-----------------+------------------------+-----------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type              ; File Name with Absolute Path                                                      ; Library ;
++----------------------------------+-----------------+------------------------+-----------------------------------------------------------------------------------+---------+
+; sortInstruction.v                ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/sortInstruction.v   ;         ;
+; registerFile.v                   ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/registerFile.v      ;         ;
+; register.v                       ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/register.v          ;         ;
+; readData.v                       ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/readData.v          ;         ;
+; programCounter.v                 ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/programCounter.v    ;         ;
+; instructionMemory.v              ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/instructionMemory.v ;         ;
+; D_FF.v                           ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/D_FF.v              ;         ;
+; cpu.v                            ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v               ;         ;
+; conditionTest.v                  ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/conditionTest.v     ;         ;
+; ALU.v                            ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/ALU.v               ;         ;
+; flagRegister.v                   ; yes             ; User Verilog HDL File  ; C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/flagRegister.v      ;         ;
++----------------------------------+-----------------+------------------------+-----------------------------------------------------------------------------------+---------+
+
+
++-----------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                                 ;
++---------------------------------------------+-------------------------------+
+; Resource                                    ; Usage                         ;
++---------------------------------------------+-------------------------------+
+; Estimate of Logic utilization (ALMs needed) ; 76                            ;
+;                                             ;                               ;
+; Combinational ALUT usage for logic          ; 119                           ;
+;     -- 7 input functions                    ; 0                             ;
+;     -- 6 input functions                    ; 33                            ;
+;     -- 5 input functions                    ; 31                            ;
+;     -- 4 input functions                    ; 22                            ;
+;     -- <=3 input functions                  ; 33                            ;
+;                                             ;                               ;
+; Dedicated logic registers                   ; 8                             ;
+;                                             ;                               ;
+; I/O pins                                    ; 59                            ;
+;                                             ;                               ;
+; Total DSP Blocks                            ; 0                             ;
+;                                             ;                               ;
+; Maximum fan-out node                        ; programCounter:PC|currData[6] ;
+; Maximum fan-out                             ; 53                            ;
+; Total fan-out                               ; 657                           ;
+; Average fan-out                             ; 2.68                          ;
++---------------------------------------------+-------------------------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                         ;
++--------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------+-------------------+--------------+
+; Compilation Hierarchy Node     ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name            ; Entity Name       ; Library Name ;
++--------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------+-------------------+--------------+
+; |cpu                           ; 119 (0)             ; 8 (0)                     ; 0                 ; 0          ; 59   ; 0            ; |cpu                           ; cpu               ; work         ;
+;    |instructionMemory:Memory|  ; 61 (61)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |cpu|instructionMemory:Memory  ; instructionMemory ; work         ;
+;    |programCounter:PC|         ; 24 (24)             ; 8 (8)                     ; 0                 ; 0          ; 0    ; 0            ; |cpu|programCounter:PC         ; programCounter    ; work         ;
+;    |sortInstruction:sortInstr| ; 34 (34)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |cpu|sortInstruction:sortInstr ; sortInstruction   ; work         ;
++--------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------+-------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
+Encoding Type:  One-Hot
++----------------------------------------------------------------------------------------------------------+
+; State Machine - |cpu|ps                                                                                  ;
++---------------------+---------------+------------+------------------+---------------------+--------------+
+; Name                ; ps.dataMemory ; ps.execute ; ps.registerFetch ; ps.instructionFetch ; ps.writeback ;
++---------------------+---------------+------------+------------------+---------------------+--------------+
+; ps.instructionFetch ; 0             ; 0          ; 0                ; 0                   ; 0            ;
+; ps.registerFetch    ; 0             ; 0          ; 1                ; 1                   ; 0            ;
+; ps.execute          ; 0             ; 1          ; 0                ; 1                   ; 0            ;
+; ps.dataMemory       ; 1             ; 0          ; 0                ; 1                   ; 0            ;
+; ps.writeback        ; 0             ; 0          ; 0                ; 1                   ; 1            ;
++---------------------+---------------+------------+------------------+---------------------+--------------+
+
+
++-------------------------------------------------------------+
+; Registers Removed During Synthesis                          ;
++----------------------------------------+--------------------+
+; Register name                          ; Reason for Removal ;
++----------------------------------------+--------------------+
+; ps~7                                   ; Lost fanout        ;
+; ps~8                                   ; Lost fanout        ;
+; ps.writeback                           ; Lost fanout        ;
+; ps.instructionFetch                    ; Lost fanout        ;
+; ps.registerFetch                       ; Lost fanout        ;
+; ps.execute                             ; Lost fanout        ;
+; ps.dataMemory                          ; Lost fanout        ;
+; programCounter:PC|currData[8..31]      ; Lost fanout        ;
+; Total Number of Removed Registers = 31 ;                    ;
++----------------------------------------+--------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------+
+; Removed Registers Triggering Further Register Optimizations                                                           ;
++--------------------------------+--------------------+-----------------------------------------------------------------+
+; Register name                  ; Reason for Removal ; Registers Removed due to This Register                          ;
++--------------------------------+--------------------+-----------------------------------------------------------------+
+; programCounter:PC|currData[31] ; Lost Fanouts       ; programCounter:PC|currData[30], programCounter:PC|currData[29], ;
+;                                ;                    ; programCounter:PC|currData[28], programCounter:PC|currData[27], ;
+;                                ;                    ; programCounter:PC|currData[26], programCounter:PC|currData[25], ;
+;                                ;                    ; programCounter:PC|currData[24], programCounter:PC|currData[23], ;
+;                                ;                    ; programCounter:PC|currData[22], programCounter:PC|currData[21], ;
+;                                ;                    ; programCounter:PC|currData[20], programCounter:PC|currData[19], ;
+;                                ;                    ; programCounter:PC|currData[18], programCounter:PC|currData[17], ;
+;                                ;                    ; programCounter:PC|currData[16], programCounter:PC|currData[15], ;
+;                                ;                    ; programCounter:PC|currData[14], programCounter:PC|currData[13], ;
+;                                ;                    ; programCounter:PC|currData[12], programCounter:PC|currData[11], ;
+;                                ;                    ; programCounter:PC|currData[10], programCounter:PC|currData[9],  ;
+;                                ;                    ; programCounter:PC|currData[8]                                   ;
+; ps~7                           ; Lost Fanouts       ; ps.instructionFetch, ps.execute                                 ;
+; ps~8                           ; Lost Fanouts       ; ps.registerFetch                                                ;
++--------------------------------+--------------------+-----------------------------------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 8     ;
+; Number of registers using Synchronous Clear  ; 6     ;
+; Number of registers using Synchronous Load   ; 0     ;
+; Number of registers using Asynchronous Clear ; 0     ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 2     ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                   ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                         ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------+
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |cpu|programCounter:PC|currData[0]                 ;
+; 3:1                ; 30 bits   ; 60 LEs        ; 30 LEs               ; 30 LEs                 ; Yes        ; |cpu|programCounter:PC|currData[7]                 ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |cpu|sortInstruction:sortInstr|immediateVal[7]     ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |cpu|sortInstruction:sortInstr|rm[3]               ;
+; 4:1                ; 25 bits   ; 50 LEs        ; 50 LEs               ; 0 LEs                  ; No         ; |cpu|sortInstruction:sortInstr|branchImmediate[13] ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------+
+
+
++---------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: Top-level Entity: |cpu ;
++------------------+-------+------------------------------------------+
+; Parameter Name   ; Value ; Type                                     ;
++------------------+-------+------------------------------------------+
+; instructionFetch ; 000   ; Unsigned Binary                          ;
+; registerFetch    ; 001   ; Unsigned Binary                          ;
+; execute          ; 010   ; Unsigned Binary                          ;
+; dataMemory       ; 011   ; Unsigned Binary                          ;
+; writeback        ; 100   ; Unsigned Binary                          ;
++------------------+-------+------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++---------------------------------------------------------+
+; Port Connectivity Checks: "flagRegister:CPSRegister"    ;
++------------+--------+----------+------------------------+
+; Port       ; Type   ; Severity ; Details                ;
++------------+--------+----------+------------------------+
+; flags      ; Input  ; Info     ; Explicitly unconnected ;
+; CPSRwrite  ; Input  ; Info     ; Explicitly unconnected ;
+; CPSRstatus ; Output ; Info     ; Explicitly unconnected ;
++------------+--------+----------+------------------------+
+
+
++--------------------------------------------------------+
+; Port Connectivity Checks: "ALU:numberCrunch"           ;
++-----------+--------+----------+------------------------+
+; Port      ; Type   ; Severity ; Details                ;
++-----------+--------+----------+------------------------+
+; cond      ; Input  ; Info     ; Explicitly unconnected ;
+; data1     ; Input  ; Info     ; Explicitly unconnected ;
+; data2     ; Input  ; Info     ; Explicitly unconnected ;
+; operation ; Input  ; Info     ; Explicitly unconnected ;
+; result    ; Output ; Info     ; Explicitly unconnected ;
+; flags     ; Output ; Info     ; Explicitly unconnected ;
++-----------+--------+----------+------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "conditionTest:condTest"                                                                           ;
++--------------------+--------+----------+-------------------------------------------------------------------------------------+
+; Port               ; Type   ; Severity ; Details                                                                             ;
++--------------------+--------+----------+-------------------------------------------------------------------------------------+
+; CPSRIn             ; Input  ; Info     ; Explicitly unconnected                                                              ;
+; conditionalExecute ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++--------------------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "registerFile:reg_file"                                                                   ;
++-----------+--------+----------+-------------------------------------------------------------------------------------+
+; Port      ; Type   ; Severity ; Details                                                                             ;
++-----------+--------+----------+-------------------------------------------------------------------------------------+
+; readData1 ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; readData2 ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++-----------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "sortInstruction:sortInstr"                                                                      ;
++------------------+--------+----------+-------------------------------------------------------------------------------------+
+; Port             ; Type   ; Severity ; Details                                                                             ;
++------------------+--------+----------+-------------------------------------------------------------------------------------+
+; linkBit          ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; prePostAddOffset ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; upDownOffset     ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; byteOrWord       ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; writeBack        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; loadStore        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; opcode           ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; rotateVal        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; rm_shift         ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; immediateOffset  ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++------------------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; arriav_ff             ; 8                           ;
+;     ENA               ; 2                           ;
+;     SCLR              ; 6                           ;
+; arriav_lcell_comb     ; 126                         ;
+;     arith             ; 15                          ;
+;         0 data inputs ; 1                           ;
+;         1 data inputs ; 6                           ;
+;         5 data inputs ; 8                           ;
+;     normal            ; 111                         ;
+;         0 data inputs ; 2                           ;
+;         1 data inputs ; 5                           ;
+;         2 data inputs ; 9                           ;
+;         3 data inputs ; 17                          ;
+;         4 data inputs ; 22                          ;
+;         5 data inputs ; 23                          ;
+;         6 data inputs ; 33                          ;
+; boundary_port         ; 59                          ;
+;                       ;                             ;
+; Max LUT depth         ; 5.70                        ;
+; Average LUT depth     ; 3.74                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:04     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
+    Info: Processing started: Wed Feb 12 17:02:35 2020
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off cpu -c cpu
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (20030): Parallel compilation is enabled and will use 2 of the 2 processors detected
+Info (12021): Found 1 design units, including 1 entities, in source file sortinstruction.v
+    Info (12023): Found entity 1: sortInstruction File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/sortInstruction.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file registerfile.v
+    Info (12023): Found entity 1: registerFile File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/registerFile.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file register.v
+    Info (12023): Found entity 1: register File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/register.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file readdata.v
+    Info (12023): Found entity 1: readData File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/readData.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file programcounter.v
+    Info (12023): Found entity 1: programCounter File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/programCounter.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file instructionmemory.v
+    Info (12023): Found entity 1: instructionMemory File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/instructionMemory.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file d_ff.v
+    Info (12023): Found entity 1: D_FF File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/D_FF.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file cpu.v
+    Info (12023): Found entity 1: cpu File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 1
+Info (12021): Found 2 design units, including 2 entities, in source file conditiontest.v
+    Info (12023): Found entity 1: conditionTest File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/conditionTest.v Line: 1
+    Info (12023): Found entity 2: conditionTest_testbench File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/conditionTest.v Line: 69
+Info (12021): Found 1 design units, including 1 entities, in source file alu.v
+    Info (12023): Found entity 1: ALU File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/ALU.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file flagregister.v
+    Info (12023): Found entity 1: flagRegister File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/flagRegister.v Line: 1
+Info (12127): Elaborating entity "cpu" for the top level hierarchy
+Info (12128): Elaborating entity "programCounter" for hierarchy "programCounter:PC" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 51
+Info (12128): Elaborating entity "instructionMemory" for hierarchy "instructionMemory:Memory" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 53
+Info (12128): Elaborating entity "sortInstruction" for hierarchy "sortInstruction:sortInstr" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 58
+Info (12128): Elaborating entity "registerFile" for hierarchy "registerFile:reg_file" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 61
+Info (12128): Elaborating entity "register" for hierarchy "registerFile:reg_file|register:R15" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/registerFile.v Line: 93
+Info (12128): Elaborating entity "D_FF" for hierarchy "registerFile:reg_file|register:R15|D_FF:bit31" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/register.v Line: 24
+Info (12128): Elaborating entity "readData" for hierarchy "registerFile:reg_file|readData:readDataOne" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/registerFile.v Line: 115
+Info (12128): Elaborating entity "conditionTest" for hierarchy "conditionTest:condTest" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 63
+Info (12128): Elaborating entity "ALU" for hierarchy "ALU:numberCrunch" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 65
+Warning (10858): Verilog HDL warning at ALU.v(12): object C used but never assigned File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/ALU.v Line: 12
+Warning (10030): Net "C" at ALU.v(12) has no driver or initial value, using a default initial value '0' File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/ALU.v Line: 12
+Info (12128): Elaborating entity "flagRegister" for hierarchy "flagRegister:CPSRegister" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 67
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "led" is stuck at VCC File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 4
+    Warning (13410): Pin "debug_port7[0]" is stuck at VCC File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+    Warning (13410): Pin "debug_port7[1]" is stuck at VCC File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+    Warning (13410): Pin "debug_port7[2]" is stuck at VCC File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+    Warning (13410): Pin "debug_port7[3]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+    Warning (13410): Pin "debug_port7[4]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+    Warning (13410): Pin "debug_port7[5]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+    Warning (13410): Pin "debug_port7[6]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+    Warning (13410): Pin "debug_port7[7]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+Info (286030): Timing-Driven Synthesis is running
+Info (17049): 31 registers lost all their fanouts during netlist optimizations.
+Info (144001): Generated suppressed messages file C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/output_files/cpu.map.smsg
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Info (21057): Implemented 178 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 2 input pins
+    Info (21059): Implemented 57 output pins
+    Info (21061): Implemented 119 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 13 warnings
+    Info: Peak virtual memory: 684 megabytes
+    Info: Processing ended: Wed Feb 12 17:03:12 2020
+    Info: Elapsed time: 00:00:37
+    Info: Total CPU time (on all processors): 00:00:54
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/output_files/cpu.map.smsg.
+
+

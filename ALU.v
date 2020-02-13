@@ -1,24 +1,20 @@
-module  ALU(cond, data1, data2, operation, result, execute, reset, clk);
+module  ALU(cond, data1, data2, operation, result, flags, reset, clk);
 
 input wire [3:0] cond;
 input wire [31:0] data1, data2;
 input wire [4:0] operation;
 input wire reset,clk;
 output reg [31:0] result;  //either logical or signed
+output reg [3:0] flags;
 
 reg [31:0] unsignedData1, unsignedData2, unsignedResult;
 reg [1:0] negativeData; 
-reg [3:0] condReg;
 reg Z, C, N, V; //zero carry negative overflow flags
-wire executeIn;
-output reg execute;
 
 
 
 
 always @* begin
-execute = executeIn;
-condReg = cond;
 
 // convert signed input data to unsigned
 if (data1[31] == 1) 
@@ -202,14 +198,17 @@ case (operation)
 		end
 	
 	
-		
-		
+/// encode CPSR output
+flags[0] = Z;
+flags[1] = C;
+flags[2] = N;
+flags[3] = V;
 
 		
 	
 end
 
-conditionTest condTest (.cond(condReg), .Z(Z), .C(C), .N(N), .V(V), .execute(executeIn), .reset(reset), .clk(clk));
+
 
 	
 endmodule

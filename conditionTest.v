@@ -1,58 +1,66 @@
-module conditionTest (cond, Z, C, N, V, execute, reset, clk);
+module conditionTest (cond, CPSRIn, conditionalExecute, reset, clk);
 
-input wire [3:0] cond;
-input wire Z, C, N, V, reset, clk;
-output reg execute;
+input wire [3:0] cond, CPSRIn;
+input wire reset, clk;
+reg Z,C,N,V;
+output reg conditionalExecute;
 
 
 always @* begin
+
+Z = CPSRIn[0];
+C = CPSRIn[1];
+N = CPSRIn[2];
+V = CPSRIn[3];
+
+
 	//condition test
 case (cond)	
 4'b0000: if (Z == 1)						//EQ	Z set									(equal)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b0001: if (Z == 0)						//NE	Z clear 								(not equal)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b0010: if (C == 1)						//CS	C set 								(unsigned higher or same)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b0011: if (C == 0)						//CC	C clear 								(unsigned lower)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b0100: if (N == 1)						//MI	N set 								(negative)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b0101:	if (N == 0)						//PL 	N clear 								(positive or zero)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b0110: if (V == 1)						//VS 	V set 								(overflow)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b0111: if (V == 0)						//VC 	V clear								(no overflow)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b1000: if ((C == 1) && (Z == 0))	//HI 	C set and Z clear					(unsigned higher)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b1001: if ((C == 0) | (Z == 1))	//LS 	C clear or Z set 					(unsigned lower or same)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b1010: if (N == V)						//GE 	N equals V 							(greater or equal)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b1011: if (N != V)						//LT 	N not equal to V 					(less than)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b1100: if ((Z == 0) && (N == V))	//GT 	Z clear AND (N equals V)		(greater than)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b1101: if ((Z == 1) | (N != V))	//LE 	Z set OR (N not equal to V) 	(less than or equal)
-				execute = 1; else execute = 0;
+				conditionalExecute = 1; else conditionalExecute = 0;
 				
 4'b1110: 									//AL 	(ignored) 							(always)
-				execute = 1;
-default: 	execute = 1;
+				conditionalExecute = 1;
+default: 	conditionalExecute = 1;
 endcase
 end
 endmodule
@@ -62,9 +70,9 @@ module conditionTest_testbench ();
 
 reg [3:0] cond;
 reg Z, C, N, V, reset, clk;
-wire execute;
+wire conditionalExecute;
 
-conditionTest dut (.cond(cond), .Z(Z), .C(C), .N(N), .V(V), .execute(execute), .reset(reset), .clk(clk));
+conditionTest dut (.cond(cond), .Z(Z), .C(C), .N(N), .V(V), .conditionalExecute(conditionalExecute), .reset(reset), .clk(clk));
 
   
  // Set up the clock.
