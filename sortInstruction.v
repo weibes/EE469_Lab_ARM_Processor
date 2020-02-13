@@ -1,14 +1,16 @@
 module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 												byteOrWord, writeBack, loadStore, rd, rn, rm, opcode,
 												cond, rotateVal, rm_shift, immediateVal, immediateOffset,
-												branchImmediate, reset, clk, isBranch);
+												branchImmediate, reset, clk, isBranch, CPSRwrite);
 
 
 	input wire [31:0] instruction;
 	input wire reset, clk;
+	
 	output reg linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack,
-							 loadStore, isBranch;
-	output reg [3:0] rd, rn, rm, opcode, cond, rotateVal;
+							 loadStore, isBranch, CPSRwrite;
+	output reg [3:0] rd, rn, rm, cond, rotateVal;
+	output reg [4:0] opcode;
 	output reg [7:0] rm_shift, immediateVal;
 	output reg [11:0] immediateOffset;
 	output reg [23:0] branchImmediate;
@@ -24,9 +26,11 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 		rn = 0;
 		rd = 0;
 		rm = 0;
+		
 		rm_shift = 0;
 		immediateVal = 0;
 		rotateVal = 0;
+		
 		immediateOffset = 0;
 		linkBit = 0;
 		branchImmediate = 0;
@@ -37,79 +41,77 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 		loadStore = 0;
 		isBranch = 0;
 
-		if (instruction [27:26] == 2'b00)
+		if (instruction [27:26] == 2'b00)  //if instruction format is "data processing"
 
-			begin  //if instruction format is "data processing"
+			begin
 			isBranch = 1'b0;
-			opcode = instruction[24:21];
 			rn = instruction[19:16];
 			rd = instruction[15:12];
-
-
-				if (instruction[25] == 1'b0)
-
+         end
+			
+				if (instruction[25] == 1'b0) //if immediate operand is 0 (shift)
+				
 				begin
+				
 				rm = instruction[3:0];
-				rm_shift = instruction[11:4];
+				rm_shift = instruction[11:7];
+				
+//					case (instruction [6:5]) // shift type
+//					begin
+//					//	 shift type select
+//					2'b00: // logical left
+//					2'b01: // logical right
+//					2'b10: // arithmetic right
+//					2'b11: // rotate right
+//					end
+//					endcase
+
 				end
 
-				else
+				
+				
+	
+	
+				else									//if immediate opperand is 1 (rotate / immediate)
 
 				begin
 				immediateVal = instruction[7:0];
 				rotateVal = instruction[11:8];
+				
 				end
 				end
+	
+	
+		CPSRwrite = instruction [20] 		// Set conditionc codes
+ 
 
-
-
-	//	instruction [31:28] 	//cond
-	//
-	//	if (instruction [25] & 1 ) //if immediate bit is true
-	//		instruction [11:8] //rotate
-	//		instruction [7:0]//immediate value
-	//	else
-	//		instruction [11:4] //shift
-	//		instruction [3:0] // rm
-	//
-	//	instruction [24:21] 	//opcode
-	//	instruction [20] 		//S bit
-	//	instruction [19:16] 	//rn
-	//	instruction [15:12] 	//rd
-
-		/*
-		case (instruction [24:21]) //read opcode
-
-
-		// 3210
+		
+		case (instruction [24:21]) //opcode
 		begin
-
-		//	Meaning of each instuction
-		4'b0000: inst = "AND";
-		4'b0001: inst = "EOR";
-		4'b0010: inst = "SUB";
-		4'b0011: inst = "RSB";
-		4'b0100: inst = "ADD";
-		4'b0101: inst = "ADC";
-		4'b0110: inst = "SBC";
-		4'b0111: inst = "RSC";
-		4'b1000: inst = "TST";
-		4'b1001: inst = "TEQ";
-		4'b1010: inst = "CMP";
-		4'b1011: inst = "CMN";
-		4'b1100: inst = "ORR";
-		4'b1101: inst = "MOV";
-		4'b1110: inst = "BIC";
-		4'b1111: inst = "MVN";
-
+		//	encode opcode for ALU
+		4'b0000: opcode = 5'b00000  //"AND"
+		4'b0001: opcode = 5'b00001  //"EOR"
+		4'b0010: opcode = 5'b00010  //"SUB"
+		4'b0011: opcode = 5'b00011  //"RSB"
+		4'b0100: opcode = 5'b00100  //"ADD"
+		4'b0101: opcode = 5'b00101  //"ADC"
+		4'b0110: opcode = 5'b00110  //"SBC"
+		4'b0111: opcode = 5'b00111  //"RSC"
+		4'b1000: opcode = 5'b01000  //"TST"
+		4'b1001: opcode = 5'b01001  //"TEQ"
+		4'b1010: opcode = 5'b01010  //"CMP"
+		4'b1011: opcode = 5'b01011  //"CMN"
+		4'b1100: opcode = 5'b01100  //"ORR"
+		4'b1101: opcode = 5'b01101  //"MOV"
+		4'b1110: opcode = 5'b01110  //"BIC"
+		4'b1111: opcode = 5'b01111  //"MVN"
 		end
 		endcase
+		
 
-		*/
+		else if (instruction [27:26] == 2'b01)  //if instruction format is "single data transfer"
 
-		else if (instruction [27:26] == 2'b01)
-
-		begin //if instruction format is "single data transfer"
+		begin 
 
 	/*
 	// Interpretation of Single Data Swap instructions
@@ -168,6 +170,11 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 	end
 
 endmodule
+
+
+
+
+
 
 /*
 module  sortInstruction_testbench();

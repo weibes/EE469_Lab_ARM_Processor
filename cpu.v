@@ -32,10 +32,11 @@ module cpu(
 		
 		//from
 	wire linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack, loadStore;
-	wire [3:0] rd, rn, rm, opcode, cond, rotateVal;
+	wire [3:0] rd, rn, rm, cond, rotateVal;
+	wire [4:0] opcode;
 	wire [7:0] rm_shift, immediateVal;
 	wire [11:0] immediateOffset;
-	wire isBranchWire;
+	wire isBranchWire, CPSRwritewire;
 	
 	
 	//registerFile variables
@@ -97,7 +98,7 @@ module cpu(
 	sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBit), .prePostAddOffset(prePostAddOffset), .upDownOffset(upDownOffset),
   												.byteOrWord(byteOrWord), .writeBack(writeBack), .loadStore(loadStore), .rd(rd), .rn(rn), .rm(rm), .opcode(opcode),
   												.cond(cond), .rotateVal(rotateVal), .rm_shift(rm_shift), .immediateVal(immediateVal), .immediateOffset(immediateOffset),
-  												.branchImmediate(branchImmediate), .reset(nreset), .clk(clk), .isBranch(isBranchWire));
+  												.branchImmediate(branchImmediate), .reset(nreset), .clk(clk), .isBranch(isBranchWire), .CPSRwrite(CPSRwritewire));
 												
 
 	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
