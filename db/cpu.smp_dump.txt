@@ -1,8 +1,0 @@
-
-State Machine - |cpu|ps
-Name ps.dataMemory ps.execute ps.registerFetch ps.instructionFetch ps.writeback 
-ps.instructionFetch 0 0 0 0 0 
-ps.registerFetch 0 0 1 1 0 
-ps.execute 0 1 0 1 0 
-ps.dataMemory 1 0 0 1 0 
-ps.writeback 0 0 0 1 1 
