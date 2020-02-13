@@ -8220,47 +8220,15 @@ clk => ~NO_FANOUT~
 
 
 |cpu|flagRegister:CPSRegister
-flags[0] => CPSRhold.DATAB
-flags[1] => CPSRhold.DATAB
-flags[2] => CPSRhold.DATAB
-flags[3] => CPSRhold.DATAB
-CPSRwrite => CPSRhold.OUTPUTSELECT
-CPSRwrite => CPSRhold.OUTPUTSELECT
-CPSRwrite => CPSRhold.OUTPUTSELECT
-CPSRwrite => CPSRhold.OUTPUTSELECT
-CPSRstatus[0] <= D_FF:flag00.q
-CPSRstatus[1] <= D_FF:flag01.q
-CPSRstatus[2] <= D_FF:flag02.q
-CPSRstatus[3] <= D_FF:flag03.q
-reset => reset.IN4
-clk => clk.IN4
-
-
-|cpu|flagRegister:CPSRegister|D_FF:flag03
-q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
-d => q.DATAA
-reset => q.OUTPUTSELECT
-clk => q~reg0.CLK
-
-
-|cpu|flagRegister:CPSRegister|D_FF:flag02
-q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
-d => q.DATAA
-reset => q.OUTPUTSELECT
-clk => q~reg0.CLK
-
-
-|cpu|flagRegister:CPSRegister|D_FF:flag01
-q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
-d => q.DATAA
-reset => q.OUTPUTSELECT
-clk => q~reg0.CLK
-
-
-|cpu|flagRegister:CPSRegister|D_FF:flag00
-q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
-d => q.DATAA
-reset => q.OUTPUTSELECT
-clk => q~reg0.CLK
+flags[0] => CPSRstatus[0].DATAIN
+flags[1] => CPSRstatus[1].DATAIN
+flags[2] => CPSRstatus[2].DATAIN
+flags[3] => CPSRstatus[3].DATAIN
+CPSRstatus[0] <= flags[0].DB_MAX_OUTPUT_PORT_TYPE
+CPSRstatus[1] <= flags[1].DB_MAX_OUTPUT_PORT_TYPE
+CPSRstatus[2] <= flags[2].DB_MAX_OUTPUT_PORT_TYPE
+CPSRstatus[3] <= flags[3].DB_MAX_OUTPUT_PORT_TYPE
+reset => ~NO_FANOUT~
+clk => ~NO_FANOUT~
 
 

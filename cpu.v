@@ -11,20 +11,60 @@ module cpu(
   output wire [7:0] debug_port7
   );
 
-  wire [31:0] rmData, rnData, writeData;
-  wire linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack,
-               loadStore, isBranch;
-
-  reg readWrite;
-  wire [3:0] rd, rn, rm, opcode, cond, rotateVal;
-  wire [7:0] rm_shift, immediateVal;
-  wire [11:0] immediateOffset;
-  wire [23:0] branchImmediate;
-
-  wire [31:0] instrLoc, nextInstr;
   
+	// programCounter variables
+		//to
+	reg isBranch;
+		//from
+	wire [31:0] instrLoc;
+	wire [23:0] branchImmediate;
+
+	
+	// instructionMemory variables
+		//to
+		
+		//from
+	wire [31:0] nextInstr;
+	
+	
+	// sortinstruction variables
+		//to
+		
+		//from
+	wire linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack, loadStore;
+	wire [3:0] rd, rn, rm, opcode, cond, rotateVal;
+	wire [7:0] rm_shift, immediateVal;
+	wire [11:0] immediateOffset;
+	wire isBranch2;
+	
+	
+	//registerFile variables
+		//to
+	reg readWrite;	
+		//from
+	wire [31:0] rmData, rnData, writeData;
+  
+  
+  //conditionTest variables
+  		//to
+		
+		//from
   wire conditionalExecute;
-  wire [3:0] CPSR;
+  wire [3:0] CPSRflags;
+  
+ 
+  	// ALU variables
+		//to
+		
+		//from
+		
+		
+	//flagRegister variables
+		//to
+		
+		//from
+	
+	
 
   // Controls the LED on the board.
   assign led = 1'b1;
@@ -49,22 +89,34 @@ module cpu(
 
 	programCounter PC(.Branch(isBranch), .Reset(nreset), .currData(instrLoc),
                     .branchImmediate(branchImmediate), .clk(clk));
+						  
 
 	instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstr));
+	
 
 	sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBit), .prePostAddOffset(prePostAddOffset), .upDownOffset(upDownOffset),
   												.byteOrWord(byteOrWord), .writeBack(writeBack), .loadStore(loadStore), .rd(rd), .rn(rn), .rm(rm), .opcode(opcode),
   												.cond(cond), .rotateVal(rotateVal), .rm_shift(rm_shift), .immediateVal(immediateVal), .immediateOffset(immediateOffset),
-  												.branchImmediate(branchImmediate), .reset(nreset), .clk(clk), .isBranch(isBranch));
+  												.branchImmediate(branchImmediate), .reset(nreset), .clk(clk), .isBranch(isBranch2));
+												
 
 	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
                          .writeData(writeData), .readData1(rmData), .readData2(rnData), .reset(nreset), .clk(clk));
-								 					 
-	conditionTest condTest (.cond(cond), .CPSRIn(), .conditionalExecute(conditionalExecute), .reset(nreset), .clk(clk));
+								 
+								 
+	conditionTest condTest (.cond(cond), .CPSRIn(CPSRflags), .conditionalExecute(conditionalExecute), .reset(nreset), .clk(clk));
 
+	
 	ALU numberCrunch (.cond(), .data1(), .data2(), .operation(), .result(), .flags(), .reset(nreset), .clk(clk));
 
+	
 	flagRegister CPSRegister(.flags(), .CPSRwrite(), .CPSRstatus(), .reset(nreset), .clk(clk));
+	
+	
+	
+	
+	
+	
 	
 	
 
