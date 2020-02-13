@@ -1,0 +1,15 @@
+module shifter();
+
+
+
+case () // shift type
+					begin
+					//	 shift type select
+					2'b00: // logical left
+					2'b01: // logical right
+					2'b10: // arithmetic right
+					2'b11: // rotate right
+					end
+					endcase
+					
+endmodule

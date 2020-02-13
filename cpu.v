@@ -31,13 +31,14 @@ module cpu(
 		//to
 		
 		//from
-	wire linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack, loadStore;
+	wire linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack, loadStore, CPSRwritewire, immediateOperand;
+	wire [1:0] shiftType;
 	wire [3:0] rd, rn, rm, cond, rotateVal;
-	wire [4:0] opcode;
-	wire [7:0] rm_shift, immediateVal;
+	wire [4:0] opcode, rm_shift;
+	wire [7:0] rm_shiftSDT, immediateVal;
 	wire [11:0] immediateOffset;
-	wire isBranchWire, CPSRwritewire;
 	
+
 	
 	//registerFile variables
 		//to
@@ -85,9 +86,6 @@ module cpu(
 //YOUR CODE GOES HERE
 
 
-
-
-
 	programCounter PC(.Branch(isBranch), .Reset(nreset), .currData(instrLoc),
                     .branchImmediate(branchImmediate), .clk(clk));
 						  
@@ -98,8 +96,8 @@ module cpu(
 	sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBit), .prePostAddOffset(prePostAddOffset), .upDownOffset(upDownOffset),
   												.byteOrWord(byteOrWord), .writeBack(writeBack), .loadStore(loadStore), .rd(rd), .rn(rn), .rm(rm), .opcode(opcode),
   												.cond(cond), .rotateVal(rotateVal), .rm_shift(rm_shift), .immediateVal(immediateVal), .immediateOffset(immediateOffset),
-  												.branchImmediate(branchImmediate), .reset(nreset), .clk(clk), .isBranch(isBranchWire), .CPSRwrite(CPSRwritewire));
-												
+  												.branchImmediate(branchImmediate), .reset(nreset), .clk(clk), .CPSRwrite(CPSRwritewire),.shiftType(shiftType),
+												.immediateOperand(immediateOperand), .rm_shiftSDT(rm_shiftSDT));											
 
 	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
                          .writeData(writeData), .readData1(rmData), .readData2(rnData), .reset(nreset), .clk(clk));
@@ -134,9 +132,8 @@ reg [2:0] ps, ns;
 
 always @* begin
 
-isBranch = isBranchWire;
-
- 
+if (opcode == 5'b10001) isBranch = 1; 
+else isBranch = 0;
  
  // State logic
 	case (ps)

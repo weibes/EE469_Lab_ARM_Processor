@@ -7,6 +7,9 @@ module programCounter(Branch, Reset, currData, branchImmediate, clk);
 
   reg branchCheck;
 
+
+
+
   always @* begin
 
     if (Branch == 1'b1)

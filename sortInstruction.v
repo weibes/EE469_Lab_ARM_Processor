@@ -1,17 +1,18 @@
 module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 												byteOrWord, writeBack, loadStore, rd, rn, rm, opcode,
 												cond, rotateVal, rm_shift, immediateVal, immediateOffset,
-												branchImmediate, reset, clk, isBranch, CPSRwrite);
+												branchImmediate, reset, clk, CPSRwrite, shiftType, immediateOperand, rm_shiftSDT);
 
 
 	input wire [31:0] instruction;
 	input wire reset, clk;
 	
 	output reg linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack,
-							 loadStore, isBranch, CPSRwrite;
+							 loadStore, CPSRwrite, immediateOperand;
+	output reg [1:0] shiftType;
 	output reg [3:0] rd, rn, rm, cond, rotateVal;
-	output reg [4:0] opcode;
-	output reg [7:0] rm_shift, immediateVal;
+	output reg [4:0] opcode, rm_shift;
+	output reg [7:0] rm_shiftSDT, immediateVal;
 	output reg [11:0] immediateOffset;
 	output reg [23:0] branchImmediate;
 
@@ -19,18 +20,23 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 
 	always @* begin
 
-	// send condition from instruction to register_file
+	// information used by all instructions
 		cond = instruction [31:28];
-
-		opcode = 0;
+		opcode = 5'b11111; //invalid opcode
 		rn = 0;
 		rd = 0;
 		rm = 0;
 		
+		// data processing information
 		rm_shift = 0;
 		immediateVal = 0;
 		rotateVal = 0;
+		immediateOperand = 0;
+		shiftType = 0;
+		CPSRwrite = 0;
 		
+		//single data transfer information
+		rm_shiftSDT = 0;
 		immediateOffset = 0;
 		linkBit = 0;
 		branchImmediate = 0;
@@ -39,94 +45,47 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 		byteOrWord = 0;
 		writeBack = 0;
 		loadStore = 0;
-		isBranch = 0;
 
 		if (instruction [27:26] == 2'b00)  //if instruction format is "data processing"
-
-			begin
-			isBranch = 1'b0;
+		
+		begin
 			rn = instruction[19:16];
 			rd = instruction[15:12];
-         end
-			
-				if (instruction[25] == 1'b0) //if immediate operand is 0 (shift)
-				
-				begin
-				
-				rm = instruction[3:0];
-				rm_shift = instruction[11:7];
-				
-//					case (instruction [6:5]) // shift type
-//					begin
-//					//	 shift type select
-//					2'b00: // logical left
-//					2'b01: // logical right
-//					2'b10: // arithmetic right
-//					2'b11: // rotate right
-//					end
-//					endcase
-
-				end
-
-				
-				
-	
-	
-				else									//if immediate opperand is 1 (rotate / immediate)
-
-				begin
-				immediateVal = instruction[7:0];
-				rotateVal = instruction[11:8];
-				
-				end
-				end
-	
-	
-		CPSRwrite = instruction [20] 		// Set conditionc codes
- 
-
+			rm = instruction[3:0];
+			immediateOperand = instruction[25];
+			rm_shift = instruction[11:7];
+			shiftType = instruction [6:5];
+			immediateVal = instruction[7:0];
+			rotateVal = instruction[11:8];
+			CPSRwrite = instruction [20]; 		// Set conditionc codes
 		
-		case (instruction [24:21]) //opcode
-		begin
-		//	encode opcode for ALU
-		4'b0000: opcode = 5'b00000  //"AND"
-		4'b0001: opcode = 5'b00001  //"EOR"
-		4'b0010: opcode = 5'b00010  //"SUB"
-		4'b0011: opcode = 5'b00011  //"RSB"
-		4'b0100: opcode = 5'b00100  //"ADD"
-		4'b0101: opcode = 5'b00101  //"ADC"
-		4'b0110: opcode = 5'b00110  //"SBC"
-		4'b0111: opcode = 5'b00111  //"RSC"
-		4'b1000: opcode = 5'b01000  //"TST"
-		4'b1001: opcode = 5'b01001  //"TEQ"
-		4'b1010: opcode = 5'b01010  //"CMP"
-		4'b1011: opcode = 5'b01011  //"CMN"
-		4'b1100: opcode = 5'b01100  //"ORR"
-		4'b1101: opcode = 5'b01101  //"MOV"
-		4'b1110: opcode = 5'b01110  //"BIC"
-		4'b1111: opcode = 5'b01111  //"MVN"
+			case (instruction [24:21]) //opcode
+			//	encode opcode for ALU
+			4'b0000: opcode = 5'b00000;  //"AND"
+			4'b0001: opcode = 5'b00001;  //"EOR"
+			4'b0010: opcode = 5'b00010;  //"SUB"
+			4'b0011: opcode = 5'b00011;  //"RSB"
+			4'b0100: opcode = 5'b00100;  //"ADD"
+			4'b0101: opcode = 5'b00101;  //"ADC"
+			4'b0110: opcode = 5'b00110;  //"SBC"
+			4'b0111: opcode = 5'b00111;  //"RSC"
+			4'b1000: opcode = 5'b01000;  //"TST"
+			4'b1001: opcode = 5'b01001;  //"TEQ"
+			4'b1010: opcode = 5'b01010;  //"CMP"
+			4'b1011: opcode = 5'b01011;  //"CMN"
+			4'b1100: opcode = 5'b01100;  //"ORR"
+			4'b1101: opcode = 5'b01101;  //"MOV"
+			4'b1110: opcode = 5'b01110;  //"BIC"
+			4'b1111: opcode = 5'b01111;  //"MVN"
+			endcase
 		end
-		endcase
-		
 
 		else if (instruction [27:26] == 2'b01)  //if instruction format is "single data transfer"
-
-		begin 
-
-	/*
-	// Interpretation of Single Data Swap instructions
-		instruction [31:28] //cond
-		instruction [25] 	//immediate
-		instruction [24] 	//Pre/Post indexing
-		instruction [23] 	//up/down
-		instruction [22] 	//byte/word
-		instruction [21] 	//write-back
-		instruction [20] 	//load/Store
-		instruction [19:16] 	//rn (base register)
-		instruction [15:12] 	//rd (source/destination register)
-		instruction [11:0] 	//offset
-	*/
-			isBranch = 1'b0;
+			
+			begin 
+			
+			opcode = 5'b10000; // code for load or store
+			
 			prePostAddOffset = instruction[24];
 			upDownOffset = instruction[23];
 			byteOrWord = instruction[22];
@@ -134,39 +93,20 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 			loadStore = instruction[20];
 			rn = instruction[19:16];
 			rd = instruction[15:12];
-
-
-			if (instruction[25] == 1'b1)
-
-			begin
-				rm_shift = instruction[11:4];
-				rm = instruction[3:0];
+			rm = instruction[3:0];
+			immediateOperand = instruction[25];
+			rm_shiftSDT = instruction[11:4];
+			immediateOffset = instruction[11:0];
 			end
 
-			else
-
+		else if (instruction [27:25] == 3'b101) //if instruction format is branch
 			begin
-				immediateOffset = instruction[11:0];
+			
+			opcode = 5'b10001; // code for branch
+			
+			linkBit = instruction[24];
+			branchImmediate = instruction[23:0];
 			end
-		end
-
-		else if (instruction [27:25] == 3'b101)
-		begin //if instruction format is branch
-		linkBit = instruction[24];
-		branchImmediate = instruction[23:0];
-		if (cond == 4'b1110) //execute unconditionalBranch
-			isBranch = 1'b1;
-		else
-			isBranch = 1'b0;
-
-
-
-	/*
-
-		instruction [24] 		//link
-		instruction [23:0] 	//offset
-	*/
-		end
 	end
 
 endmodule
