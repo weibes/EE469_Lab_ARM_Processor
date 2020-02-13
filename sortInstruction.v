@@ -3,10 +3,9 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 												cond, rotateVal, rm_shift, immediateVal, immediateOffset,
 												branchImmediate, reset, clk, CPSRwrite, shiftType, immediateOperand, rm_shiftSDT);
 
-
 	input wire [31:0] instruction;
 	input wire reset, clk;
-	
+
 	output reg linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack,
 							 loadStore, CPSRwrite, immediateOperand;
 	output reg [1:0] shiftType;

@@ -15,52 +15,59 @@ module cpu(
 	// programCounter variables
 		//to
 	reg isBranch;
+	reg [23:0] branchImmediate;
 		//from
-	wire [31:0] instrLoc;
-	wire [23:0] branchImmediate;
+	wire [31:0] instrLocWire;
 
-	
+
 	// instructionMemory variables
 		//to
-		
+	reg [31:0] instrLoc;
 		//from
-	wire [31:0] nextInstr;
-	
+	wire [31:0] nextInstrWire;
+
 	
 	// sortinstruction variables
 		//to
-		
+	reg [31:0] nextInstr;
 		//from
-	wire linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack, loadStore, CPSRwritewire, immediateOperand;
-	wire [1:0] shiftType;
-	wire [3:0] rd, rn, rm, cond, rotateVal;
-	wire [4:0] opcode, rm_shift;
-	wire [7:0] rm_shiftSDT, immediateVal;
-	wire [11:0] immediateOffset;
-	
+	wire linkBitWire, prePostAddOffsetWire, upDownOffsetWire, byteOrWordWire, writeBackWire, loadStoreWire, CPSRwritewire, immediateOperandWire;
+	wire [1:0] shiftTypeWire;
+	wire [3:0] rdWire, rnWire, rmWire, condWire, rotateValWire;
+	wire [4:0] opcodeWire, rm_shiftWire;
+	wire [7:0] rm_shiftSDTWire, immediateValWire;
+	wire [11:0] immediateOffsetWire;
+	wire [23:0] branchImmediateWire;
 
 	
 	//registerFile variables
-		//to
-	reg readWrite;	
+	//to
+	reg readWrite;
+	reg [3:0] rd,rm,rn;
+	reg [31:0] writeData;
 		//from
-	wire [31:0] rmData, rnData, writeData;
+	wire [31:0] rmDataWire, rnDataWire;
   
   
   //conditionTest variables
   		//to
-		
+	reg [3:0] cond, CPSRstatus;
+	
 		//from
-  wire conditionalExecute;
-  wire [3:0] CPSRflags;
+	wire conditionalExecuteWire;
+	wire [3:0] CPSRflagsWire;
   
- 
   	// ALU variables
 		//to
-		
+	reg ALUexecute;
+	reg [31:0] ALUData1, ALUData2;
+	reg opcode;
 		//from
-		
-		
+	wire [3:0] CPSRflagsWire;
+	wire [31:0] resultWire;
+	
+	
+	
 	//flagRegister variables
 		//to
 		
@@ -72,51 +79,41 @@ module cpu(
   assign led = 1'b1;
 
   // These are how you communicate back to the serial port debugger.
-  assign debug_port1 = instrLoc[7:0];
-  assign debug_port2 = nextInstr[27:20];
-  assign debug_port3[3:0] = cond;
-  assign debug_port3[7:4] = rd;
-  assign debug_port4[3:0] = rm;
-  assign debug_port4[7:4] = rn;
-  assign debug_port5 = branchImmediate[7:0];
-  assign debug_port6 = immediateVal;
-  assign debug_port7 = 8'h07;
+  
+  
+//  assign debug_port1 = instrLoc[7:0];
+//  assign debug_port2 = nextInstr[27:20];
+//  assign debug_port3[3:0] = cond;
+//  assign debug_port3[7:4] = rd;
+//  assign debug_port4[3:0] = rm;
+//  assign debug_port4[7:4] = rn;
+//  assign debug_port5 = branchImmediate[7:0];
+//  assign debug_port6 = immediateVal;
+//  assign debug_port7 = 8'h07;
 
 
 //YOUR CODE GOES HERE
 
 
-	programCounter PC(.Branch(isBranch), .Reset(nreset), .currData(instrLoc),
+	programCounter PC(.Branch(isBranch), .Reset(nreset), .currData(instrLocWire),
                     .branchImmediate(branchImmediate), .clk(clk));
 						  
+	instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstrWire));
 
-	instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstr));
-	
-
-	sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBit), .prePostAddOffset(prePostAddOffset), .upDownOffset(upDownOffset),
-  												.byteOrWord(byteOrWord), .writeBack(writeBack), .loadStore(loadStore), .rd(rd), .rn(rn), .rm(rm), .opcode(opcode),
-  												.cond(cond), .rotateVal(rotateVal), .rm_shift(rm_shift), .immediateVal(immediateVal), .immediateOffset(immediateOffset),
-  												.branchImmediate(branchImmediate), .reset(nreset), .clk(clk), .CPSRwrite(CPSRwritewire),.shiftType(shiftType),
-												.immediateOperand(immediateOperand), .rm_shiftSDT(rm_shiftSDT));											
+	sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
+  												.byteOrWord(byteOrWordWire), .writeBack(writeBackWire), .loadStore(loadStoreWire), .rd(rdWire), .rn(rnWire), .rm(rmWire), .opcode(opcodeWire),
+  												.cond(condWire), .rotateVal(rotateValWire), .rm_shift(rm_shiftWire), .immediateVal(immediateValWire), .immediateOffset(immediateOffsetWire),
+  												.branchImmediate(branchImmediateWire), .reset(nreset), .clk(clk), .CPSRwrite(CPSRwritewire),.shiftType(shiftTypeWire),
+												.immediateOperand(immediateOperandWire), .rm_shiftSDT(rm_shiftSDTWire));											
 
 	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
-                         .writeData(writeData), .readData1(rmData), .readData2(rnData), .reset(nreset), .clk(clk));
-								 
-								 
-	conditionTest condTest (.cond(cond), .CPSRIn(CPSRflags), .conditionalExecute(conditionalExecute), .reset(nreset), .clk(clk));
+                         .writeData(writeData), .readData1(rmDataWire), .readData2(rnDataWire), .reset(nreset), .clk(clk));	 
+				 
+	conditionTest condTest (.cond(cond), .CPSRIn(CPSRstatus), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
+	
+	ALU numberCrunch (.ALUexecute(ALUexecute), .data1(ALUData1), .data2(ALUData2), .operation(opcode), .result(resultWire), .flags(CPSRflagsWire), .reset(nreset), .clk(clk));
 
-	
-	ALU numberCrunch (.cond(), .data1(), .data2(), .operation(), .result(), .flags(), .reset(nreset), .clk(clk));
-
-	
-	flagRegister CPSRegister(.flags(), .CPSRwrite(), .CPSRstatus(), .reset(nreset), .clk(clk));
-	
-	
-	
-	
-	
-	
-	
+	flagRegister CPSRegister(.flags(CPSRflags), .CPSRwrite(CPSRwrite), .CPSRstatus(CPSRstatusWire), .reset(nreset), .clk(clk));
 	
 
 // State variables.

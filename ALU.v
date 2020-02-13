@@ -1,9 +1,9 @@
-module  ALU(cond, data1, data2, operation, result, flags, reset, clk);
+module  ALU(ALUexecute, data1, data2, operation, result, flags, reset, clk);
 
-input wire [3:0] cond;
 input wire [31:0] data1, data2;
 input wire [4:0] operation;
-input wire reset,clk;
+input wire ALUexecute, reset,clk;
+
 output reg [31:0] result;  //either logical or signed
 output reg [3:0] flags;
 

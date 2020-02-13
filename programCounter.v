@@ -1,6 +1,7 @@
 module programCounter(Branch, Reset, currData, branchImmediate, clk);
   input wire Branch, Reset, clk;
   input wire [23:0] branchImmediate;
+  
   output reg [31:0] currData;
 
   reg [31:0] nextData;

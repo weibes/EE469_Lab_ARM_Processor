@@ -2,9 +2,10 @@ module conditionTest (cond, CPSRIn, conditionalExecute, reset, clk);
 
 input wire [3:0] cond, CPSRIn;
 input wire reset, clk;
-reg Z,C,N,V;
+
 output reg conditionalExecute;
 
+reg Z,C,N,V;
 
 always @* begin
 

@@ -1,5 +1,5 @@
 Analysis & Synthesis report for cpu
-Thu Feb 13 10:56:25 2020
+Thu Feb 13 11:39:24 2020
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -17,17 +17,17 @@ Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
   9. Registers Removed During Synthesis
  10. Removed Registers Triggering Further Register Optimizations
  11. General Register Statistics
- 12. Multiplexer Restructuring Statistics (Restructuring Performed)
- 13. Parameter Settings for User Entity Instance: Top-level Entity: |cpu
- 14. Port Connectivity Checks: "flagRegister:CPSRegister"
- 15. Port Connectivity Checks: "ALU:numberCrunch"
- 16. Port Connectivity Checks: "conditionTest:condTest"
- 17. Port Connectivity Checks: "registerFile:reg_file"
- 18. Port Connectivity Checks: "sortInstruction:sortInstr"
- 19. Post-Synthesis Netlist Statistics for Top Partition
- 20. Elapsed Time Per Partition
- 21. Analysis & Synthesis Messages
- 22. Analysis & Synthesis Suppressed Messages
+ 12. Parameter Settings for User Entity Instance: Top-level Entity: |cpu
+ 13. Port Connectivity Checks: "flagRegister:CPSRegister"
+ 14. Port Connectivity Checks: "ALU:numberCrunch"
+ 15. Port Connectivity Checks: "conditionTest:condTest"
+ 16. Port Connectivity Checks: "registerFile:reg_file"
+ 17. Port Connectivity Checks: "sortInstruction:sortInstr"
+ 18. Port Connectivity Checks: "instructionMemory:Memory"
+ 19. Port Connectivity Checks: "programCounter:PC"
+ 20. Post-Synthesis Netlist Statistics for Top Partition
+ 21. Elapsed Time Per Partition
+ 22. Analysis & Synthesis Messages
 
 
 
@@ -54,13 +54,13 @@ agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                  ;
 +---------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Thu Feb 13 10:56:25 2020       ;
+; Analysis & Synthesis Status     ; Successful - Thu Feb 13 11:39:24 2020       ;
 ; Quartus Prime Version           ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                   ; cpu                                         ;
 ; Top-level Entity Name           ; cpu                                         ;
 ; Family                          ; Cyclone V                                   ;
 ; Logic utilization (in ALMs)     ; N/A                                         ;
-; Total registers                 ; 8                                           ;
+; Total registers                 ; 0                                           ;
 ; Total pins                      ; 59                                          ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 0                                           ;
@@ -170,11 +170,10 @@ agreement for further details.
 ; Maximum allowed            ; 2           ;
 ;                            ;             ;
 ; Average used               ; 1.00        ;
-; Maximum used               ; 2           ;
+; Maximum used               ; 1           ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;   0.0%      ;
 +----------------------------+-------------+
 
 
@@ -197,43 +196,40 @@ agreement for further details.
 +----------------------------------+-----------------+------------------------+-----------------------------------------------------------------------------------+---------+
 
 
-+-----------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Usage Summary                                 ;
-+---------------------------------------------+-------------------------------+
-; Resource                                    ; Usage                         ;
-+---------------------------------------------+-------------------------------+
-; Estimate of Logic utilization (ALMs needed) ; 73                            ;
-;                                             ;                               ;
-; Combinational ALUT usage for logic          ; 118                           ;
-;     -- 7 input functions                    ; 0                             ;
-;     -- 6 input functions                    ; 28                            ;
-;     -- 5 input functions                    ; 28                            ;
-;     -- 4 input functions                    ; 33                            ;
-;     -- <=3 input functions                  ; 29                            ;
-;                                             ;                               ;
-; Dedicated logic registers                   ; 8                             ;
-;                                             ;                               ;
-; I/O pins                                    ; 59                            ;
-;                                             ;                               ;
-; Total DSP Blocks                            ; 0                             ;
-;                                             ;                               ;
-; Maximum fan-out node                        ; programCounter:PC|currData[6] ;
-; Maximum fan-out                             ; 51                            ;
-; Total fan-out                               ; 645                           ;
-; Average fan-out                             ; 2.64                          ;
-+---------------------------------------------+-------------------------------+
++----------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary              ;
++---------------------------------------------+------------+
+; Resource                                    ; Usage      ;
++---------------------------------------------+------------+
+; Estimate of Logic utilization (ALMs needed) ; 0          ;
+;                                             ;            ;
+; Combinational ALUT usage for logic          ; 0          ;
+;     -- 7 input functions                    ; 0          ;
+;     -- 6 input functions                    ; 0          ;
+;     -- 5 input functions                    ; 0          ;
+;     -- 4 input functions                    ; 0          ;
+;     -- <=3 input functions                  ; 0          ;
+;                                             ;            ;
+; Dedicated logic registers                   ; 0          ;
+;                                             ;            ;
+; I/O pins                                    ; 59         ;
+;                                             ;            ;
+; Total DSP Blocks                            ; 0          ;
+;                                             ;            ;
+; Maximum fan-out node                        ; led~output ;
+; Maximum fan-out                             ; 1          ;
+; Total fan-out                               ; 59         ;
+; Average fan-out                             ; 0.50       ;
++---------------------------------------------+------------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                         ;
-+--------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------+-------------------+--------------+
-; Compilation Hierarchy Node     ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name            ; Entity Name       ; Library Name ;
-+--------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------+-------------------+--------------+
-; |cpu                           ; 118 (0)             ; 8 (0)                     ; 0                 ; 0          ; 59   ; 0            ; |cpu                           ; cpu               ; work         ;
-;    |instructionMemory:Memory|  ; 59 (59)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |cpu|instructionMemory:Memory  ; instructionMemory ; work         ;
-;    |programCounter:PC|         ; 24 (24)             ; 8 (8)                     ; 0                 ; 0          ; 0    ; 0            ; |cpu|programCounter:PC         ; programCounter    ; work         ;
-;    |sortInstruction:sortInstr| ; 35 (35)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |cpu|sortInstruction:sortInstr ; sortInstruction   ; work         ;
-+--------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------+-------------------+--------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                    ;
++----------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+---------------------+-------------+--------------+
+; Compilation Hierarchy Node ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name ; Entity Name ; Library Name ;
++----------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+---------------------+-------------+--------------+
+; |cpu                       ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 59   ; 0            ; |cpu                ; cpu         ; work         ;
++----------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+---------------------+-------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
@@ -251,43 +247,30 @@ Encoding Type:  One-Hot
 +---------------------+---------------+------------+------------------+---------------------+--------------+
 
 
-+-------------------------------------------------------------+
-; Registers Removed During Synthesis                          ;
-+----------------------------------------+--------------------+
-; Register name                          ; Reason for Removal ;
-+----------------------------------------+--------------------+
-; ps~7                                   ; Lost fanout        ;
-; ps~8                                   ; Lost fanout        ;
-; ps.writeback                           ; Lost fanout        ;
-; ps.instructionFetch                    ; Lost fanout        ;
-; ps.registerFetch                       ; Lost fanout        ;
-; ps.execute                             ; Lost fanout        ;
-; ps.dataMemory                          ; Lost fanout        ;
-; programCounter:PC|currData[8..31]      ; Lost fanout        ;
-; Total Number of Removed Registers = 31 ;                    ;
-+----------------------------------------+--------------------+
++------------------------------------------------------------+
+; Registers Removed During Synthesis                         ;
++---------------------------------------+--------------------+
+; Register name                         ; Reason for Removal ;
++---------------------------------------+--------------------+
+; ps~7                                  ; Lost fanout        ;
+; ps~8                                  ; Lost fanout        ;
+; ps.writeback                          ; Lost fanout        ;
+; ps.instructionFetch                   ; Lost fanout        ;
+; ps.registerFetch                      ; Lost fanout        ;
+; ps.execute                            ; Lost fanout        ;
+; ps.dataMemory                         ; Lost fanout        ;
+; Total Number of Removed Registers = 7 ;                    ;
++---------------------------------------+--------------------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------+
-; Removed Registers Triggering Further Register Optimizations                                                           ;
-+--------------------------------+--------------------+-----------------------------------------------------------------+
-; Register name                  ; Reason for Removal ; Registers Removed due to This Register                          ;
-+--------------------------------+--------------------+-----------------------------------------------------------------+
-; programCounter:PC|currData[31] ; Lost Fanouts       ; programCounter:PC|currData[30], programCounter:PC|currData[29], ;
-;                                ;                    ; programCounter:PC|currData[28], programCounter:PC|currData[27], ;
-;                                ;                    ; programCounter:PC|currData[26], programCounter:PC|currData[25], ;
-;                                ;                    ; programCounter:PC|currData[24], programCounter:PC|currData[23], ;
-;                                ;                    ; programCounter:PC|currData[22], programCounter:PC|currData[21], ;
-;                                ;                    ; programCounter:PC|currData[20], programCounter:PC|currData[19], ;
-;                                ;                    ; programCounter:PC|currData[18], programCounter:PC|currData[17], ;
-;                                ;                    ; programCounter:PC|currData[16], programCounter:PC|currData[15], ;
-;                                ;                    ; programCounter:PC|currData[14], programCounter:PC|currData[13], ;
-;                                ;                    ; programCounter:PC|currData[12], programCounter:PC|currData[11], ;
-;                                ;                    ; programCounter:PC|currData[10], programCounter:PC|currData[9],  ;
-;                                ;                    ; programCounter:PC|currData[8]                                   ;
-; ps~7                           ; Lost Fanouts       ; ps.instructionFetch, ps.execute                                 ;
-; ps~8                           ; Lost Fanouts       ; ps.registerFetch                                                ;
-+--------------------------------+--------------------+-----------------------------------------------------------------+
++-----------------------------------------------------------------------------+
+; Removed Registers Triggering Further Register Optimizations                 ;
++---------------+--------------------+----------------------------------------+
+; Register name ; Reason for Removal ; Registers Removed due to This Register ;
++---------------+--------------------+----------------------------------------+
+; ps~7          ; Lost Fanouts       ; ps.instructionFetch, ps.execute        ;
+; ps~8          ; Lost Fanouts       ; ps.registerFetch                       ;
++---------------+--------------------+----------------------------------------+
 
 
 +------------------------------------------------------+
@@ -295,25 +278,14 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 8     ;
-; Number of registers using Synchronous Clear  ; 6     ;
+; Total registers                              ; 0     ;
+; Number of registers using Synchronous Clear  ; 0     ;
 ; Number of registers using Synchronous Load   ; 0     ;
 ; Number of registers using Asynchronous Clear ; 0     ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 2     ;
+; Number of registers using Clock Enable       ; 0     ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
-
-
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                   ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                         ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------+
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |cpu|programCounter:PC|currData[0]                 ;
-; 3:1                ; 30 bits   ; 60 LEs        ; 30 LEs               ; 30 LEs                 ; Yes        ; |cpu|programCounter:PC|currData[21]                ;
-; 4:1                ; 24 bits   ; 48 LEs        ; 48 LEs               ; 0 LEs                  ; No         ; |cpu|sortInstruction:sortInstr|branchImmediate[13] ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------+
 
 
 +---------------------------------------------------------------------+
@@ -330,48 +302,54 @@ Encoding Type:  One-Hot
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
-+--------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "flagRegister:CPSRegister"                                             ;
-+------------+---------+------------------+--------------------------------------------------------+
-; Port       ; Type    ; Severity         ; Details                                                ;
-+------------+---------+------------------+--------------------------------------------------------+
-; flags      ; Input   ; Info             ; Explicitly unconnected                                 ;
-; CPSRwrite  ; Unknown ; Critical Warning ; Named port was not declared by the instantiated entity ;
-; CPSRstatus ; Output  ; Info             ; Explicitly unconnected                                 ;
-+------------+---------+------------------+--------------------------------------------------------+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "flagRegister:CPSRegister"                                                                                                                           ;
++------------+--------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+; Port       ; Type   ; Severity ; Details                                                                                                                                       ;
++------------+--------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+; flags      ; Input  ; Warning  ; Input port expression (1 bits) is smaller than the input port (4 bits) it drives.  Extra input bit(s) "flags[3..1]" will be connected to GND. ;
+; CPSRstatus ; Output ; Warning  ; Output or bidir port (4 bits) is wider than the port expression (1 bits) it drives; bit(s) "CPSRstatus[3..1]" have no fanouts                 ;
+; CPSRstatus ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed.                                                           ;
++------------+--------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 
 
-+--------------------------------------------------------+
-; Port Connectivity Checks: "ALU:numberCrunch"           ;
-+-----------+--------+----------+------------------------+
-; Port      ; Type   ; Severity ; Details                ;
-+-----------+--------+----------+------------------------+
-; cond      ; Input  ; Info     ; Explicitly unconnected ;
-; data1     ; Input  ; Info     ; Explicitly unconnected ;
-; data2     ; Input  ; Info     ; Explicitly unconnected ;
-; operation ; Input  ; Info     ; Explicitly unconnected ;
-; result    ; Output ; Info     ; Explicitly unconnected ;
-; flags     ; Output ; Info     ; Explicitly unconnected ;
-+-----------+--------+----------+------------------------+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "ALU:numberCrunch"                                                                                                                                      ;
++-----------+--------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port      ; Type   ; Severity ; Details                                                                                                                                           ;
++-----------+--------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+; data1     ; Input  ; Warning  ; Input port expression (1 bits) is smaller than the input port (32 bits) it drives.  Extra input bit(s) "data1[31..1]" will be connected to GND.   ;
+; data2     ; Input  ; Warning  ; Input port expression (1 bits) is smaller than the input port (32 bits) it drives.  Extra input bit(s) "data2[31..1]" will be connected to GND.   ;
+; operation ; Input  ; Warning  ; Input port expression (1 bits) is smaller than the input port (5 bits) it drives.  Extra input bit(s) "operation[4..1]" will be connected to GND. ;
+; result    ; Output ; Warning  ; Output or bidir port (32 bits) is wider than the port expression (1 bits) it drives; bit(s) "result[31..1]" have no fanouts                       ;
+; result    ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed.                                                               ;
+; flags     ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed.                                                               ;
++-----------+--------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
-+------------------------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "conditionTest:condTest"                                                                           ;
-+--------------------+--------+----------+-------------------------------------------------------------------------------------+
-; Port               ; Type   ; Severity ; Details                                                                             ;
-+--------------------+--------+----------+-------------------------------------------------------------------------------------+
-; conditionalExecute ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+--------------------+--------+----------+-------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "conditionTest:condTest"                                                                                                                                      ;
++--------------------+--------+----------+------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port               ; Type   ; Severity ; Details                                                                                                                                        ;
++--------------------+--------+----------+------------------------------------------------------------------------------------------------------------------------------------------------+
+; cond               ; Input  ; Warning  ; Input port expression (1 bits) is smaller than the input port (4 bits) it drives.  Extra input bit(s) "cond[3..1]" will be connected to GND.   ;
+; CPSRIn             ; Input  ; Warning  ; Input port expression (1 bits) is smaller than the input port (4 bits) it drives.  Extra input bit(s) "CPSRIn[3..1]" will be connected to GND. ;
+; conditionalExecute ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed.                                                            ;
++--------------------+--------+----------+------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
-+---------------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "registerFile:reg_file"                                                                   ;
-+-----------+--------+----------+-------------------------------------------------------------------------------------+
-; Port      ; Type   ; Severity ; Details                                                                             ;
-+-----------+--------+----------+-------------------------------------------------------------------------------------+
-; readData1 ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-; readData2 ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+-----------+--------+----------+-------------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "registerFile:reg_file"                                                                                                                                               ;
++------------------+--------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port             ; Type   ; Severity ; Details                                                                                                                                                  ;
++------------------+--------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+; writeDestination ; Input  ; Warning  ; Input port expression (1 bits) is smaller than the input port (4 bits) it drives.  Extra input bit(s) "writeDestination[3..1]" will be connected to GND. ;
+; readReg1         ; Input  ; Warning  ; Input port expression (1 bits) is smaller than the input port (4 bits) it drives.  Extra input bit(s) "readReg1[3..1]" will be connected to GND.         ;
+; readReg2         ; Input  ; Warning  ; Input port expression (1 bits) is smaller than the input port (4 bits) it drives.  Extra input bit(s) "readReg2[3..1]" will be connected to GND.         ;
+; writeData        ; Input  ; Warning  ; Input port expression (1 bits) is smaller than the input port (32 bits) it drives.  Extra input bit(s) "writeData[31..1]" will be connected to GND.      ;
+; readData1        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed.                                                                      ;
+; readData2        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed.                                                                      ;
++------------------+--------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 +----------------------------------------------------------------------------------------------------------------------------+
@@ -385,9 +363,16 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; byteOrWord       ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
 ; writeBack        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
 ; loadStore        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; rd               ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; rn               ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; rm               ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; opcode           ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; cond             ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
 ; rotateVal        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
 ; rm_shift         ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; immediateVal     ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
 ; immediateOffset  ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; branchImmediate  ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
 ; CPSRwrite        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
 ; shiftType        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
 ; immediateOperand ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
@@ -395,31 +380,37 @@ Note: In order to hide this table in the UI and the text report file, please set
 +------------------+--------+----------+-------------------------------------------------------------------------------------+
 
 
++-------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "instructionMemory:Memory"                                                              ;
++---------+--------+----------+-------------------------------------------------------------------------------------+
+; Port    ; Type   ; Severity ; Details                                                                             ;
++---------+--------+----------+-------------------------------------------------------------------------------------+
+; dataOut ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++---------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "programCounter:PC"                                                                      ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+; Port     ; Type   ; Severity ; Details                                                                             ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+; Branch   ; Input  ; Info     ; Stuck at GND                                                                        ;
+; currData ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+
+
 +-----------------------------------------------------+
 ; Post-Synthesis Netlist Statistics for Top Partition ;
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; arriav_ff             ; 8                           ;
-;     ENA               ; 2                           ;
-;     SCLR              ; 6                           ;
-; arriav_lcell_comb     ; 127                         ;
-;     arith             ; 15                          ;
-;         0 data inputs ; 1                           ;
-;         1 data inputs ; 6                           ;
-;         5 data inputs ; 8                           ;
-;     normal            ; 112                         ;
+; arriav_lcell_comb     ; 2                           ;
+;     normal            ; 2                           ;
 ;         0 data inputs ; 2                           ;
-;         1 data inputs ; 7                           ;
-;         2 data inputs ; 10                          ;
-;         3 data inputs ; 12                          ;
-;         4 data inputs ; 33                          ;
-;         5 data inputs ; 20                          ;
-;         6 data inputs ; 28                          ;
 ; boundary_port         ; 59                          ;
 ;                       ;                             ;
-; Max LUT depth         ; 4.70                        ;
-; Average LUT depth     ; 3.37                        ;
+; Max LUT depth         ; 0.00                        ;
+; Average LUT depth     ; 0.00                        ;
 +-----------------------+-----------------------------+
 
 
@@ -428,7 +419,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:04     ;
+; Top            ; 00:00:00     ;
 +----------------+--------------+
 
 
@@ -438,7 +429,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Thu Feb 13 10:55:53 2020
+    Info: Processing started: Thu Feb 13 11:38:59 2020
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off cpu -c cpu
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 2 of the 2 processors detected
@@ -466,49 +457,112 @@ Info (12021): Found 1 design units, including 1 entities, in source file flagreg
     Info (12023): Found entity 1: flagRegister File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/flagRegister.v Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file shifter.v
     Info (12023): Found entity 1: shifter File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/shifter.v Line: 1
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(102): created implicit net for "rd" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 102
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(102): created implicit net for "rm" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 102
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(102): created implicit net for "rn" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 102
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(103): created implicit net for "writeData" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 103
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(105): created implicit net for "cond" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 105
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(105): created implicit net for "CPSRstatus" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 105
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(107): created implicit net for "ALUexecute" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 107
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(107): created implicit net for "ALUData1" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 107
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(107): created implicit net for "ALUData2" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 107
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(107): created implicit net for "opcode" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 107
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(107): created implicit net for "resultWire" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 107
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(109): created implicit net for "CPSRflags" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 109
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(109): created implicit net for "CPSRwrite" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 109
+Warning (10236): Verilog HDL Implicit Net warning at cpu.v(109): created implicit net for "CPSRstatusWire" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 109
 Info (12127): Elaborating entity "cpu" for the top level hierarchy
-Info (12128): Elaborating entity "programCounter" for hierarchy "programCounter:PC" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 90
-Info (12128): Elaborating entity "instructionMemory" for hierarchy "instructionMemory:Memory" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 93
+Warning (10034): Output port "debug_port1" at cpu.v(5) has no driver File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 5
+Warning (10034): Output port "debug_port2" at cpu.v(6) has no driver File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 6
+Warning (10034): Output port "debug_port3" at cpu.v(7) has no driver File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 7
+Warning (10034): Output port "debug_port4" at cpu.v(8) has no driver File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 8
+Warning (10034): Output port "debug_port5" at cpu.v(9) has no driver File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 9
+Warning (10034): Output port "debug_port6" at cpu.v(10) has no driver File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 10
+Warning (10034): Output port "debug_port7" at cpu.v(12) has no driver File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+Info (12128): Elaborating entity "programCounter" for hierarchy "programCounter:PC" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 92
+Info (12128): Elaborating entity "instructionMemory" for hierarchy "instructionMemory:Memory" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 94
 Info (12128): Elaborating entity "sortInstruction" for hierarchy "sortInstruction:sortInstr" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 100
 Info (12128): Elaborating entity "registerFile" for hierarchy "registerFile:reg_file" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 103
 Info (12128): Elaborating entity "register" for hierarchy "registerFile:reg_file|register:R15" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/registerFile.v Line: 93
 Info (12128): Elaborating entity "D_FF" for hierarchy "registerFile:reg_file|register:R15|D_FF:bit31" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/register.v Line: 24
 Info (12128): Elaborating entity "readData" for hierarchy "registerFile:reg_file|readData:readDataOne" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/registerFile.v Line: 115
-Info (12128): Elaborating entity "conditionTest" for hierarchy "conditionTest:condTest" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 106
-Info (12128): Elaborating entity "ALU" for hierarchy "ALU:numberCrunch" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 109
+Info (12128): Elaborating entity "conditionTest" for hierarchy "conditionTest:condTest" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 105
+Info (12128): Elaborating entity "ALU" for hierarchy "ALU:numberCrunch" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 107
 Warning (10858): Verilog HDL warning at ALU.v(12): object C used but never assigned File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/ALU.v Line: 12
 Warning (10030): Net "C" at ALU.v(12) has no driver or initial value, using a default initial value '0' File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/ALU.v Line: 12
-Info (12128): Elaborating entity "flagRegister" for hierarchy "flagRegister:CPSRegister" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 112
-Warning (12241): 1 hierarchies have connectivity warnings - see the Connectivity Checks report folder
+Info (12128): Elaborating entity "flagRegister" for hierarchy "flagRegister:CPSRegister" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 109
+Warning (12241): 4 hierarchies have connectivity warnings - see the Connectivity Checks report folder
 Warning (13024): Output pins are stuck at VCC or GND
     Warning (13410): Pin "led" is stuck at VCC File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 4
-    Warning (13410): Pin "debug_port7[0]" is stuck at VCC File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
-    Warning (13410): Pin "debug_port7[1]" is stuck at VCC File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
-    Warning (13410): Pin "debug_port7[2]" is stuck at VCC File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+    Warning (13410): Pin "debug_port1[0]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 5
+    Warning (13410): Pin "debug_port1[1]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 5
+    Warning (13410): Pin "debug_port1[2]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 5
+    Warning (13410): Pin "debug_port1[3]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 5
+    Warning (13410): Pin "debug_port1[4]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 5
+    Warning (13410): Pin "debug_port1[5]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 5
+    Warning (13410): Pin "debug_port1[6]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 5
+    Warning (13410): Pin "debug_port1[7]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 5
+    Warning (13410): Pin "debug_port2[0]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 6
+    Warning (13410): Pin "debug_port2[1]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 6
+    Warning (13410): Pin "debug_port2[2]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 6
+    Warning (13410): Pin "debug_port2[3]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 6
+    Warning (13410): Pin "debug_port2[4]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 6
+    Warning (13410): Pin "debug_port2[5]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 6
+    Warning (13410): Pin "debug_port2[6]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 6
+    Warning (13410): Pin "debug_port2[7]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 6
+    Warning (13410): Pin "debug_port3[0]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 7
+    Warning (13410): Pin "debug_port3[1]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 7
+    Warning (13410): Pin "debug_port3[2]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 7
+    Warning (13410): Pin "debug_port3[3]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 7
+    Warning (13410): Pin "debug_port3[4]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 7
+    Warning (13410): Pin "debug_port3[5]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 7
+    Warning (13410): Pin "debug_port3[6]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 7
+    Warning (13410): Pin "debug_port3[7]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 7
+    Warning (13410): Pin "debug_port4[0]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 8
+    Warning (13410): Pin "debug_port4[1]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 8
+    Warning (13410): Pin "debug_port4[2]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 8
+    Warning (13410): Pin "debug_port4[3]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 8
+    Warning (13410): Pin "debug_port4[4]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 8
+    Warning (13410): Pin "debug_port4[5]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 8
+    Warning (13410): Pin "debug_port4[6]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 8
+    Warning (13410): Pin "debug_port4[7]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 8
+    Warning (13410): Pin "debug_port5[0]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 9
+    Warning (13410): Pin "debug_port5[1]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 9
+    Warning (13410): Pin "debug_port5[2]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 9
+    Warning (13410): Pin "debug_port5[3]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 9
+    Warning (13410): Pin "debug_port5[4]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 9
+    Warning (13410): Pin "debug_port5[5]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 9
+    Warning (13410): Pin "debug_port5[6]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 9
+    Warning (13410): Pin "debug_port5[7]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 9
+    Warning (13410): Pin "debug_port6[0]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 10
+    Warning (13410): Pin "debug_port6[1]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 10
+    Warning (13410): Pin "debug_port6[2]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 10
+    Warning (13410): Pin "debug_port6[3]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 10
+    Warning (13410): Pin "debug_port6[4]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 10
+    Warning (13410): Pin "debug_port6[5]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 10
+    Warning (13410): Pin "debug_port6[6]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 10
+    Warning (13410): Pin "debug_port6[7]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 10
+    Warning (13410): Pin "debug_port7[0]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+    Warning (13410): Pin "debug_port7[1]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
+    Warning (13410): Pin "debug_port7[2]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
     Warning (13410): Pin "debug_port7[3]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
     Warning (13410): Pin "debug_port7[4]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
     Warning (13410): Pin "debug_port7[5]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
     Warning (13410): Pin "debug_port7[6]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
     Warning (13410): Pin "debug_port7[7]" is stuck at GND File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 12
-Info (286030): Timing-Driven Synthesis is running
-Info (17049): 31 registers lost all their fanouts during netlist optimizations.
-Info (144001): Generated suppressed messages file C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/output_files/cpu.map.smsg
+Info (17049): 7 registers lost all their fanouts during netlist optimizations.
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 177 device resources after synthesis - the final resource count might be different
+Warning (21074): Design contains 2 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "nreset" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 3
+    Warning (15610): No output dependent on input pin "clk" File: C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/cpu.v Line: 2
+Info (21057): Implemented 59 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 2 input pins
     Info (21059): Implemented 57 output pins
-    Info (21061): Implemented 118 logic cells
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 14 warnings
-    Info: Peak virtual memory: 673 megabytes
-    Info: Processing ended: Thu Feb 13 10:56:25 2020
-    Info: Elapsed time: 00:00:32
-    Info: Total CPU time (on all processors): 00:00:53
-
-
-+------------------------------------------+
-; Analysis & Synthesis Suppressed Messages ;
-+------------------------------------------+
-The suppressed messages can be found in C:/Users/Austin/Desktop/COMPUTER_ARCHITECTURE/LAB_2/EE469_Lab/output_files/cpu.map.smsg.
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 86 warnings
+    Info: Peak virtual memory: 658 megabytes
+    Info: Processing ended: Thu Feb 13 11:39:24 2020
+    Info: Elapsed time: 00:00:25
+    Info: Total CPU time (on all processors): 00:00:52
 
 
