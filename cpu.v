@@ -35,7 +35,7 @@ module cpu(
 	wire [3:0] rd, rn, rm, opcode, cond, rotateVal;
 	wire [7:0] rm_shift, immediateVal;
 	wire [11:0] immediateOffset;
-	wire isBranch2;
+	wire isBranchWire;
 	
 	
 	//registerFile variables
@@ -97,7 +97,7 @@ module cpu(
 	sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBit), .prePostAddOffset(prePostAddOffset), .upDownOffset(upDownOffset),
   												.byteOrWord(byteOrWord), .writeBack(writeBack), .loadStore(loadStore), .rd(rd), .rn(rn), .rm(rm), .opcode(opcode),
   												.cond(cond), .rotateVal(rotateVal), .rm_shift(rm_shift), .immediateVal(immediateVal), .immediateOffset(immediateOffset),
-  												.branchImmediate(branchImmediate), .reset(nreset), .clk(clk), .isBranch(isBranch2));
+  												.branchImmediate(branchImmediate), .reset(nreset), .clk(clk), .isBranch(isBranchWire));
 												
 
 	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
@@ -130,8 +130,14 @@ parameter 	instructionFetch = 3'b000,
 
 reg [2:0] ps, ns;
 
- // State logic
+
 always @* begin
+
+isBranch = isBranchWire;
+
+ 
+ 
+ // State logic
 	case (ps)
 	
 	instructionFetch: 	begin
