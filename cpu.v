@@ -61,6 +61,8 @@ module cpu(
 		//from
 	wire conditionalExecuteWire;
 	wire [3:0] CPSRflagsWire;
+	
+	
   
   	// ALU variables
 		//to
@@ -105,8 +107,7 @@ module cpu(
 	instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstrWire));
 	
 	
-	instructionFetchRegister(.instructionIN(nextInstrReg), .instructionOUT(nextInstr), .reset(nreset), .clk(instructionFetchGo));//////////////////
-	
+	instructionFetchRegister instFetch(.instructionIN(nextInstrReg), .instructionOUT(nextInstr), .reset(nreset), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
 	
 
 	sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
@@ -117,31 +118,36 @@ module cpu(
 
 	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
                          .writeData(writeData), .readData1(rmDataWire), .readData2(rnDataWire), .reset(nreset), .clk(clk));
-								 
-							
-	
-	registerFetchRegister(.Data1(rmDataReg), .Data2(rnDataReg), .reset(nreset), .clk(registerFetchGo));	////////////////////
-	
-				 
 
+						 
+	shifter shifty(.opcode(), .rotateVal(), .rm_shift(), .immediateVal(), .immediateOffset(),
+												 .immediateOperand(), .rm_shiftSDT(), .shiftType());
 	
-	ALU numberCrunch (.ALUexecute(ALUexecute), .data1(ALUData1), .data2(ALUData2), .operation(opcode), .result(resultWire), .flags(CPSRflagsWire), .reset(nreset), .clk(clk));
+	
+	registerFetchRegister regFetch(.Data1IN(rmDataReg), .Data2IN(rnDataReg), linkBit(), prePostAddOffset(), upDownOffset(),
+												byteOrWord(), writeBack(), loadStore(), rd(), rn(), rm(), opcode(),
+												cond(), immediateVal(), immediateOffset(),
+												branchImmediate(), CPSRwrite(), immediateOperand(),
+												rm_shiftSDT.Data1OUT(), .Data2OUT(), .reset(nreset), .clk(registerFetchGo));	///////////////////////////////////////////////
+	
 	
 	
 	conditionTest condTest (.cond(cond), .CPSRIn(CPSRstatus), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
+
+	ALU numberCrunch (.ALUexecute(ALUexecute), .data1(ALUData1), .data2(ALUData2), .operation(opcode), .result(resultWire), .flags(CPSRflagsWire), .reset(nreset), .clk(clk));
 	
 	
-	executeRegister(.writeData(), .reset(nreset), .clk(executeGo));  ///////////////////////////
-	
+	executeRegister ex (.writeData(), .reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 
-	//dataMemory goes here
-	
-	DataMemoryRegister( .reset(nreset), .clk(dataMemoryGo)); ////////////////////////////
+	dataMemory dataMem(.addr(), .dataIn(), .dataOut(), .memoryEnable(), .readNotWrite(), .reset(nreset), .clk(clk));
 	
 	
+	DataMemoryRegister( .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
+
+
 	
-	writebackRegister(.reset(nreset), .clk(writebackGo)); ///////////////////////////
+	writebackRegister(.writeAddress(), .writeData(), .reset(nreset), .clk(writebackGo)); /////////////////////////////////////////////////////////////////////////////////
 	
 
 // State variables.
