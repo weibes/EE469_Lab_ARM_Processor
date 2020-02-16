@@ -25,7 +25,10 @@ module cpu(
 	reg [31:0] instrLoc;
 		//from
 	wire [31:0] nextInstrWire;
-
+	 // pass to register
+	reg nextInstrReg;
+	
+	
 	
 	// SORTINSTRUCTION variables
 		//to
@@ -47,6 +50,8 @@ module cpu(
 	reg [31:0] writeData;
 		//from
 	wire [31:0] rmDataWire, rnDataWire;
+	 // pass to register
+	reg  rmDataReg, rnDataReg;
  
   
   //CONDITIONTEST variables
@@ -66,12 +71,12 @@ module cpu(
 	wire [3:0] CPSRflagsWire;
 	wire [31:0] resultWire;
 	
-	//FLAGREGISTER variables
-		//to
-	reg [3:0] CPSRflags;
-	reg CPSRwrite;
-		//from
-	wire [3:0] CPSRstatusWire;
+//	//FLAGREGISTER variables
+//		//to
+//	reg [3:0] CPSRflags;
+//	reg CPSRwrite;
+//		//from
+//	wire [3:0] CPSRstatusWire;
 	
 	
   // Controls the LED on the board.
@@ -100,8 +105,7 @@ module cpu(
 	instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstrWire));
 	
 	
-	
-	instructionFetchRegister(.instructionIN(), .instructionOUT(), .reset(nreset), .clk(instructionFetchGo));////////
+	instructionFetchRegister(.instructionIN(nextInstrReg), .instructionOUT(nextInstr), .reset(nreset), .clk(instructionFetchGo));//////////////////
 	
 	
 
@@ -109,34 +113,35 @@ module cpu(
   												.byteOrWord(byteOrWordWire), .writeBack(writeBackWire), .loadStore(loadStoreWire), .rd(rdWire), .rn(rnWire), .rm(rmWire), .opcode(opcodeWire),
   												.cond(condWire), .rotateVal(rotateValWire), .rm_shift(rm_shiftWire), .immediateVal(immediateValWire), .immediateOffset(immediateOffsetWire),
   												.branchImmediate(branchImmediateWire), .reset(nreset), .clk(clk), .CPSRwrite(CPSRwritewire),.shiftType(shiftTypeWire),
-												.immediateOperand(immediateOperandWire), .rm_shiftSDT(rm_shiftSDTWire));											
+												.immediateOperand(immediateOperandWire), .rm_shiftSDT(rm_shiftSDTWire));										
 
 	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
                          .writeData(writeData), .readData1(rmDataWire), .readData2(rnDataWire), .reset(nreset), .clk(clk));
 								 
 							
 	
-	registerFetchRegister(.Data1(), .Data2(), .reset(nreset), .clk(registerFetchGo));	//////////	
-	
+	registerFetchRegister(.Data1(rmDataReg), .Data2(rnDataReg), .reset(nreset), .clk(registerFetchGo));	////////////////////
 	
 				 
-	conditionTest condTest (.cond(cond), .CPSRIn(CPSRstatus), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
+
 	
 	ALU numberCrunch (.ALUexecute(ALUexecute), .data1(ALUData1), .data2(ALUData2), .operation(opcode), .result(resultWire), .flags(CPSRflagsWire), .reset(nreset), .clk(clk));
 	
 	
+	conditionTest condTest (.cond(cond), .CPSRIn(CPSRstatus), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
 	
-	executeRegister(.writeData(), .reset(nreset), .clk(executeGo));  //////////
+	
+	executeRegister(.writeData(), .reset(nreset), .clk(executeGo));  ///////////////////////////
 	
 	
 
 	//dataMemory goes here
 	
-	DataMemoryRegister( .reset(nreset), .clk(dataMemoryGo)); //////////
+	DataMemoryRegister( .reset(nreset), .clk(dataMemoryGo)); ////////////////////////////
 	
 	
 	
-	writebackRegister(.reset(nreset), .clk(writebackGo)); //////////
+	writebackRegister(.reset(nreset), .clk(writebackGo)); ///////////////////////////
 	
 
 // State variables.
@@ -151,6 +156,15 @@ reg [2:0] ps, ns;
 
 
 always @* begin
+
+	nextInstrReg = nextInstrWire;
+
+	rmDataReg = rmDataWire;
+	rnDataReg = rnDataWire
+	
+	
+	
+	
 
 if (opcode == 5'b10001) isBranch = 1; 
 else isBranch = 0;
