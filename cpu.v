@@ -61,7 +61,14 @@ module cpu(
 	wire [31:0] rmDataWire, rnDataWire;
 	 // pass to register
 	reg [31:0] rnDataReg, rmDataReg;
- 
+	
+	
+	//SHIFTER variables
+	//from
+	wire [31:0] shiftedDataWire;
+	//pass to register 
+	reg [31:0] shiftedDataReg;
+  
   
   //CONDITIONTEST variables
   		//to
@@ -133,11 +140,19 @@ module cpu(
 												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg). shiftedData(shiftedDataWire));
 	
 	
-	registerFetchRegister regFetch(.Data1IN(rnDataReg), .Data2IN(), linkBit(), prePostAddOffset(), upDownOffset(),
-												byteOrWord(), writeBack(), loadStore(), rd(), rn(), rm(), opcode(),
-												cond(), immediateVal(), immediateOffset(),
-												branchImmediate(), CPSRwrite(), immediateOperand(),
-												rm_shiftSDT.Data1OUT(), .Data2OUT(), .reset(nreset), .clk(registerFetchGo));	///////////////////////////////////////////////
+	registerFetchRegister regFetch(.Data1IN(rnDataReg), .Data2IN(shiftedDataReg), .linkBitIN(linkBitReg), .prePostAddOffsetIN(), .upDownOffsetIN(),
+												.byteOrWordIN(), .writeBackIN(), .loadStoreIN(), .rdIN(), .opcodeIN(),
+												.condIN(), .immediateOffsetIN(),
+												.branchImmediateIN(), .CPSRwriteIN(), .immediateOperandIN(),
+												.rm_shiftSDTIN(),
+												
+												.Data1OUT(), .Data2OUT(), .linkBitOUT(), .prePostAddOffsetOUT(), .upDownOffsetOUT(),
+												.byteOrWordOUT(), .writeBackOUT(), .loadStoreOUT(), .rdOUT(), .opcodeOUT(),
+												.condOUT(), .immediateOffsetOUT(),
+												.branchImmediateOUT(), .CPSRwriteOUT(), .immediateOperandOUT(),
+												.rm_shiftSDTOUT(), 
+												
+												.reset(nreset), .clk(registerFetchGo));	///////////////////////////////////////////////
 	
 	
 	
@@ -202,6 +217,8 @@ always @* begin
 	rm = rmWire;
 	rmDataReg = rmDataWire;
 	rnDataReg = rnDataWire;
+
+	shiftedDataReg = shiftedDataWire;
 	
 if (opcode == 5'b10001) isBranch = 1; 
 else isBranch = 0;
