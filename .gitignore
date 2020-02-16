@@ -1,3 +1,7 @@
-
-*.flock
+db/
+incremental_db/
+output_files/
 *.bak
+*.flock
+*.qpf
+*.qsf
