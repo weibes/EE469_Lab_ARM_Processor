@@ -42,6 +42,15 @@ module cpu(
 	wire [11:0] immediateOffsetWire;
 	wire [23:0] branchImmediateWire;
 	
+	// pass to register	
+	reg linkBitReg, prePostAddOffsetReg, upDownOffsetReg, byteOrWordReg, writeBackReg, loadStoreReg, CPSRwriteReg, immediateOperandReg;
+	reg [1:0] shiftTypeReg;
+	reg [3:0] rdReg, rnReg, rmReg, condReg, rotateValReg;
+	reg [4:0] opcodeReg, rm_shiftReg;
+	reg [7:0] rm_shiftSDTReg, immediateValReg;
+	reg [11:0] immediateOffsetReg;
+	reg [23:0] branchImmediateReg;
+	
 	
 	//REGISTERFILE variables
 	//to
@@ -120,8 +129,8 @@ module cpu(
                          .writeData(writeData), .readData1(rmDataWire), .readData2(rnDataWire), .reset(nreset), .clk(clk));
 
 						 
-	shifter shifty(.opcode(), .rotateVal(), .rm_shift(), .immediateVal(), .immediateOffset(),
-												 .immediateOperand(), .rm_shiftSDT(), .shiftType());
+	shifter shifty(.rm(rmReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
+												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg));
 	
 	
 	registerFetchRegister regFetch(.Data1IN(rmDataReg), .Data2IN(rnDataReg), linkBit(), prePostAddOffset(), upDownOffset(),
@@ -168,8 +177,26 @@ always @* begin
 	rmDataReg = rmDataWire;
 	rnDataReg = rnDataWire
 	
-	
-	
+	linkBitReg = linkBitWire;
+	prePostAddOffsetReg = prePostAddOffsetWire;
+	upDownOffsetReg = upDownOffsetWire;
+	byteOrWordReg = byteOrWordWire;
+	writeBackReg = writeBackWire;
+	loadStoreReg = loadStoreWire;
+	CPSRwriteReg = CPSRwritewire;
+	immediateOperandReg = immediateOperandWire;
+	shiftTypeReg = shiftTypeWire;
+	rdReg = rdWire;
+	rnReg = rnWire;
+	rmReg = rmWire;
+	condReg = condWire;
+	rotateValReg = rotateValWire;
+	opcodeReg = opcodeWire;
+	rm_shiftReg = rm_shiftWire;
+	rm_shiftSDTReg = rm_shiftSDTWire;
+	immediateValReg = immediateValWire;
+	immediateOffsetReg = immediateOffsetWire;
+	branchImmediateReg = branchImmediateWire;
 	
 
 if (opcode == 5'b10001) isBranch = 1; 

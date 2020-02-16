@@ -1,7 +1,21 @@
-module shifter(shiftType);
+module shifter(rm, opcode, rotateVal, rm_shift, immediateVal, immediateOffset,
+												 immediateOperand, rm_shiftSDT, .shiftType);
 
 input wire [1:0] shiftType;
-	
+
+opcode
+rotateVal
+rm_shift
+immediateVal
+immediateOffset
+shiftType
+immediateOperand
+rm_shiftSDT
+
+
+
+
+
 always @* begin
 		
 		case (shiftType) // shift type
