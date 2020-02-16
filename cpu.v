@@ -12,22 +12,22 @@ module cpu(
   );
 
   
-	// programCounter variables
+	// PROGRAMCOUNTER variables
 		//to
 	reg isBranch;
 	reg [23:0] branchImmediate;
 		//from
 	wire [31:0] instrLocWire;
 
-
-	// instructionMemory variables
+	
+	// INSTRUCTIONMEMORY variables
 		//to
 	reg [31:0] instrLoc;
 		//from
 	wire [31:0] nextInstrWire;
 
 	
-	// sortinstruction variables
+	// SORTINSTRUCTION variables
 		//to
 	reg [31:0] nextInstr;
 		//from
@@ -38,18 +38,18 @@ module cpu(
 	wire [7:0] rm_shiftSDTWire, immediateValWire;
 	wire [11:0] immediateOffsetWire;
 	wire [23:0] branchImmediateWire;
-
 	
-	//registerFile variables
+	
+	//REGISTERFILE variables
 	//to
 	reg readWrite;
 	reg [3:0] rd,rm,rn;
 	reg [31:0] writeData;
 		//from
 	wire [31:0] rmDataWire, rnDataWire;
+ 
   
-  
-  //conditionTest variables
+  //CONDITIONTEST variables
   		//to
 	reg [3:0] cond, CPSRstatus;
 	
@@ -66,15 +66,14 @@ module cpu(
 	wire [3:0] CPSRflagsWire;
 	wire [31:0] resultWire;
 	
-	
-	
-	//flagRegister variables
+	//FLAGREGISTER variables
 		//to
-		
+	reg [3:0] CPSRflags;
+	reg CPSRwrite;
 		//from
+	wire [3:0] CPSRstatusWire;
 	
 	
-
   // Controls the LED on the board.
   assign led = 1'b1;
 
@@ -99,6 +98,12 @@ module cpu(
                     .branchImmediate(branchImmediate), .clk(clk));
 						  
 	instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstrWire));
+	
+	
+	
+	instructionFetchRegister(.instructionIN(), .instructionOUT(), .reset(nreset), .clk(instructionFetchGo));////////
+	
+	
 
 	sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
   												.byteOrWord(byteOrWordWire), .writeBack(writeBackWire), .loadStore(loadStoreWire), .rd(rdWire), .rn(rnWire), .rm(rmWire), .opcode(opcodeWire),
@@ -107,13 +112,31 @@ module cpu(
 												.immediateOperand(immediateOperandWire), .rm_shiftSDT(rm_shiftSDTWire));											
 
 	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
-                         .writeData(writeData), .readData1(rmDataWire), .readData2(rnDataWire), .reset(nreset), .clk(clk));	 
+                         .writeData(writeData), .readData1(rmDataWire), .readData2(rnDataWire), .reset(nreset), .clk(clk));
+								 
+							
+	
+	registerFetchRegister(.Data1(), .Data2(), .reset(nreset), .clk(registerFetchGo));	//////////	
+	
+	
 				 
 	conditionTest condTest (.cond(cond), .CPSRIn(CPSRstatus), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
 	
 	ALU numberCrunch (.ALUexecute(ALUexecute), .data1(ALUData1), .data2(ALUData2), .operation(opcode), .result(resultWire), .flags(CPSRflagsWire), .reset(nreset), .clk(clk));
+	
+	
+	
+	executeRegister(.writeData(), .reset(nreset), .clk(executeGo));  //////////
+	
+	
 
-	flagRegister CPSRegister(.flags(CPSRflags), .CPSRwrite(CPSRwrite), .CPSRstatus(CPSRstatusWire), .reset(nreset), .clk(clk));
+	//dataMemory goes here
+	
+	DataMemoryRegister( .reset(nreset), .clk(dataMemoryGo)); //////////
+	
+	
+	
+	writebackRegister(.reset(nreset), .clk(writebackGo)); //////////
 	
 
 // State variables.
@@ -131,18 +154,21 @@ always @* begin
 
 if (opcode == 5'b10001) isBranch = 1; 
 else isBranch = 0;
- 
+
+// always connected
+instrLoc = instrLocWire;
+	
  // State logic
 	case (ps)
 	
 	instructionFetch: 	begin
-	//read R15
-	//compute pc value
-	//write R15 and make it the new PC value
-	
-//send the pc value to instruction memory
-//get the instruction from instruction memory
-	
+			
+			instructionFetchGo = 1; 
+			registerFetchGo = 0;
+			executeGo = 0;
+			dataMemoryGo = 0;
+			writebackGo = 0;
+			
 			ns = registerFetch;
 			end
 			
@@ -150,7 +176,11 @@ else isBranch = 0;
 	
 	//read instruction and send values to register file
 	//read registers
-	
+			instructionFetchGo = 0; 
+			registerFetchGo = 1;
+			executeGo = 0;
+			dataMemoryGo = 0;
+			writebackGo = 0;
 	
 			ns = execute;
 			end
@@ -159,21 +189,36 @@ else isBranch = 0;
 	
 	//send values from registers to the ALU
 	//get value of computation from ALU
-	
+			instructionFetchGo = 0; 
+			registerFetchGo = 0;
+			executeGo = 1;
+			dataMemoryGo = 0;
+			writebackGo = 0;
+			
 			ns = dataMemory;
 			end
 			
 	dataMemory: 			begin
 	
 	// load or store values into memory
-	
+			instructionFetchGo = 0; 
+			registerFetchGo = 0;
+			executeGo = 0;
+			dataMemoryGo = 1;
+			writebackGo = 0;
+			
 			ns = writeback;
 			end
 			
 	writeback: 				begin
 	
 	// write to the registers
-	
+			instructionFetchGo = 0; 
+			registerFetchGo = 0;
+			executeGo = 0;
+			dataMemoryGo = 0;
+			writebackGo = 1;
+			
 			ns = instructionFetch;
 			end
 			

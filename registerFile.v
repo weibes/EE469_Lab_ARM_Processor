@@ -84,7 +84,7 @@ always @* begin
 			4'b1011: 	writeTo_R11 = 1;
 			4'b1100: 	writeTo_R12 = 1;
 			4'b1101: 	writeTo_R13 = 1;
-			4'b1110:  writeTo_R14 = 1;
+			4'b1110:    writeTo_R14 = 1;
 			4'b1111: 	writeTo_R15 = 1;
 		endcase
 	 end
