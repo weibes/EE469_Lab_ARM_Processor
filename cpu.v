@@ -42,7 +42,7 @@ module cpu(
 	wire [11:0] immediateOffsetWire;
 	wire [23:0] branchImmediateWire;
 	
-	// pass to register	
+	// pass to register
 	reg linkBitReg, prePostAddOffsetReg, upDownOffsetReg, byteOrWordReg, writeBackReg, loadStoreReg, CPSRwriteReg, immediateOperandReg;
 	reg [1:0] shiftTypeReg;
 	reg [3:0] rdReg, rnReg, rmReg, condReg, rotateValReg;
@@ -60,7 +60,7 @@ module cpu(
 		//from
 	wire [31:0] rmDataWire, rnDataWire;
 	 // pass to register
-	reg  rmDataReg, rnDataReg;
+	reg [31:0] rnDataReg, rmDataReg;
  
   
   //CONDITIONTEST variables
@@ -125,15 +125,15 @@ module cpu(
   												.branchImmediate(branchImmediateWire), .reset(nreset), .clk(clk), .CPSRwrite(CPSRwritewire),.shiftType(shiftTypeWire),
 												.immediateOperand(immediateOperandWire), .rm_shiftSDT(rm_shiftSDTWire));										
 
-	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rm), .readReg2(rn),
-                         .writeData(writeData), .readData1(rmDataWire), .readData2(rnDataWire), .reset(nreset), .clk(clk));
+	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rn), .readReg2(rm),
+                         .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(clk));
 
 						 
-	shifter shifty(.rm(rmReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
-												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg));
+	shifter shifty(.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
+												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg). shiftedData(shiftedDataWire));
 	
 	
-	registerFetchRegister regFetch(.Data1IN(rmDataReg), .Data2IN(rnDataReg), linkBit(), prePostAddOffset(), upDownOffset(),
+	registerFetchRegister regFetch(.Data1IN(rnDataReg), .Data2IN(), linkBit(), prePostAddOffset(), upDownOffset(),
 												byteOrWord(), writeBack(), loadStore(), rd(), rn(), rm(), opcode(),
 												cond(), immediateVal(), immediateOffset(),
 												branchImmediate(), CPSRwrite(), immediateOperand(),
@@ -174,8 +174,7 @@ always @* begin
 
 	nextInstrReg = nextInstrWire;
 
-	rmDataReg = rmDataWire;
-	rnDataReg = rnDataWire
+
 	
 	linkBitReg = linkBitWire;
 	prePostAddOffsetReg = prePostAddOffsetWire;
@@ -197,8 +196,13 @@ always @* begin
 	immediateValReg = immediateValWire;
 	immediateOffsetReg = immediateOffsetWire;
 	branchImmediateReg = branchImmediateWire;
-	
 
+	rd = rdWire; 
+	rn = rnWire;
+	rm = rmWire;
+	rmDataReg = rmDataWire;
+	rnDataReg = rnDataWire;
+	
 if (opcode == 5'b10001) isBranch = 1; 
 else isBranch = 0;
 
