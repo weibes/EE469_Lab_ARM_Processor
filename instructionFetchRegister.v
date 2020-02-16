@@ -11,6 +11,6 @@ input wire [31:0] instructionIN;
  instructionOUT <= 0; // On reset, set to 0
  
  else
- instructionOUT <= instructionIN; // Otherwise out = d
+ instructionOUT <= instructionIN;
 
 endmodule

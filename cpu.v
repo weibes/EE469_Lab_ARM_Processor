@@ -133,7 +133,7 @@ module cpu(
 												.immediateOperand(immediateOperandWire), .rm_shiftSDT(rm_shiftSDTWire));										
 
 	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rn), .readReg2(rm),
-                         .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(clk));
+                         .writeData(), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(clk));
 
 						 
 	shifter shifty(.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
