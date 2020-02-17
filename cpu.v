@@ -16,10 +16,12 @@ module cpu(
 		//to
 	reg isBranch;
 	reg [23:0] branchImmediate;
+	wire incrEnable;
+	assign incrEnable = 1'b0;
 		//from
 	wire [31:0] instrLocWire;
 		//to_registerFile
-	wire writeToPC;
+	wire writeToPC; //TODO make reg, fix logic to comply
 	
 
 	
@@ -120,7 +122,7 @@ module cpu(
 
 
 	programCounter PC(.Branch(isBranch), .currData(instrLocWire),
-                    .branchImmediate(branchImmediate), .clk(clk), .writeEnable(writeToPC), .writeData(wrieData));
+                    .branchImmediate(branchImmediate), .clk(clk), .writeEnable(writeToPC), .writeData(wrieData), .incrEnable(incrEnable));
 						  
 	instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstrWire));
 	
