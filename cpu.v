@@ -19,7 +19,7 @@ module cpu(
 		//from
 	wire [31:0] instrLocWire;
 		//to_registerFile
-	wire writeToPC;
+	reg writeToPC;
 	
 
 	
@@ -98,6 +98,9 @@ module cpu(
 //		//from
 //	wire [3:0] CPSRstatusWire;
 	
+	
+	//GO variables
+	reg instructionFetchGo, registerFetchGo, executeGo, dataMemoryGo, writebackGo;
 	
   // Controls the LED on the board.
   assign led = 1'b1;
