@@ -18,6 +18,9 @@ module cpu(
 	reg [23:0] branchImmediate;
 		//from
 	wire [31:0] instrLocWire;
+		//to_registerFile
+	wire writeToPC;
+	
 
 	
 	// INSTRUCTIONMEMORY variables
@@ -86,7 +89,6 @@ module cpu(
 	reg [31:0] ALUData1, ALUData2;
 	reg opcode;
 		//from
-	wire [3:0] CPSRflagsWire;
 	wire [31:0] resultWire;
 	
 //	//FLAGREGISTER variables
@@ -117,8 +119,8 @@ module cpu(
 //YOUR CODE GOES HERE
 
 
-	programCounter PC(.Branch(isBranch), .Reset(nreset), .currData(instrLocWire),
-                    .branchImmediate(branchImmediate), .clk(clk));
+	programCounter PC(.Branch(isBranch), .currData(instrLocWire),
+                    .branchImmediate(branchImmediate), .clk(clk), .writeEnable(writeToPC), .writeData(wrieData));
 						  
 	instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstrWire));
 	
@@ -133,11 +135,11 @@ module cpu(
 												.immediateOperand(immediateOperandWire), .rm_shiftSDT(rm_shiftSDTWire));										
 
 	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rn), .readReg2(rm),
-                         .writeData(), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(clk));
+                         .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(clk), .oldPCVal(instrLoc), .writeToPC(writeToPC));
 
 						 
 	shifter shifty(.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
-												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg). shiftedData(shiftedDataWire));
+												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire));
 	
 	
 	registerFetchRegister regFetch(.Data1IN(rnDataReg), .Data2IN(shiftedDataReg), .linkBitIN(linkBitReg), .prePostAddOffsetIN(), .upDownOffsetIN(),

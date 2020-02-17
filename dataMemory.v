@@ -27,7 +27,7 @@ endmodule
 
 /*
 
-TODO: finish writing testbench
+TODO: finish writing testbench, make sure it works
 module dataMemory_testbench() begin
 	wire [31:0] addr, dataIn;
 	wire readNotWrite, enable, reset, clk;

@@ -51,42 +51,43 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 
 													
 													
-	 always @(posedge clk)
-	 if (reset)
-		// On reset, set to 0
-		Data1OUT <= 0;
-		Data2OUT <= 0;
-		linkBitOUT <= 0;
-		prePostAddOffsetOUT <= 0;
-		upDownOffsetOUT <= 0;
-		byteOrWordOUT <= 0;
-		writeBackOUT <= 0;
-		loadStoreOUT <= 0;
-		rdOUT <= 0;
-		opcodeOUT <= 0;
-		condOUT <= 0;
-		immediateOffsetOUT <= 0;
-		branchImmediateOUT <= 0;
-		CPSRwriteOUT <= 0;
-		immediateOperandOUT <= 0;
-		rm_shiftSDTOUT <= 0;
-	 
-	 else
-		Data1OUT <= Data1IN;
-		Data1OUT <= Data1IN;
-		linkBitOUT <= linkBitIN;
-		prePostAddOffsetOUT <= prePostAddOffsetIN;
-		upDownOffsetOUT <= upDownOffsetIN;
-		byteOrWordOUT <= byteOrWordIN;
-		writeBackOUT <= writeBackIN;
-		loadStoreOUT <= loadStoreIN;
-		rdOUT <= rdIN;
-		opcodeOUT <= opcodeIN;
-		condOUT <= condIN;
-		immediateOffsetOUT <= immediateOffsetIN;
-		branchImmediateOUT <= branchImmediateIN;
-		CPSRwriteOUT <= CPSRwriteIN;
-		immediateOperandOUT <= immediateOperandIN;
-		rm_shiftSDTOUT <= rm_shiftSDTIN;										
-												
+	 always @(posedge clk) begin
+		 if (reset) begin
+			// On reset, set to 0
+			Data1OUT <= 0;
+			Data2OUT <= 0;
+			linkBitOUT <= 0;
+			prePostAddOffsetOUT <= 0;
+			upDownOffsetOUT <= 0;
+			byteOrWordOUT <= 0;
+			writeBackOUT <= 0;
+			loadStoreOUT <= 0;
+			rdOUT <= 0;
+			opcodeOUT <= 0;
+			condOUT <= 0;
+			immediateOffsetOUT <= 0;
+			branchImmediateOUT <= 0;
+			CPSRwriteOUT <= 0;
+			immediateOperandOUT <= 0;
+			rm_shiftSDTOUT <= 0;
+		 end
+		 else begin
+			Data1OUT <= Data1IN;
+			Data1OUT <= Data1IN;
+			linkBitOUT <= linkBitIN;
+			prePostAddOffsetOUT <= prePostAddOffsetIN;
+			upDownOffsetOUT <= upDownOffsetIN;
+			byteOrWordOUT <= byteOrWordIN;
+			writeBackOUT <= writeBackIN;
+			loadStoreOUT <= loadStoreIN;
+			rdOUT <= rdIN;
+			opcodeOUT <= opcodeIN;
+			condOUT <= condIN;
+			immediateOffsetOUT <= immediateOffsetIN;
+			branchImmediateOUT <= branchImmediateIN;
+			CPSRwriteOUT <= CPSRwriteIN;
+			immediateOperandOUT <= immediateOperandIN;
+			rm_shiftSDTOUT <= rm_shiftSDTIN;										
+		end			
+	 end
 endmodule

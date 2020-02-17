@@ -1,26 +1,24 @@
-module programCounter(Branch, Reset, currData, branchImmediate, clk);
-  input wire Branch, Reset, clk;
+module programCounter(Branch, currData, branchImmediate, clk, writeEnable, writeData);
+  input wire Branch, clk, writeEnable;
   input wire [23:0] branchImmediate;
+  input wire [31:0] writeData;
   
   output reg [31:0] currData;
 
   reg [31:0] nextData;
 
-  reg branchCheck;
 
   always @* begin
-
     if (Branch == 1'b1)
-      nextData = currData + 3'b100 - branchImmediate;
-    else
+      nextData = currData + 4'b1000 - branchImmediate;
+    else if (writeEnable)
+		nextData = writeData;
+	 else 
       nextData = currData + 3'b100;
   end
 
   always @(posedge clk) begin
-    if(Reset == 1'b1)
-      currData <= 0;
-    else
-      currData <= nextData;
+    currData <= nextData;
   end
 endmodule
 
