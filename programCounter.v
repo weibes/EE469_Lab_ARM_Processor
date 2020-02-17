@@ -1,5 +1,5 @@
-module programCounter(Branch, currData, branchImmediate, clk, writeEnable, writeData);
-  input wire Branch, clk, writeEnable;
+module programCounter(Branch, currData, branchImmediate, clk, writeEnable, writeData, incrEnable);
+  input wire Branch, clk, writeEnable, incrEnable;
   input wire [23:0] branchImmediate;
   input wire [31:0] writeData;
   
@@ -13,8 +13,10 @@ module programCounter(Branch, currData, branchImmediate, clk, writeEnable, write
       nextData = currData + 4'b1000 - branchImmediate;
     else if (writeEnable)
 		nextData = writeData;
-	 else 
+	 else if (incrEnable)
       nextData = currData + 3'b100;
+	 else 
+		nextData = currData;
   end
 
   always @(posedge clk) begin
