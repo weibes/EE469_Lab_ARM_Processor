@@ -15,6 +15,9 @@ module shifter(rmData, opcode, rotateVal, rm_shift, immediateVal, immediateOffse
 	always @* begin
 			
 			if (opcode == 5'b10000) // load / store
+				if (immediateOperand == 0) 
+					immediateOffset///
+					
 				shiftedData = rm_shiftSDT; // gotta figure this one out
 			
 			if (immediateOperand == 0) begin // data processing

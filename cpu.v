@@ -145,25 +145,27 @@ module cpu(
 												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire));
 	
 	
+	conditionTest condTest (.cond(cond), .CPSRIn(CPSRstatus), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
+	
 	registerFetchRegister regFetch(.Data1IN(rnDataReg), .Data2IN(shiftedDataReg), .linkBitIN(linkBitReg), .prePostAddOffsetIN(), .upDownOffsetIN(),
-												.byteOrWordIN(), .writeBackIN(), .loadStoreIN(), .rdIN(), .opcodeIN(),
-												.condIN(), .immediateOffsetIN(),
+												.byteOrWordIN(), .writeBackIN(), .loadStoreIN(), .rdIN() .rmIN(), , .opcodeIN(),
+												.conditionalExecuteIN(), .immediateOffsetIN(),
 												.branchImmediateIN(), .CPSRwriteIN(), .immediateOperandIN(),
 												.rm_shiftSDTIN(),
 												
 												.Data1OUT(), .Data2OUT(), .linkBitOUT(), .prePostAddOffsetOUT(), .upDownOffsetOUT(),
-												.byteOrWordOUT(), .writeBackOUT(), .loadStoreOUT(), .rdOUT(), .opcodeOUT(),
-												.condOUT(), .immediateOffsetOUT(),
+												.byteOrWordOUT(), .writeBackOUT(), .loadStoreOUT(), .rdOUT(), .rmOUT(), .opcodeOUT(),
+												.conditionalExecuteOUT(), .immediateOffsetOUT(),
 												.branchImmediateOUT(), .CPSRwriteOUT(), .immediateOperandOUT(),
 												.rm_shiftSDTOUT(), 
 												
 												.reset(nreset), .clk(registerFetchGo));	///////////////////////////////////////////////
 	
-	
-	
-	conditionTest condTest (.cond(cond), .CPSRIn(CPSRstatus), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
 
-	ALU numberCrunch (.ALUexecute(ALUexecute), .data1(ALUData1), .data2(ALUData2), .operation(opcode), .result(resultWire), .flags(CPSRflagsWire), .reset(nreset), .clk(clk));
+	ALU numberCrunch (.data1(ALUData1), .data2(ALUData2), .operation(opcode), .result(resultWire), .flags(CPSRflagsWire), .reset(nreset), .clk(clk));
+	
+	
+	aluOutputMux(.opcode(), .ALUresult(), .branchImmediate, .aluMuxout());
 	
 	
 	executeRegister ex (.writeData(), .reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
