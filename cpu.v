@@ -165,7 +165,7 @@ module cpu(
 	ALU numberCrunch (.data1(ALUData1), .data2(ALUData2), .operation(opcode), .result(resultWire), .flags(CPSRflagsWire), .reset(nreset), .clk(clk));
 	
 	
-	aluOutputMux(.opcode(), .ALUresult(), .branchImmediate, .aluMuxout());
+	aluOutputMux(.opcode(), .ALUresult(), .branchImmediate(), .aluMuxout());
 	
 	
 	executeRegister ex (.writeData(), .reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,10 +173,11 @@ module cpu(
 
 	dataMemory dataMem(.addr(), .dataIn(), .dataOut(), .memoryEnable(), .readNotWrite(), .reset(nreset), .clk(clk));
 	
+	regWriteMux(.opcode(), .ALUresult(), .memData(), .conditionalExecute(), .regWriteDataout(), .writeEnable());
 	
 	DataMemoryRegister( .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 
-
+	
 	
 	writebackRegister(.writeAddress(), .writeData(), .reset(nreset), .clk(writebackGo)); /////////////////////////////////////////////////////////////////////////////////
 	
