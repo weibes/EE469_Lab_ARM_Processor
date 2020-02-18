@@ -45,22 +45,34 @@ else
 
 
 case (operation)
-	5'b00000:  	unsignedResult = (data1 & data2);			// AND (and)
+	5'b00000:  	begin
+					unsignedResult = (data1 & data2);			// AND (and)
 					AluWritebackTest = 1;
-	5'b00001:	unsignedResult = (data1 ^ data2);			// EOR (exclusive or) 
+					end
+					
+	5'b00001:	begin
+					unsignedResult = (data1 ^ data2);			// EOR (exclusive or) 
 					AluWritebackTest = 1;
+					end
 	
-	5'b00010:	AluWritebackTest = 1;							// SUB (subtract)	
+	5'b00010:	begin
+					AluWritebackTest = 1;							// SUB (subtract)	
 					if ((negativeData == 2'b10)|(negativeData == 2'b01))
 						unsignedResult = (unsignedData1 + unsignedData2);
 					else if (unsignedData2 > unsignedData1)
 						unsignedResult = (unsignedData2 - unsignedData1);
-					else unsignedResult = (unsignedData1 - unsignedData2);			
+					else unsignedResult = (unsignedData1 - unsignedData2);
+					end
 						
-	5'b00011:	AluWritebackTest = 1;
-					unsignedResult = (unsignedData2 - unsignedData1);			// RSB (reverse subtract)
-	5'b00100:	AluWritebackTest = 1;												// ADD (add)
-					begin
+	5'b00011:	begin
+					AluWritebackTest = 1;
+					unsignedResult = (unsignedData2 - unsignedData1);	
+			
+					end                                                      // RSB (reverse subtract)
+	
+	5'b00100:	begin
+					AluWritebackTest = 1;												// ADD (add)
+					
 					
 					if ((negativeData == 2'b10)|(negativeData == 2'b01))
 						if (unsignedData1 > unsignedData2)
@@ -76,22 +88,29 @@ case (operation)
 //	5'b00111:			not responsible for this	// RSC (reverse subtract with carry)
 
 
-	5'b01000:	AluWritebackTest = 0;
-					unsignedResult =	(data1 & data2);										// TST (Test bits)	
-	5'b01001:	AluWritebackTest = 0;
+	5'b01000:	begin
+					AluWritebackTest = 0;
+					unsignedResult =	(data1 & data2);	
+					end
+																	// TST (Test bits)	
+	5'b01001:	begin
+					AluWritebackTest = 0;
 					unsignedResult =	(data1 ^ data2);										//	TEQ (Test bitwise equality)
+					end
 	
-	
-	5'b01010:	AluWritebackTest = 0;
+	5'b01010:	begin
+					AluWritebackTest = 0;
 			
 					if ((negativeData == 2'b10)|(negativeData == 2'b01))				//	CMP (Compare)
 						unsignedResult = (unsignedData1 + unsignedData2);
 					else if (unsignedData2 > unsignedData1)
 						unsignedResult = (unsignedData2 - unsignedData1);
 					else unsignedResult = (unsignedData1 - unsignedData2);
+					end
 					
-	5'b01011:	AluWritebackTest = 0;														//	CMN (Compare Negative)
-					begin
+	5'b01011:	begin
+					AluWritebackTest = 0;														//	CMN (Compare Negative)
+					
 					if ((negativeData == 2'b10)|(negativeData == 2'b01))
 						if (unsignedData1 > unsignedData2)
 							unsignedResult = (unsignedData1 - unsignedData2);
@@ -103,15 +122,25 @@ case (operation)
 
 
 
-	5'b01100:	AluWritebackTest = 1;
-					unsignedResult = (data1 | data2);			// ORR (or)
-	5'b01101:	AluWritebackTest = 1;
-					unsignedResult = (data2);						// MOV (Move register or constant)
-	5'b01110:	AluWritebackTest = 1;
-					unsignedResult = (data1 & ~data2);			//	BIC (Bit Clear)
-	5'b01111:	AluWritebackTest = 1;
-					unsignedResult = (~data2);					// MVN (Move negative register)
+	5'b01100:	begin
+					AluWritebackTest = 1;
+					unsignedResult = (data1 | data2);
+					end													// ORR (or)
 	
+	5'b01101:	begin
+					AluWritebackTest = 1;
+					unsignedResult = (data2);						// MOV (Move register or constant)
+					end
+	
+	5'b01110:	begin
+					AluWritebackTest = 1;
+					unsignedResult = (data1 & ~data2);			//	BIC (Bit Clear)
+					end
+					
+	5'b01111:	begin
+					AluWritebackTest = 1;
+					unsignedResult = (~data2);					// MVN (Move negative register)
+					end
 	
 //	5'b10000:
 //	5'b10001:

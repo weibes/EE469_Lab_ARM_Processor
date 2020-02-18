@@ -114,7 +114,7 @@ module cpu(
 	wire writebackEnableWire;
 	//pass to register
 	reg [31:0] ALUMuxReg;
-	reg writebackEnableReg
+	reg writebackEnableReg;
 	
 	// PROGRAMCOUNTER variables
 		//to
@@ -169,14 +169,14 @@ module cpu(
 
 						 
 	shifter shifty(.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
-												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire));
+												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire), .clk(clk), .reset(nreset));
 	
 	
 	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatusReg), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
 	
 	
 	registerFetchRegister regFetch (.Data1IN(rnDataReg), .Data2IN(shiftedDataReg), .linkBitIN(linkBitReg), .prePostAddOffsetIN(prePostAddOffsetReg), .upDownOffsetIN(upDownOffsetReg),
-												.byteOrWordIN(byteOrWordReg), .writeBackIN(writeBackReg), .loadStoreIN(loadStoreReg), .rdIN(rd) .rmIN(rm), .opcodeIN(opcodeReg),
+												.byteOrWordIN(byteOrWordReg), .writeBackIN(writeBackReg), .loadStoreIN(loadStoreReg), .rdIN(rd), .rmIN(rm), .opcodeIN(opcodeReg),
 												.conditionalExecuteIN(conditionalExecuteReg), .immediateOffsetIN(immediateOffsetReg),
 												.CPSRwriteIN(CPSRwriteReg), .immediateOperandIN(immediateOperandReg),
 												.rm_shiftSDTIN(rm_shiftSDTReg),
@@ -192,12 +192,12 @@ module cpu(
 
 	
 
-	ALU numberCrunch (.data1(Data1_RFR_Reg), .data2(Data2_RFR_Reg), .operation(opcode_RFR_Reg), .result(resultWire), .flags(CPSRStatusWire), .AluWritebackTest(AluWritebackTestWire) .reset(nreset), .clk(clk));
+	ALU numberCrunch (.data1(Data1_RFR_Reg), .data2(Data2_RFR_Reg), .operation(opcode_RFR_Reg), .result(resultWire), .flags(CPSRStatusWire), .AluWritebackTest(AluWritebackTestWire), .reset(nreset), .clk(clk));
 	
 	
 	aluOutputMux aluOutMux (.opcode(opcode_RFR_Reg), .ALUresult(ALUResultReg), .branchImmediate(Data2_RFR_Reg), 
 									.aluWritebackTest(AluWritebackTestReg), .conditionalExecute(conditionalExecute_RFR_Reg),
-									writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
+									.writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
 	
 	
 	
@@ -214,7 +214,7 @@ module cpu(
 	DataMemoryRegister DataMemReg ( .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
 	programCounter PC(.Branch(), .currData(instrLocWire),
-                    .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(wrieData));
+                    .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData));
 	
 	
 
