@@ -104,13 +104,17 @@ module cpu(
 		//from
 	wire [31:0] resultWire;
 	wire [3:0] CPSRStatusWire;
+	wire AluWritebackTestWire;
 	 //pass to register
 	reg ALUResultReg;
+	reg AluWritebackTestReg;
 
 	//aluOutputMux variables
 	wire [31:0] ALUMuxWire;
+	wire writebackEnableWire;
 	//pass to register
 	reg [31:0] ALUMuxReg;
+	reg writebackEnableReg
 	
 	// PROGRAMCOUNTER variables
 		//to
@@ -188,10 +192,14 @@ module cpu(
 
 	
 
-	ALU numberCrunch (.data1(Data1_RFR_Reg), .data2(Data2_RFR_Reg), .operation(opcode_RFR_Reg), .result(resultWire), .flags(CPSRStatusWire), .reset(nreset), .clk(clk));
+	ALU numberCrunch (.data1(Data1_RFR_Reg), .data2(Data2_RFR_Reg), .operation(opcode_RFR_Reg), .result(resultWire), .flags(CPSRStatusWire), .AluWritebackTest(AluWritebackTestWire) .reset(nreset), .clk(clk));
 	
 	
-	aluOutputMux aluOutMux (.opcode(opcode_RFR_Reg), .ALUresult(ALUResultReg), .branchImmediate(Data2_RFR_Reg), .aluMuxout(ALUMuxWire));
+	aluOutputMux aluOutMux (.opcode(opcode_RFR_Reg), .ALUresult(ALUResultReg), .branchImmediate(Data2_RFR_Reg), 
+									.aluWritebackTest(AluWritebackTestReg), .conditionalExecute(conditionalExecute_RFR_Reg),
+									writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
+	
+	
 	
 	
 	executeRegister ex (.writeData(ALUMuxReg), .reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,10 +230,10 @@ reg [2:0] ps, ns;
 
 
 always @* begin
-
+	
+	instrLoc = instrLocWire;
+	
 	nextInstrReg = nextInstrWire;
-
-
 	
 	linkBitReg = linkBitWire;
 	prePostAddOffsetReg = prePostAddOffsetWire;
@@ -280,11 +288,15 @@ always @* begin
 	
 	ALUMuxReg = ALUMuxWire;
 	
+	AluWritebackTestReg = AluWritebackTestWire;
+	
+	writebackEnableReg = writebackEnableWire;
+	
 if (opcode == 5'b10001) isBranch = 1; 
 else isBranch = 0;
 
-// always connected
-instrLoc = instrLocWire;
+
+;
 	
  // State logic
 	case (ps)
