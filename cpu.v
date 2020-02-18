@@ -292,11 +292,10 @@ always @* begin
 	
 	writebackEnableReg = writebackEnableWire;
 	
-if (opcode == 5'b10001) isBranch = 1; 
+if (opcodeReg == 5'b10001) isBranch = 1; 
 else isBranch = 0;
 
 
-;
 	
  // State logic
 	case (ps)
@@ -347,7 +346,7 @@ else isBranch = 0;
 			dataMemoryGo = 1;
 			PCGo = 0;
 			
-			ns = PCupdate;
+			ns = PCUpdate;
 			end
 			
 	PCUpdate: 				begin

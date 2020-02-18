@@ -127,13 +127,13 @@ endmodule
 
 module shifter_testbench();
 
-	wire immediateOperand, clk, reset;
-	wire [4:0]  opcode;
-	wire [11:0] data12In;
-	wire [23:0] branchOffset;
-	wire [31:0] rmData;
+	reg immediateOperand, clk, reset;
+	reg [4:0]  opcode;
+	reg [11:0] data12In;
+	reg [23:0] branchOffset;
+	reg [31:0] rmData;
 	
-	reg [31:0] shiftedData;
+	wire [31:0] shiftedData;
 	
 	shifter dut (.immediateOperand(immediateOperand), .opcode(opcode), .data12In(data12In),
 					 .brachOffset(branchOffset), .rmData(rmData), .clk(clk), .reset(reset));
