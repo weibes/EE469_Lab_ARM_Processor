@@ -1,6 +1,6 @@
-module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOperand);
+module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOperand, clk, reset);
 
-	input wire immediateOperand;
+	input wire immediateOperand, clk, reset;
 	input wire [4:0]  opcode;
 	input wire [11:0] data12In;
 	input wire [23:0] branchOffset;
@@ -124,6 +124,10 @@ module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOpe
 	end	
 endmodule
 
+
+
+
+
 module shifter_testbench();
 
 
@@ -148,8 +152,6 @@ shifter dut (.opcode(opcode), .data12In(data12In), .branchOffset(branchOffset),
 					.clk(clk), .reset(reset));
 
 
-	shifter dut (.immediateOperand(immediateOperand), .opcode(opcode), .data12In(data12In),
-					 .brachOffset(branchOffset), .rmData(rmData));
 					 
 	
 
