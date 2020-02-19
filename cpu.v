@@ -199,12 +199,10 @@ module cpu(
 									.aluWritebackTest(AluWritebackTestReg), .conditionalExecute(conditionalExecute_RFR_Reg),
 									.writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
 	
-	
-	
+	addrInputMux( 
 	
 	executeRegister ex (.writeData(ALUMuxReg), .reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-
 	
 	
 	dataMemory dataMem (.addr(), .dataIn(), .dataOut(), .memoryEnable(), .readNotWrite(), .reset(nreset), .clk(clk));
