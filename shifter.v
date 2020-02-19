@@ -1,22 +1,6 @@
-/*module shifter(rmData, opcode, rotateVal, rm_shift, immediateVal, immediateOffset,
-												 immediateOperand, rm_shiftSDT, shiftType, shiftedData,
-												 branchOffset);
-*/
-module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOperand);
-/*
-////// old i/o ///////////////////////////////////////////////////////
-	input wire immediateOperand;
-	input wire [1:0] shiftType;
-	input wire [3:0] rotateVal;
-	input wire [4:0] opcode, rm_shift;
-	input wire [7:0] rm_shiftSDT, immediateVal;
-	input wire [11:0] immediateOffset;
-	input wire [23:0] branchOffset;
-	input wire [31:0] rmData;
 
-	output reg [31:0] shiftedData;
-*/
-/////////////////new i/o ///////////////////////////////////////////
+module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOperand);
+
 	input wire immediateOperand;
 	input wire [4:0]  opcode;
 	input wire [11:0] data12In;
@@ -28,7 +12,7 @@ module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOpe
 	reg [7:0] rm_shift;
 	reg [1:0] shiftType;
 	reg [31:0] immediateData;
-////////////////////////////////////////////////	
+
 	always @* begin
 			
 			if (opcode == 5'b10001) begin //input is branch
@@ -143,20 +127,11 @@ endmodule
 
 module shifter_testbench();
 
-<<<<<<< HEAD
-	wire immediateOperand;
-	wire [4:0]  opcode;
-	wire [11:0] data12In;
-	wire [23:0] branchOffset;
-	wire [31:0] rmData;
-=======
 	reg immediateOperand, clk, reset;
 	reg [4:0]  opcode;
 	reg [11:0] data12In;
 	reg [23:0] branchOffset;
-	reg [31:0] rmData;
->>>>>>> a91fc87155f51e28d0d3fd077704133921f8154a
-	
+	reg [31:0] rmData;	
 	wire [31:0] shiftedData;
 	
 	shifter dut (.immediateOperand(immediateOperand), .opcode(opcode), .data12In(data12In),

@@ -108,13 +108,21 @@ module cpu(
 	 //pass to register
 	reg ALUResultReg;
 	reg AluWritebackTestReg;
-
+	
 	//aluOutputMux variables
 	wire [31:0] ALUMuxWire;
 	wire writebackEnableWire;
 	//pass to register
 	reg [31:0] ALUMuxReg;
 	reg writebackEnableReg;
+	
+	//addrInputMux variables
+		//to
+	//	prePostAddOffset bit, determines if from ALU or direct from D0
+	//	ALU result from ALU
+		//from
+	wire [31:0] addrFinalWire;
+	reg [31:0] addrFinalReg;
 	
 	// PROGRAMCOUNTER variables
 		//to
@@ -171,6 +179,7 @@ module cpu(
 	shifter shifty(.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
 												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire), .clk(clk), .reset(nreset));
 	
+	shifter shifty(.opcode(opcodeReg), .data12In(), .branchOffset(
 	
 	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatusReg), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
 	
@@ -199,7 +208,7 @@ module cpu(
 									.aluWritebackTest(AluWritebackTestReg), .conditionalExecute(conditionalExecute_RFR_Reg),
 									.writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
 	
-	addrInputMux(
+	addrInputMux(.preCheck(prePostAddOffset_RFR), .ALUInput(.ALUResultReg), .dataOut(addrFinalWire), .branchOffset(branchImmediateOffsetReg);
 	
 	executeRegister ex (.writeData(ALUMuxReg), .reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -212,7 +221,7 @@ module cpu(
 	DataMemoryRegister DataMemReg ( .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
 	programCounter PC(.Branch(), .currData(instrLocWire),
-                    .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData));
+                    .branchImmediate(branchImmediateReg), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData));
 	
 	
 
@@ -289,6 +298,8 @@ always @* begin
 	AluWritebackTestReg = AluWritebackTestWire;
 	
 	writebackEnableReg = writebackEnableWire;
+	
+	addrFinalReg = addrFinalWire;
 	
 if (opcodeReg == 5'b10001) isBranch = 1; 
 else isBranch = 0;
