@@ -135,10 +135,10 @@ module shifter_testbench();
 	
 	wire [31:0] shiftedData;
 	
-	shifter dut (.immediateOperand(immediateOperand), .opcode(opcode), .data12In(data12In),
-					 .brachOffset(branchOffset), .rmData(rmData), .clk(clk), .reset(reset));
-					 
-	
+shifter dut (.opcode(opcode), .data12In(data12In), .branchOffset(branchOffset),
+					.rmData(rmData), .shiftedData(shiftedData), .immediateOperand(immediateOperand), 
+					.clk(clk), .reset(reset));
+
 	// Set up the clock.
 	 parameter CLOCK_PERIOD=100;
 	 initial begin
@@ -146,15 +146,39 @@ module shifter_testbench();
 		forever #(CLOCK_PERIOD/2) clk <= ~clk;
 	 end
 	 
-	 initial begin
-		immediateOperand = 0;	opcode = 0;	data12In = 0;
-		branchOffset = 0;	rmData = 0;									@(posedge clk);
-		
-			
-	 
-		$stop;
+	 	 initial begin
+														@(posedge clk);
+			reset	<= 1;								@(posedge clk);
+			reset	<= 0;								@(posedge clk);
+			opcode <= 5'b10001;					@(posedge clk);//branch
+			branchOffset <= 3;					@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+														@(posedge clk);
+
+			$stop; // End the simulation.
+
 	 end
-
-	
-
 endmodule
+

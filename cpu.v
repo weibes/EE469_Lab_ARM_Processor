@@ -116,6 +116,29 @@ module cpu(
 	reg [31:0] ALUMuxReg;
 	reg writebackEnableReg;
 	
+	
+	//EXECUTE REGISTER variables
+	
+	//from
+	wire [31:0] Data1_EX_Wire;
+	wire [31:0] Data2_EX_Wire;
+	wire linkBit_EX_Wire, prePostAddOffset_EX_Wire, upDownOffset_EX_Wire, byteOrWord_EX_Wire, writeBack_EX_Wire, loadStore_EX_Wire, writebackEnable_EX_Wire;
+	wire [3:0] rd_EX_Wire;
+	wire [3:0] rm_EX_Wire;
+	wire [4:0]opcode_EX_Wire;
+	wire [31:0] writeData_EX_Wire;
+	
+	// pass to register
+	reg [31:0] Data1_EX_Reg;
+	reg [31:0] Data2_EX_Reg;
+	reg linkBit_EX_Reg, prePostAddOffset_EX_Reg, upDownOffset_EX_Reg, byteOrWord_EX_Reg, writeBack_EX_Reg, loadStore_EX_Reg, writebackEnable_EX_Reg;
+	reg [3:0] rd_EX_Reg;
+	reg [3:0] rm_EX_Reg;
+	reg [4:0]opcode_EX_Reg;
+	reg [31:0] writeData_EX_Reg;
+	
+	
+	
 	// PROGRAMCOUNTER variables
 		//to
 	reg isBranch;
@@ -151,24 +174,24 @@ module cpu(
 
 
 						  
-	instructionMemory Memory(.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstrWire));
+	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstrWire));
 	
 	
-	instructionFetchRegister instFetch(.instructionIN(nextInstrReg),  .instructionOUT(nextInstr), .reset(nreset), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
+	instructionFetchRegister instFetch (.instructionIN(nextInstrReg),  .instructionOUT(nextInstr), .reset(nreset), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
 	
 
-	sortInstruction sortInstr(.instruction(nextInstr), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
+	sortInstruction sortInstr (.instruction(nextInstr), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
   												.byteOrWord(byteOrWordWire), .writeBack(writeBackWire), .loadStore(loadStoreWire), .rd(rdWire), .rn(rnWire), .rm(rmWire), .opcode(opcodeWire),
   												.cond(condWire), .rotateVal(rotateValWire), .rm_shift(rm_shiftWire), .immediateVal(immediateValWire), .immediateOffset(immediateOffsetWire),
   												.branchImmediate(branchImmediateWire), .reset(nreset), .clk(clk), .CPSRwrite(CPSRwritewire),.shiftType(shiftTypeWire),
 												.immediateOperand(immediateOperandWire), .rm_shiftSDT(rm_shiftSDTWire));										
 
 						
-	registerFile reg_file(.writeDestination(rd), .writeEnable(readWrite), .readReg1(rn), .readReg2(rm),
+	registerFile reg_file (.writeDestination(rd), .writeEnable(readWrite), .readReg1(rn), .readReg2(rm),
                          .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(clk), .oldPCVal(instrLoc), .writeToPC(writeToPC));
 
 						 
-	shifter shifty(.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
+	shifter shifty (.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
 												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire), .clk(clk), .reset(nreset));
 	
 	
@@ -188,7 +211,6 @@ module cpu(
 												.rm_shiftSDTOUT(rm_shiftSDT_RFR),
 												
 												.reset(nreset), .clk(registerFetchGo));	///////////////////////////////////////////////
-	
 
 	
 
@@ -201,10 +223,19 @@ module cpu(
 	
 	
 	
+	executeRegister ex (.Data1_EX(Data1_RFR_Reg), .Data2_EX(Data2_RFR_Reg), .linkBit_EX(linkBit_RFR_Reg), .prePostAddOffset_EX(prePostAddOffset_RFR_Reg),
+								.upDownOffset_EX(upDownOffset_RFR_Reg), .byteOrWord_EX(byteOrWord_RFR_Reg), .writeBack_EX(writeBack_RFR_Reg), .loadStore_EX(loadStore_RFR_Reg),
+								.rd_EX(rd_RFR_Reg), .rm_EX(rm_RFR_Reg), .opcode_EX(opcode_RFR_Reg), .writebackEnable_EX(writebackEnableReg),
+								.writeData_EX(ALUMuxReg), 
+								
+								.Data1_EX_OUT(Data1_EX_Wire), .Data2_EX_OUT(Data2_EX_Wire), .linkBit_EX_OUT(linkBit_EX_Wire), .prePostAddOffset_EX_OUT(prePostAddOffset_EX_Wire),
+								.upDownOffset_EX_OUT(upDownOffset_EX_Wire), .byteOrWord_EX_OUT(byteOrWord_EX_Wire), .writeBack_EX_OUT(writeBack_EX_Wire), .loadStore_EX_OUT(loadStore_EX_Wire),
+								.rd_EX_OUT(rd_EX_Wire), .rm_EX_OUT(rm_EX_Wire), .opcode_EX_OUT(opcode_EX_Wire), .writebackEnable_EX_OUT(writebackEnable_EX_Wire),
+								.writeData_EX_OUT(writeData_EX_Wire),
+								
+								.reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	executeRegister ex (.writeData(ALUMuxReg), .reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-
 	
 	
 	dataMemory dataMem (.addr(), .dataIn(), .dataOut(), .memoryEnable(), .readNotWrite(), .reset(nreset), .clk(clk));
@@ -213,7 +244,7 @@ module cpu(
 	
 	DataMemoryRegister DataMemReg ( .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
-	programCounter PC(.Branch(), .currData(instrLocWire),
+	programCounter PC (.Branch(), .currData(instrLocWire),
                     .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData));
 	
 	
@@ -291,6 +322,23 @@ always @* begin
 	AluWritebackTestReg = AluWritebackTestWire;
 	
 	writebackEnableReg = writebackEnableWire;
+	
+	
+	
+	Data1_EX_Reg = Data1_EX_Wire;
+	Data2_EX_Reg = Data2_EX_Wire;
+	linkBit_EX_Reg = linkBit_EX_Wire;
+	prePostAddOffset_EX_Reg = prePostAddOffset_EX_Wire;
+	upDownOffset_EX_Reg = upDownOffset_EX_Wire;
+	byteOrWord_EX_Reg = byteOrWord_EX_Wire;
+	writeBack_EX_Reg = writeBack_EX_Wire;
+	loadStore_EX_Reg = loadStore_EX_Wire;
+	writebackEnable_EX_Reg = writebackEnable_EX_Wire;
+	rd_EX_Reg = rd_EX_Wire;
+	rm_EX_Reg = rm_EX_Wire;
+	opcode_EX_Reg = opcode_EX_Wire;
+	writeData_EX_Reg = writeData_EX_Wire;
+	
 	
 if (opcodeReg == 5'b10001) isBranch = 1; 
 else isBranch = 0;
