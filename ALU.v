@@ -6,11 +6,12 @@ input wire reset,clk;
 
 output reg [31:0] result;  //either logical or signed
 output reg [3:0] flags;
+output reg AluWritebackTest;
 
 reg [31:0] unsignedData1, unsignedData2, unsignedResult;
 reg [1:0] negativeData; 
 reg Z, C, N, V; //zero carry negative overflow flags
-reg AluWritebackTest;
+
 
 
 
