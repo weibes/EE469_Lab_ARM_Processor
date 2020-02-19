@@ -25,9 +25,13 @@ module cpu(
 	reg nextInstrReg;
 	
 	
+	//instructionFetchRegister variables
+	//from
+	wire [31:0] nextInstr_INSTfetch_Wire;
+	
 	// SORTINSTRUCTION variables
 		//to
-	reg [31:0] nextInstr;
+	reg [31:0] nextInstr_INSTfetch_Reg;
 		//from
 	wire linkBitWire, prePostAddOffsetWire, upDownOffsetWire, byteOrWordWire, writeBackWire, loadStoreWire, CPSRwritewire, immediateOperandWire;
 	wire [1:0] shiftTypeWire;
@@ -38,6 +42,7 @@ module cpu(
 	wire [23:0] branchImmediateWire;
 	
 	// pass to register
+
 	reg linkBitReg, prePostAddOffsetReg, upDownOffsetReg, byteOrWordReg, writeBackReg, loadStoreReg, CPSRwriteReg, immediateOperandReg;
 	reg [1:0] shiftTypeReg;
 	reg [3:0] rdReg, rnReg, rmReg, condReg, rotateValReg;
@@ -177,10 +182,10 @@ module cpu(
 	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstrWire));
 	
 	
-	instructionFetchRegister instFetch (.instructionIN(nextInstrReg),  .instructionOUT(nextInstr), .reset(nreset), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
+	instructionFetchRegister instFetch (.instructionIN(nextInstrReg),  .instructionOUT(nextInstr_INSTfetch_Wire), .reset(nreset), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
 	
 
-	sortInstruction sortInstr (.instruction(nextInstr), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
+	sortInstruction sortInstr (.instruction(nextInstr_INSTfetch_Reg), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
   												.byteOrWord(byteOrWordWire), .writeBack(writeBackWire), .loadStore(loadStoreWire), .rd(rdWire), .rn(rnWire), .rm(rmWire), .opcode(opcodeWire),
   												.cond(condWire), .rotateVal(rotateValWire), .rm_shift(rm_shiftWire), .immediateVal(immediateValWire), .immediateOffset(immediateOffsetWire),
   												.branchImmediate(branchImmediateWire), .reset(nreset), .clk(clk), .CPSRwrite(CPSRwritewire),.shiftType(shiftTypeWire),
@@ -236,7 +241,7 @@ module cpu(
 								
 								.reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	addrInputMux(
+	//addrInputMux(
 
 	
 	
@@ -269,6 +274,8 @@ always @* begin
 	instrLoc = instrLocWire;
 	
 	nextInstrReg = nextInstrWire;
+	
+	nextInstr_INSTfetch_Reg = nextInstr_INSTfetch_Wire;
 	
 	linkBitReg = linkBitWire;
 	prePostAddOffsetReg = prePostAddOffsetWire;

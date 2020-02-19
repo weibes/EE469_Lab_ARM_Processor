@@ -131,12 +131,6 @@ endmodule
 module shifter_testbench();
 
 
-	wire immediateOperand;
-	wire [4:0]  opcode;
-	wire [11:0] data12In;
-	wire [23:0] branchOffset;
-	wire [31:0] rmData;
-
 	reg immediateOperand, clk, reset;
 	reg [4:0]  opcode;
 	reg [11:0] data12In;
@@ -193,19 +187,8 @@ shifter dut (.opcode(opcode), .data12In(data12In), .branchOffset(branchOffset),
 														@(posedge clk);
 														@(posedge clk);
 														@(posedge clk);
-
-	 initial begin
-		immediateOperand = 0;	opcode = 0;	data12In = 0;
-		branchOffset = 0;	rmData = 0;									@(posedge clk);
-		opcode = 5'b10001;
-		branchOffset = 24'b000000000000000000000001;				@(posedge clk);
-		opcode = 5'b10000; 												@(posedge clk);
+														@(posedge clk);
 		
-			
-	 
-		$stop;
-	 end
-
 
 			$stop; // End the simulation.
 
