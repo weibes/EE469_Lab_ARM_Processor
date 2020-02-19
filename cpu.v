@@ -221,7 +221,7 @@ module cpu(
 									.aluWritebackTest(AluWritebackTestReg), .conditionalExecute(conditionalExecute_RFR_Reg),
 									.writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
 	
-<<<<<<< HEAD
+
 	
 	
 	executeRegister ex (.Data1_EX(Data1_RFR_Reg), .Data2_EX(Data2_RFR_Reg), .linkBit_EX(linkBit_RFR_Reg), .prePostAddOffset_EX(prePostAddOffset_RFR_Reg),
@@ -235,9 +235,9 @@ module cpu(
 								.writeData_EX_OUT(writeData_EX_Wire),
 								
 								.reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-=======
+
 	addrInputMux(
->>>>>>> 66b19a8199c574a4de6c12577a6eb7baeea5e506
+
 	
 	
 	

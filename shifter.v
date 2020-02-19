@@ -1,22 +1,5 @@
-/*module shifter(rmData, opcode, rotateVal, rm_shift, immediateVal, immediateOffset,
-												 immediateOperand, rm_shiftSDT, shiftType, shiftedData,
-												 branchOffset);
-*/
 module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOperand);
-/*
-////// old i/o ///////////////////////////////////////////////////////
-	input wire immediateOperand;
-	input wire [1:0] shiftType;
-	input wire [3:0] rotateVal;
-	input wire [4:0] opcode, rm_shift;
-	input wire [7:0] rm_shiftSDT, immediateVal;
-	input wire [11:0] immediateOffset;
-	input wire [23:0] branchOffset;
-	input wire [31:0] rmData;
 
-	output reg [31:0] shiftedData;
-*/
-/////////////////new i/o ///////////////////////////////////////////
 	input wire immediateOperand;
 	input wire [4:0]  opcode;
 	input wire [11:0] data12In;
@@ -28,7 +11,7 @@ module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOpe
 	reg [7:0] rm_shift;
 	reg [1:0] shiftType;
 	reg [31:0] immediateData;
-////////////////////////////////////////////////	
+
 	always @* begin
 			
 			if (opcode == 5'b10001) begin //input is branch
@@ -49,7 +32,7 @@ module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOpe
 						2'b00: 	shiftedData = rmData << rm_shift; // logical left
 						2'b01:	shiftedData = rmData >> rm_shift; // logical right
 						2'b10: 	shiftedData = rmData >>> rm_shift; // arithmetic right
-						//2'b11: 	shiftedData = {rmData[rm_shift:0], rmData[15:(15 - rm_shift)]}; //rotate right, still doesn't work
+
 						
 						
 						2'b11: 	case(rm_shift)
@@ -143,33 +126,33 @@ endmodule
 
 module shifter_testbench();
 
-<<<<<<< HEAD
+
 	wire immediateOperand;
 	wire [4:0]  opcode;
 	wire [11:0] data12In;
 	wire [23:0] branchOffset;
 	wire [31:0] rmData;
-=======
+
 	reg immediateOperand, clk, reset;
 	reg [4:0]  opcode;
 	reg [11:0] data12In;
 	reg [23:0] branchOffset;
 	reg [31:0] rmData;
->>>>>>> a91fc87155f51e28d0d3fd077704133921f8154a
+
 	
 	wire [31:0] shiftedData;
 	
-<<<<<<< HEAD
+
 shifter dut (.opcode(opcode), .data12In(data12In), .branchOffset(branchOffset),
 					.rmData(rmData), .shiftedData(shiftedData), .immediateOperand(immediateOperand), 
 					.clk(clk), .reset(reset));
 
-=======
+
 	shifter dut (.immediateOperand(immediateOperand), .opcode(opcode), .data12In(data12In),
 					 .brachOffset(branchOffset), .rmData(rmData));
 					 
 	
->>>>>>> 66b19a8199c574a4de6c12577a6eb7baeea5e506
+
 	// Set up the clock.
 	 parameter CLOCK_PERIOD=100;
 	 initial begin
@@ -177,7 +160,7 @@ shifter dut (.opcode(opcode), .data12In(data12In), .branchOffset(branchOffset),
 		forever #(CLOCK_PERIOD/2) clk <= ~clk;
 	 end
 	 
-<<<<<<< HEAD
+
 	 	 initial begin
 														@(posedge clk);
 			reset	<= 1;								@(posedge clk);
@@ -208,7 +191,7 @@ shifter dut (.opcode(opcode), .data12In(data12In), .branchOffset(branchOffset),
 														@(posedge clk);
 														@(posedge clk);
 														@(posedge clk);
-=======
+
 	 initial begin
 		immediateOperand = 0;	opcode = 0;	data12In = 0;
 		branchOffset = 0;	rmData = 0;									@(posedge clk);
@@ -220,7 +203,7 @@ shifter dut (.opcode(opcode), .data12In(data12In), .branchOffset(branchOffset),
 	 
 		$stop;
 	 end
->>>>>>> 66b19a8199c574a4de6c12577a6eb7baeea5e506
+
 
 			$stop; // End the simulation.
 
