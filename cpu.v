@@ -121,6 +121,16 @@ module cpu(
 	reg [31:0] ALUMuxReg;
 	reg writebackEnableReg;
 	
+	//addrInputMux variables
+		//to
+	//	prePostAddOffset bit, determines if from ALU or direct from D0
+	//	ALU result from ALU
+		//from
+	wire [31:0] addrFinalWire;
+	//to reg
+	reg [31:0] addrFinalReg;
+	
+	
 	
 	//EXECUTE REGISTER variables
 	
@@ -132,15 +142,17 @@ module cpu(
 	wire [3:0] rm_EX_Wire;
 	wire [4:0]opcode_EX_Wire;
 	wire [31:0] writeData_EX_Wire;
+	wire [31:0] addrFinal_EX_Wire;
 	
 	// pass to register
-	reg [31:0] Data1_EX_Reg;
+	reg [31:0] Data1_EX_Reg;	
 	reg [31:0] Data2_EX_Reg;
 	reg linkBit_EX_Reg, prePostAddOffset_EX_Reg, upDownOffset_EX_Reg, byteOrWord_EX_Reg, writeBack_EX_Reg, loadStore_EX_Reg, writebackEnable_EX_Reg;
 	reg [3:0] rd_EX_Reg;
 	reg [3:0] rm_EX_Reg;
 	reg [4:0]opcode_EX_Reg;
 	reg [31:0] writeData_EX_Reg;
+	reg [31:0] addrFinal_EX_Reg;
 	
 	
 	
@@ -192,12 +204,13 @@ module cpu(
 												.immediateOperand(immediateOperandWire), .rm_shiftSDT(rm_shiftSDTWire));										
 
 						
-	registerFile reg_file (.writeDestination(rd), .writeEnable(readWrite), .readReg1(rn), .readReg2(rm),
-                         .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(clk), .oldPCVal(instrLoc), .writeToPC(writeToPC));
+	registerFile reg_file (.writeDestination(rd_DMR_reg), .writeEnable(readWrite_DMR_Reg), .readReg1(rn), .readReg2(rm),
+                          .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(clk), .oldPCVal(instrLoc), .writeToPC(writeToPC));
 
 						 
 	shifter shifty (.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
-												 .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire), .clk(clk), .reset(nreset));
+											  .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire), 
+											  .clk(clk), .reset(nreset));
 	
 	
 	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatusReg), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
@@ -207,7 +220,7 @@ module cpu(
 												.byteOrWordIN(byteOrWordReg), .writeBackIN(writeBackReg), .loadStoreIN(loadStoreReg), .rdIN(rd), .rmIN(rm), .opcodeIN(opcodeReg),
 												.conditionalExecuteIN(conditionalExecuteReg), .immediateOffsetIN(immediateOffsetReg),
 												.CPSRwriteIN(CPSRwriteReg), .immediateOperandIN(immediateOperandReg),
-												.rm_shiftSDTIN(rm_shiftSDTReg),
+												.rm_shiftSDTIN(rm_shiftSDTReg), readWrite_
 												
 												.Data1OUT(Data1_RFR), .Data2OUT(Data2_RFR), .linkBitOUT(linkBit_RFR), .prePostAddOffsetOUT( prePostAddOffset_RFR), .upDownOffsetOUT(upDownOffset_RFR),
 												.byteOrWordOUT(byteOrWord_RFR), .writeBackOUT(writeBack_RFR), .loadStoreOUT(loadStore_RFR), .rdOUT(rd_RFR), .rmOUT(rm_RFR), .opcodeOUT(opcode_RFR),
@@ -219,7 +232,8 @@ module cpu(
 
 	
 
-	ALU numberCrunch (.data1(Data1_RFR_Reg), .data2(Data2_RFR_Reg), .operation(opcode_RFR_Reg), .result(resultWire), .flags(CPSRStatusWire), .AluWritebackTest(AluWritebackTestWire), .reset(nreset), .clk(clk));
+	ALU numberCrunch (.data1(Data1_RFR_Reg), .data2(Data2_RFR_Reg), .operation(opcode_RFR_Reg), .result(resultWire), 
+							.flags(CPSRStatusWire), .AluWritebackTest(AluWritebackTestWire), .reset(nreset), .clk(clk));
 	
 	
 	aluOutputMux aluOutMux (.opcode(opcode_RFR_Reg), .ALUresult(ALUResultReg), .branchImmediate(Data2_RFR_Reg), 
@@ -227,34 +241,42 @@ module cpu(
 									.writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
 	
 
-	
+	addrInputMux(.preCheck(prePostAddOffset_RFR), .ALUInput(.ALUResultReg), .dataOut(addrFinalWire), .branchOffset(branchImmediateOffsetReg);
+
 	
 	executeRegister ex (.Data1_EX(Data1_RFR_Reg), .Data2_EX(Data2_RFR_Reg), .linkBit_EX(linkBit_RFR_Reg), .prePostAddOffset_EX(prePostAddOffset_RFR_Reg),
 								.upDownOffset_EX(upDownOffset_RFR_Reg), .byteOrWord_EX(byteOrWord_RFR_Reg), .writeBack_EX(writeBack_RFR_Reg), .loadStore_EX(loadStore_RFR_Reg),
 								.rd_EX(rd_RFR_Reg), .rm_EX(rm_RFR_Reg), .opcode_EX(opcode_RFR_Reg), .writebackEnable_EX(writebackEnableReg),
-								.writeData_EX(ALUMuxReg), 
+								.writeData_EX(ALUMuxReg), .writeData_EX(addrFinalReg), .ALUResult_EX(ALUResultReg),
 								
 								.Data1_EX_OUT(Data1_EX_Wire), .Data2_EX_OUT(Data2_EX_Wire), .linkBit_EX_OUT(linkBit_EX_Wire), .prePostAddOffset_EX_OUT(prePostAddOffset_EX_Wire),
 								.upDownOffset_EX_OUT(upDownOffset_EX_Wire), .byteOrWord_EX_OUT(byteOrWord_EX_Wire), .writeBack_EX_OUT(writeBack_EX_Wire), .loadStore_EX_OUT(loadStore_EX_Wire),
 								.rd_EX_OUT(rd_EX_Wire), .rm_EX_OUT(rm_EX_Wire), .opcode_EX_OUT(opcode_EX_Wire), .writebackEnable_EX_OUT(writebackEnable_EX_Wire),
-								.writeData_EX_OUT(writeData_EX_Wire),
+								.writeData_EX_OUT(writeData_EX_Wire), .addrFinalWire_EX_OUT(addrFinal_EX_Wire), .ALUResult_EX_OUT(ALUResult_EX_Wire),
 								
 								.reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//addrInputMux(
-
 	
 	
 	
 	
-	dataMemory dataMem (.addr(), .dataIn(), .dataOut(), .memoryEnable(), .readNotWrite(), .reset(nreset), .clk(clk));
+	dataMemory dataMem (.addr(addrFinal_EX_Reg), .dataIn(Data2_EX_Reg), .dataOut(dataMemOutWire), .memoryEnable(opcode_EX_Reg == 5'b10000), 
+							  .readNotWrite(readWrite), .reset(nreset), .clk(clk));
 	
-	regWriteMux regWmux (.opcode(), .ALUresult(), .memData(), .conditionalExecute(), .regWriteDataout(), .writeEnable());
 	
-	DataMemoryRegister DataMemReg ( .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
+	regWriteMux regWmux (.opcode(opcode_EX), .ALUresult(ALUResult_EX_Reg), .memData(dataMemOutReg), .regWriteDataout(writeBackDataWire));
+	
+	
+	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutWire), .rd_DMR(rd_EX_Reg)
+	
+											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire),  .rd_DMR(rd_DMR_Wire)
+											  
+											  .reset(nreset), .clk(dataMemoryGo,)); //////////////////////////////////////////////////////////////////////////////////
+	
+	writeBackEnableChecker doWeWrite(
 	
 	programCounter PC (.Branch(), .currData(instrLocWire),
-                    .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData));
+                    .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData), .reset(nreset));
 	
 	
 
@@ -349,6 +371,7 @@ always @* begin
 	rm_EX_Reg = rm_EX_Wire;
 	opcode_EX_Reg = opcode_EX_Wire;
 	writeData_EX_Reg = writeData_EX_Wire;
+	addrFinal_EX_Reg = addrFinal_EX_Wire;
 	
 	
 if (opcodeReg == 5'b10001) isBranch = 1; 
