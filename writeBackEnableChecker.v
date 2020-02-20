@@ -1,10 +1,10 @@
-module writeBackEnableChecker(notBran);
-	input wire notBranch, condMet, writeBackBit;
+module writeBackEnableChecker(notBranch, condMet, writeBackEnable);
+	input wire notBranch, condMet;
 	
 	output wire writeBackEnable;
 
 	always @* begin
-		writeBackEnable = (notBranch && condMet)
+		writeBackEnable = (notBranch && condMet);
 	end
 	
 
