@@ -10,11 +10,14 @@ add wave -noupdate /registerFile_testbench/writeData
 add wave -noupdate /registerFile_testbench/writeDestination
 add wave -noupdate /registerFile_testbench/readData1
 add wave -noupdate /registerFile_testbench/readData2
+add wave -noupdate /registerFile_testbench/writeToPC
+add wave -noupdate /registerFile_testbench/oldPCVal
+add wave -noupdate -expand /registerFile_testbench/dut/regFile
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {0 ps} 0}
 quietly wave cursor active 0
 configure wave -namecolwidth 393
-configure wave -valuecolwidth 100
+configure wave -valuecolwidth 229
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
 configure wave -snapdistance 10
@@ -27,4 +30,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {11888 ps}
+WaveRestoreZoom {0 ps} {10776 ps}
