@@ -1,7 +1,8 @@
-module dataMemory(addr, dataIn, readNotWrite, enable, dataOut, clk, reset);
+module dataMemory(addr, dataIn, dataOut, memoryEnable, readNotWrite, reset, clk);
+
 
 	input wire [31:0] addr, dataIn;
-	input wire readNotWrite, enable, reset, clk; //not sure about function of enable, need to check
+	input wire readNotWrite, memoryEnable, reset, clk; //not sure about function of enable, need to check
 	
 	output reg [31:0] dataOut;
 	
@@ -10,7 +11,7 @@ module dataMemory(addr, dataIn, readNotWrite, enable, dataOut, clk, reset);
 	
 	//memory needs to be clocked for simplicity
 	always @* begin
-		if (enable) begin
+		if (memoryEnable) begin
 			// im not going to initialize all 1024 bytes of memory 
 			// just let it be ambiguous untl referenced
 			internalDataHold = mainMemory[addr];

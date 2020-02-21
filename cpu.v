@@ -157,6 +157,18 @@ module cpu(
 	reg [31:0] addrFinal_EX_Reg;
 	
 	
+	//DATAMEMORY REGISTER variables
+	//to
+	
+	//from
+	wire [31:0]dataMemOutWire;
+	wire [31:0] dataMemOut_DMR_Wire;
+	wire rd_DMR_Wire;
+	
+	// pass
+
+											  
+	
 	
 	// PROGRAMCOUNTER variables
 		//to
@@ -166,6 +178,9 @@ module cpu(
 	wire [31:0] instrLocWire;
 		//to_registerFile
 	reg writeToPC;
+	
+	
+	
 	
 	
 	//GO variables
@@ -213,7 +228,7 @@ module cpu(
 	shifter shifty (.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
 											  .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire), 
 											  .clk(clk), .reset(nreset));
-	
+
 	
 	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatusReg), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
 	
@@ -274,6 +289,8 @@ module cpu(
 											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire),  .rd_DMR_OUT(rd_DMR_Wire),
 											  
 											  .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
+											  
+											  
 	
 	writeBackEnableChecker doWeWrite (.condMet(), .writeBackBit(), .opcode(), .writeBackEnable());
 	
