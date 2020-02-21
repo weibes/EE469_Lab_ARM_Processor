@@ -4,14 +4,23 @@ vlib work
 # Compile Verilog
 #     All Verilog files that are part of this design should have
 #     their own "vlog" line below.
-#vlog "./programCounter.v"
+vlog "./programCounter.v"
 vlog "./registerFile.v"
-#vlog "./sortInstruction.v"
-#vlog "./cpu.v"
-#vlog "./instructionMemory.v"
-#vlog "./ALU.v"
-#vlog "./conditionTest.v"
-#vlog "./shifter.v"
+vlog "./sortInstruction.v"
+vlog "./cpu.v"
+vlog "./instructionMemory.v"
+vlog "./ALU.v"
+vlog "./conditionTest.v"
+vlog "./shifter.v"
+vlog "./writeBackEnableChecker.v"
+vlog "./writeBackEnableChecker.v"
+vlog "./regWriteMux.v"
+vlog "./instructionFetchRegister.v"
+vlog "./executeRegister.v"
+vlog "./DataMemoryRegister.v"
+vlog "./dataMemory.v"
+vlog "./ALUOutputMux.v"
+vlog "./addrInputMux.v"
 
 # Call vsim to invoke simulator
 #     Make sure the last item on the line is the name of the
