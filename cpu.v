@@ -163,10 +163,11 @@ module cpu(
 	//from
 	wire [31:0]dataMemOutWire;
 	wire [31:0] dataMemOut_DMR_Wire;
-	wire rd_DMR_Wire;
+	wire  rd_DMR_Wire;
 	
 	// pass
-
+	reg rd_DMR_reg;
+	reg readWrite_DMR_Reg;
 											  
 	
 	
@@ -181,7 +182,9 @@ module cpu(
 	
 	
 	//writeBackEnableChecker
+	//from
 	wire dataWriteEnableWire;
+	//pass
 	reg dataWriteEnableReg;
 
 	//GO variables
@@ -285,7 +288,7 @@ module cpu(
 	
 	
 	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutWire), .rd_DMR(rd_EX_Reg),
-											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire),  .rd_DMR(rd_DMR_Wire),
+											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire),  .rd_DMR_OUT(rd_DMR_Wire),
 											  
 											  .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
@@ -372,7 +375,8 @@ always @* begin
 	
 	writebackEnableReg = writebackEnableWire;
 	
-	
+	dataWriteEnableReg = dataWriteEnableWire;
+
 	
 	Data1_EX_Reg = Data1_EX_Wire;
 	Data2_EX_Reg = Data2_EX_Wire;

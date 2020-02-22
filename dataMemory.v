@@ -16,6 +16,7 @@ module dataMemory(addr, dataIn, dataOut, memoryEnable, readNotWrite, reset, clk)
 			// just let it be ambiguous untl referenced
 			internalDataHold = mainMemory[addr];
 		end
+			else internalDataHold = 0;
 	end
 	
 	always @(posedge clk) begin
