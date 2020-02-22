@@ -1,5 +1,5 @@
-module writeBackEnableChecker(notBranch, condMet, writeBackBit, opcode, writeBackEnable);
-	input wire notBranch, condMet, writeBackBit;
+module writeBackEnableChecker(condMet, writeBackBit, opcode, writeBackEnable);
+	input wire condMet, writeBackBit;
 	input wire [4:0] opcode;
 	
 	output reg writeBackEnable;
