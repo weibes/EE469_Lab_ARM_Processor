@@ -20,9 +20,13 @@ module dataMemory(addr, dataIn, dataOut, memoryEnable, readNotWrite, reset, clk)
 	
 	always @(posedge clk) begin
 		if (readNotWrite) //read
+			begin
 			dataOut <= internalDataHold;
+			end
 		else
+			begin
 			mainMemory[addr] <= dataIn;	
+			end
 	end
 endmodule
 

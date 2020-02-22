@@ -284,11 +284,11 @@ module cpu(
 	regWriteMux regWmux (.opcode(opcode_EX_Reg), .ALUresult(ALUResult_EX_Reg), .memData(dataMemOutReg), .regWriteDataout(writeBackDataWire));
 	
 	
-	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutWire), .rd_DMR(rd_EX_Reg),
-											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire),  .rd_DMR(rd_DMR_Wire),
+	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutWire), .rd_DMR(rd_EX_Reg), .opcode_DMR(opcode_EX_Reg), .opcode_DMR_OUT(opcode_DMR_Wire),
+											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire),  .rd_DMR_OUT(rd_DMR_Wire), 
 											  
 											  .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
-	
+
 	writeBackEnableChecker doWeWrite(.notBranch(opcode != 5'b10000), .condMet(1'b1), .writeBackEnable(dataWriteEnableWire));
 	
 	programCounter PC (.Branch(opcode == 5'b10000), .currData(instrLocWire),
@@ -301,7 +301,7 @@ module cpu(
 parameter 	instructionFetch = 3'b000,
 				registerFetch = 3'b001,
 				execute = 3'b010,
-				dataMemory = 3'b011,
+				dataMemoryParam = 3'b011,
 				PCUpdate = 3'b100;
 
 reg [2:0] ps, ns;
@@ -434,10 +434,10 @@ else isBranch = 0;
 			dataMemoryGo = 0;
 			PCGo = 0;
 			
-			ns = dataMemory;
+			ns = dataMemoryParam;
 			end
 			
-	dataMemory: 			begin
+	dataMemoryParam: 			begin
 	
 	// load or store values into memory
 			instructionFetchGo = 0; 
@@ -478,7 +478,7 @@ else isBranch = 0;
 endmodule
 
 
-
+/*
 
 module cpu_testbench();
 
@@ -654,3 +654,4 @@ cpu dut ( .clk(clk),
  end
 endmodule
 
+*/
