@@ -45,7 +45,7 @@ module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 	end
 endmodule
 	
-	
+	/*
 
 module registerFile_testbench();
 
@@ -140,3 +140,4 @@ module registerFile_testbench();
 	 end
 endmodule
 
+*/

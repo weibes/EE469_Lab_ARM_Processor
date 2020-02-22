@@ -127,7 +127,7 @@ endmodule
 
 
 
-
+/*
 module shifter_testbench();
 
 
@@ -195,3 +195,4 @@ shifter dut (.opcode(opcode), .data12In(data12In), .branchOffset(branchOffset),
 	 end
 endmodule
 
+*/

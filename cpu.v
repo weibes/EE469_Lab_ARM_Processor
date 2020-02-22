@@ -261,7 +261,7 @@ module cpu(
 									.aluWritebackTest(AluWritebackTestReg), .conditionalExecute(conditionalExecute_RFR_Reg),
 									.writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
 	
-	addrInputMux addrMux (.preCheck(prePostAddOffset_RFR), .ALUInput(ALUResultReg), .dataOut(addrFinalWire), .branchOffset(branchImmediateOffsetReg));
+	addrInputMux addrMux (.preCheck(prePostAddOffset_RFR), .ALUInput(ALUResultReg), .dataOut(addrFinalWire), .d0Input(Data1_RFR));
 
 	
 	executeRegister ex (.Data1_EX(Data1_RFR_Reg), .Data2_EX(Data2_RFR_Reg), .linkBit_EX(linkBit_RFR_Reg), .prePostAddOffset_EX(prePostAddOffset_RFR_Reg),
@@ -304,7 +304,7 @@ module cpu(
 parameter 	instructionFetch = 3'b000,
 				registerFetch = 3'b001,
 				execute = 3'b010,
-				dataMemory = 3'b011,
+				dataMemoryParam = 3'b011,
 				PCUpdate = 3'b100;
 
 reg [2:0] ps, ns;
@@ -438,10 +438,10 @@ else isBranch = 0;
 			dataMemoryGo = 0;
 			PCGo = 0;
 			
-			ns = dataMemory;
+			ns = dataMemoryParam;
 			end
 			
-	dataMemory: 			begin
+	dataMemoryParam: 			begin
 	
 	// load or store values into memory
 			instructionFetchGo = 0; 
@@ -482,7 +482,7 @@ else isBranch = 0;
 endmodule
 
 
-
+/*
 
 module cpu_testbench();
 
@@ -658,3 +658,4 @@ cpu dut ( .clk(clk),
  end
 endmodule
 
+*/
