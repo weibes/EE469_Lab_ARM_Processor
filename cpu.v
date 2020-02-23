@@ -116,14 +116,18 @@ module cpu(
 		//from
 	wire [31:0] resultWire;
 	wire [3:0] CPSRStatusWire;
+	wire AluWritebackTestWire;
 	 //pass to register
 	reg  [31:0] ALUResultReg;
+	reg AluWritebackTestReg;
 
+	
+	
 	//aluOutputMux variables
-	wire [31:0] ALUMuxWire;
+	wire [31:0] ALUMuxWire;	
 	//pass to register
 	reg [31:0] ALUMuxReg;
-	
+
 	//addrInputMux variables
 		//to
 	//	prePostAddOffset bit, determines if from ALU or direct from D0
@@ -264,9 +268,9 @@ module cpu(
 							.flags(CPSRStatusWire), .AluWritebackTest(AluWritebackTestWire), .reset(nreset || dataResetReg), .clk(clk));
 	
 	
-	aluOutputMux aluOutMux (.opcode(opcode_RFR_Reg), .ALUresult(ALUResultReg), .branchImmediate(Data2_RFR_Reg), .conditionalExecute(), 
-									.aluMuxout(ALUMuxWire), aluWritebackTest, .writebackEnable());
-	
+	aluOutputMux aluOutMux (.opcode(opcode_RFR_Reg), .ALUresult(ALUResultReg), .branchImmediate(Data2_RFR_Reg), 
+									.aluWritebackTest(AluWritebackTestReg), .conditionalExecute(conditionalExecute_RFR_Reg),
+									.writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
 
 	
 	addrInputMux addrMux (.preCheck(prePostAddOffset_RFR), .ALUInput(ALUResultReg), .dataOut(addrFinalWire), .d0Input(Data1_RFR));
@@ -376,8 +380,9 @@ always @* begin
 	rm_RFR_Reg = rm_RFR; 
 	opcode_RFR_Reg = opcode_RFR; 
 	conditionalExecute_RFR_Reg = conditionalExecute_RFR;
-	
 	ALUResultReg = resultWire;
+	AluWritebackTestReg = AluWritebackTestWire;
+	
 	
 	ALUMuxReg = ALUMuxWire;
 	
