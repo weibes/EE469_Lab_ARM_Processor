@@ -222,8 +222,11 @@ module cpu(
 												.immediateOperand(immediateOperandWire), .shifterVals(shifterValsWire));		
 								
 								
-	registerFile reg_file (.writeDestination(rd_DMR_reg), .writeEnable(writebackEnable_DMR_Reg), .readReg1(rn), .readReg2(rm),
-                          .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(clk), .oldPCVal(instrLoc), .writeToPC(WriteToPCWire));
+	registerFile reg_file (.writeDestination(rd_DMR_reg), .writeEnable(readWrite_DMR_Reg), .readReg1(rn), .readReg2(rm),
+                          .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(instructionFetchGo || PCUpdatGo), 
+								  .oldPCVal(instrLoc), .writeToPC(WriteToPCWire),
+								  .linkBit(linkBit_DMR_Reg));
+
 
 
 	shifter shifty(.opcode(opcodeReg), .data12In(shifterVals), .branchOffset(branchImmediateReg), .rmData(rmDataReg), 

@@ -1,14 +1,13 @@
 module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 	 										writeData, readData1, readData2, reset, clk,
-											writeToPC, oldPCVal);
+											writeToPC, oldPCVal, linkBit);
 
-	input wire writeEnable, reset, clk;
+	input wire writeEnable, reset, clk, linkBit;
 
 	input wire [31:0] writeData, oldPCVal;
 	input wire [3:0] writeDestination, readReg1, readReg2;
 
-	output reg [31:0] readData1;
-	output reg [31:0] readData2;
+	output reg [31:0] readData1, readData2;
 	output reg writeToPC;
 	
 	reg [31:0] internalDataHold;
@@ -16,7 +15,7 @@ module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 	reg [31:0] regFile [0:15];
 	
 	always @* begin
-
+			
 			internalDataHold = regFile[writeDestination];
 			
 			if((writeEnable == 1) && (writeDestination == 4'b1111))
@@ -40,26 +39,29 @@ module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 		
 		if (writeEnable)
 			regFile[writeDestination] <= writeData;
+			if (linkBit)
+				regFile[14] <= regFile[15]; //TODO: test if this works
 		else
 			regFile[writeDestination] <= internalDataHold;
 	end
 endmodule
 	
-	/*
+	
 
 module registerFile_testbench();
 
-	reg writeEnable, reset, clk;
-	reg [31:0] writeData, oldPCVal;
-	reg [3:0] writeDestination, readReg1, readReg2;
+	wire writeEnable, reset, clk, linkBit;
 
-	wire [31:0] readData1;
-	wire [31:0] readData2;
-	wire writeToPC;
+	wire [31:0] writeData, oldPCVal;
+	wire [3:0] writeDestination, readReg1, readReg2;
 
-	registerFile dut (.writeDestination(writeDestination), .writeEnable(writeEnable), .readReg1(readReg1), .readReg2(readReg2),
-											.writeData(writeData), .readData1(readData1), .readData2(readData2), .reset(reset), .clk(clk), .writeToPC(writeToPC), .oldPCVal(oldPCVal));
+	reg [31:0] readData1;
+	reg [31:0] readData2;
+	reg writeToPC;
+	
 
+	registerFile dut (.writeData(writeData), .oldPCVal(oldPCVal), .writeDestination(writeDestination), .readReg1(readReg1), .readReg2(readReg2), .readData1(readData1),
+							.readData2(readData2), .writeToPC(writetoPC), .writeEnable(writeEnable), .reset(.reset), .clk(clk), .linkBit(linkBit));
 
 	 // Set up the clock.
 	 parameter CLOCK_PERIOD=100;
@@ -123,7 +125,7 @@ module registerFile_testbench();
 			writeDestination	<= 4'b1111;		@(posedge clk);
 			writeData	<= 32'hCCCCCCCC;		@(posedge clk);
 														@(posedge clk);
-														@(posedge clk);
+			linkBit <= 1;							@(posedge clk);
 														@(posedge clk);
 														@(posedge clk);
 			writeEnable	 <= 1;					@(posedge clk);
@@ -140,4 +142,3 @@ module registerFile_testbench();
 	 end
 endmodule
 
-*/
