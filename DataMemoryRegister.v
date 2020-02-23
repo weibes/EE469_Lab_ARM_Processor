@@ -7,8 +7,8 @@ input wire [31:0] dataMemOut_DMR;
 input wire [3:0] rd_DMR, CPSRStatus_In;
 
 
-output reg [31:0] dataMemOut_DMR_OUT, CPSRStatus_DMR_OUT;
-output reg [3:0] rd_DMR_OUT;
+output reg [31:0] dataMemOut_DMR_OUT;
+output reg [3:0] rd_DMR_OUT, CPSRStatus_DMR_OUT;
 output reg linkBit_DMR_OUT, writebackEnable_DMR_OUT;
 
 	 always @(posedge clk) begin

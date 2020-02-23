@@ -17,7 +17,7 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 	input wire linkBitIN, prePostAddOffsetIN, upDownOffsetIN, byteOrWordIN, writeBackIN, loadStoreIN, CPSRwriteIN, immediateOperandIN, reset, clk;
 	input wire [3:0] rdIN, rmIN;
 	input wire [4:0] opcodeIN;
-	input wire [3:0] conditionalExecuteIN;
+	input wire  conditionalExecuteIN;
 
 					
 
@@ -26,7 +26,7 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 	output reg linkBitOUT, prePostAddOffsetOUT, upDownOffsetOUT, byteOrWordOUT, writeBackOUT, loadStoreOUT, CPSRwriteOUT, immediateOperandOUT;
 	output reg [3:0] rdOUT, rmOUT;
 	output reg [4:0] opcodeOUT;
-	output reg [3:0] conditionalExecuteOUT;
+	output reg  conditionalExecuteOUT;
 
 
 													

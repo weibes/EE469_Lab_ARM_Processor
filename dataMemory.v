@@ -7,7 +7,7 @@ module dataMemory(addr, dataIn, dataOut, memoryEnable, readNotWrite, reset, clk)
 	output reg [31:0] dataOut;
 	
 	reg [31:0] internalDataHold;
-	reg [31:0] mainMemory [1023:0]; //1 kB memory
+	reg [31:0] mainMemory [255:0]; //1 kB memory
 	
 	//memory needs to be clocked for simplicity
 	always @* begin
