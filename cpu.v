@@ -154,7 +154,7 @@ module cpu(
 	reg linkBit_EX_Reg, prePostAddOffset_EX_Reg, upDownOffset_EX_Reg, byteOrWord_EX_Reg, writeBack_EX_Reg, loadStore_EX_Reg, writebackEnable_EX_Reg;
 	reg [3:0] rd_EX_Reg;
 	reg [3:0] rm_EX_Reg;
-	reg [4:0]opcode_EX_Reg;
+	reg [4:0] opcode_EX_Reg;
 	reg [31:0] writeData_EX_Reg;
 	reg [31:0] addrFinal_EX_Reg;
 	
@@ -166,12 +166,14 @@ module cpu(
 	wire [31:0]dataMemOutWire;
 	wire [31:0] dataMemOut_DMR_Wire;
 	wire  rd_DMR_Wire;
+	wire linkBit_DMR_Wire;
+	wire writebackEnable_DMR_Wire;
 	
 	// pass
 	reg rd_DMR_reg;
 	reg readWrite_DMR_Reg;
-											  
-	
+	reg linkBit_DMR_Reg;									  
+	reg writebackEnable_DMR_Reg;
 	
 	// PROGRAMCOUNTER variables
 		//to
@@ -182,12 +184,7 @@ module cpu(
 		//to_registerFile
 	reg writeToPC;
 	
-	
-	//writeBackEnableChecker
-	//from
-	wire dataWriteEnableWire;
-	//pass
-	reg dataWriteEnableReg;
+
 
 	//GO variables
 	reg instructionFetchGo, registerFetchGo, executeGo, dataMemoryGo, PCGo;
@@ -229,6 +226,7 @@ module cpu(
                           .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(instructionFetchGo || PCUpdatGo), 
 								  .oldPCVal(instrLoc), .writeToPC(WriteToPCWire),
 								  .linkBit(linkBit_DMR_Reg));
+
 
 
 	shifter shifty(.opcode(opcodeReg), .data12In(shifterVals), .branchOffset(branchImmediateReg), .rmData(rmDataReg), 
@@ -282,17 +280,18 @@ module cpu(
 	
 	dataMemory dataMem (.addr(addrFinal_EX_Reg), .dataIn(Data2_EX_Reg), .dataOut(dataMemOutWire), .memoryEnable(opcode_EX_Reg == 5'b10000), 
 							  .readNotWrite(readWrite), .reset(nreset), .clk(clk));
+
 	
 	
-	regWriteMux regWmux (.opcode(opcode_EX_Reg), .ALUresult(ALUResult_EX_Reg), .memData(dataMemOutReg), .regWriteDataout(writeBackDataWire));
-	
-	
-	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutWire), .rd_DMR(rd_EX_Reg),
-											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire),  .rd_DMR_OUT(rd_DMR_Wire),
+	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutWire), .rd_DMR(rd_EX_Reg), 
+											  .linkBit(linkBit_EX_Reg), .writebackEnable(writebackEnable_EX_Reg),
+											  
+											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire), .rd_DMR_OUT(rd_DMR_Wire), 
+											  .linkBit_DMR_OUT(linkBit_DMR_Wire), .writebackEnable_DMR_OUT(writebackEnable_DMR_Wire),
 											  
 											  .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
-	writeBackEnableChecker doWeWrite(.notBranch(opcode != 5'b10000), .condMet(1'b1), .writeBackEnable(dataWriteEnableWire));
+
 	
 	programCounter PC (.Branch(opcode == 5'b10000), .currData(instrLocWire),
                     .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData), .reset(nreset));
@@ -376,8 +375,6 @@ always @* begin
 	
 	writebackEnableReg = writebackEnableWire;
 	
-	dataWriteEnableReg = dataWriteEnableWire;
-
 	
 	Data1_EX_Reg = Data1_EX_Wire;
 	Data2_EX_Reg = Data2_EX_Wire;
@@ -394,8 +391,8 @@ always @* begin
 	writeData_EX_Reg = writeData_EX_Wire;
 	addrFinal_EX_Reg = addrFinal_EX_Wire;
 	
-	dataWriteEnableReg = dataWriteEnableWire;
-	
+	writebackEnable_DMR_Reg = writebackEnable_DMR_Wire;
+	linkBit_DMR_Reg = linkBit_DMR_Wire; 
 	
 if (opcodeReg == 5'b10001) isBranch = 1; 
 else isBranch = 0;

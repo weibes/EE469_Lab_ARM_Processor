@@ -9,7 +9,7 @@ output reg [31:0] aluMuxout;
 
 always @* begin
 
-writebackEnable = (aluWritebackTest & conditionalExecute);
+writebackEnable = (aluWritebackTest && conditionalExecute);
 
 if (opcode == 5'b10001)
 	aluMuxout = branchImmediate;
