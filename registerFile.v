@@ -1,8 +1,8 @@
 module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 	 										writeData, readData1, readData2, reset, clk,
-											writeToPC, oldPCVal);
+											writeToPC, oldPCVal, linkBit);
 
-	input wire writeEnable, reset, clk;
+	input wire writeEnable, reset, clk, linkBit;
 
 	input wire [31:0] writeData, oldPCVal;
 	input wire [3:0] writeDestination, readReg1, readReg2;
@@ -16,7 +16,7 @@ module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 	reg [31:0] regFile [0:15];
 	
 	always @* begin
-
+			
 			internalDataHold = regFile[writeDestination];
 			
 			if((writeEnable == 1) && (writeDestination == 4'b1111))
@@ -40,6 +40,8 @@ module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 		
 		if (writeEnable)
 			regFile[writeDestination] <= writeData;
+			if (linkBit)
+				regFile[14] <= regFile[15]; //TODO: test if this works
 		else
 			regFile[writeDestination] <= internalDataHold;
 	end
