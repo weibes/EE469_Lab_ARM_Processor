@@ -232,7 +232,8 @@ module cpu(
 	shifter shifty (.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
 											  .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire), 
 											  .clk(clk), .reset(nreset));
-
+	
+	shifter shifty(.opcode(opcodeReg), .data12In(), .branchOffset(branchImmediateReg), .rmData(rmDataReg), .shiftedData(), .immediateOperand());  
 	
 	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatusReg), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
 	

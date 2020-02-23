@@ -1,6 +1,6 @@
-module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOperand, clk, reset);
+module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOperand);
 
-	input wire immediateOperand, clk, reset;
+	input wire immediateOperand;
 	input wire [4:0]  opcode;
 	input wire [11:0] data12In;
 	input wire [23:0] branchOffset;
