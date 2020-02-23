@@ -18,7 +18,7 @@ module cpu(
 	
 	// INSTRUCTIONMEMORY variables
 		//to
-	reg [31:0] instrLoc;
+	reg [31:0] instrLocReg;
 		//from
 	wire [31:0] nextInstrWire;
 	 // pass to register
@@ -214,7 +214,7 @@ module cpu(
 
 	
 						  
-	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLoc), .dataOut(nextInstrWire));
+	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLocReg), .dataOut(nextInstrWire));
 	
 	
 	instructionFetchRegister instFetch (.instructionIN(nextInstrReg),  .instructionOUT(nextInstr_INSTfetch_Wire), .reset(nreset), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
@@ -310,7 +310,7 @@ reg [2:0] ps, ns;
 
 always @* begin
 	
-	instrLoc = instrLocWire;
+	instrLocReg = instrLocWire;
 	
 	nextInstrReg = nextInstrWire;
 	
