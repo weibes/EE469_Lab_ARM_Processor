@@ -10,12 +10,12 @@ module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 	output reg [31:0] readData1, readData2;
 	output reg writeToPC;
 	
-	reg [31:0] internalDataHold;
-	 
+	reg [31:0] internalDataHold, resetVal;
+
 	reg [31:0] regFile [0:15];
 	
 	always @* begin
-			
+
 			internalDataHold = regFile[writeDestination];
 			
 			if((writeEnable == 1) && (writeDestination == 4'b1111))
@@ -36,7 +36,23 @@ module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 		end
 	
 	always @(posedge clk) begin
-		
+		if (reset) begin
+			regFile[0] <= 0;
+			regFile[1] <= 0;
+			regFile[2] <= 0;
+			regFile[3] <= 0;
+			regFile[4] <= 0;
+			regFile[5] <= 0;
+			regFile[6] <= 0;
+			regFile[7] <= 0;
+			regFile[8] <= 0;
+			regFile[9] <= 0;
+			regFile[10] <= 0;
+			regFile[11] <= 0;
+			regFile[12] <= 0;
+			regFile[13] <= 0;
+			regFile[14] <= 0;
+		end
 		if (writeEnable)
 			regFile[writeDestination] <= writeData;
 			if (linkBit)

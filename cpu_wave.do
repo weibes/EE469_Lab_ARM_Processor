@@ -7,7 +7,6 @@ add wave -noupdate /cpu_testbench/dut/ns
 add wave -noupdate -group PC /cpu_testbench/dut/PC/Branch
 add wave -noupdate -group PC /cpu_testbench/dut/PC/clk
 add wave -noupdate -group PC /cpu_testbench/dut/PC/writeEnable
-add wave -noupdate -group PC /cpu_testbench/dut/PC/incrEnable
 add wave -noupdate -group PC /cpu_testbench/dut/PC/reset
 add wave -noupdate -group PC /cpu_testbench/dut/PC/branchImmediate
 add wave -noupdate -group PC /cpu_testbench/dut/PC/writeData
@@ -21,8 +20,10 @@ add wave -noupdate -group instrMem /cpu_testbench/dut/Memory/memory
 add wave -noupdate -group instrMem /cpu_testbench/dut/Memory/addrReg
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/instructionOUT
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/pcValOUT
+add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/CPSRFlags_INST_OUT
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/reset
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/clk
+add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/CPSRFlags_In
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/instructionIN
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/pcValIN
 add wave -noupdate -group {sort Instr} /cpu_testbench/dut/sortInstr/instruction
@@ -153,6 +154,7 @@ add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/opc
 add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/writeData_EX
 add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/addrFinalWire_EX
 add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/ALUResult_EX
+add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/CPSRFlags_EX_In
 add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/Data1_EX_OUT
 add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/Data2_EX_OUT
 add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/linkBit_EX_OUT
@@ -168,6 +170,7 @@ add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/opc
 add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/writeData_EX_OUT
 add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/addrFinalWire_EX_OUT
 add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/ALUResult_EX_OUT
+add wave -noupdate -group {EX Register --------------} /cpu_testbench/dut/ex/CPSRFlags_EX_OUT
 add wave -noupdate -group dataMemory /cpu_testbench/dut/dataMem/addr
 add wave -noupdate -group dataMemory /cpu_testbench/dut/dataMem/dataIn
 add wave -noupdate -group dataMemory /cpu_testbench/dut/dataMem/readNotWrite
@@ -183,12 +186,14 @@ add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMe
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/clk
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/dataMemOut_DMR
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/rd_DMR
+add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/CPSRStatus_In
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/dataMemOut_DMR_OUT
+add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/CPSRStatus_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/rd_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/linkBit_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writebackEnable_DMR_OUT
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1884 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1906 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 367
 configure wave -valuecolwidth 100
@@ -204,4 +209,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {12898 ps}
+WaveRestoreZoom {1597 ps} {14495 ps}

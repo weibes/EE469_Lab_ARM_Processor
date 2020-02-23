@@ -28,7 +28,9 @@ module cpu(
 	//instructionFetchRegister variables
 	//from
 	wire [31:0] nextInstr_INSTfetch_Wire, pcVal_INST_Wire;
+	wire [3:0] CPSRStatus_INST_Wire;
 	//to reg
+	reg [3:0] CPSRStatus_INST_Reg;
 	//nextInstr in sort Instruction
 	//pcVal_INST_Reg in regFile
 	
@@ -146,8 +148,7 @@ module cpu(
 	wire [31:0] Data1_EX_Wire;
 	wire [31:0] Data2_EX_Wire;
 	wire linkBit_EX_Wire, prePostAddOffset_EX_Wire, upDownOffset_EX_Wire, byteOrWord_EX_Wire, writeBack_EX_Wire, loadStore_EX_Wire, writebackEnable_EX_Wire;
-	wire [3:0] rd_EX_Wire;
-	wire [3:0] rm_EX_Wire;
+	wire [3:0] rd_EX_Wire, rm_EX_Wire, CPSRStatus_EX_Wire;
 	wire [4:0]opcode_EX_Wire;
 	wire [31:0] writeData_EX_Wire;
 	wire [31:0] addrFinal_EX_Wire;
@@ -156,8 +157,7 @@ module cpu(
 	reg [31:0] Data1_EX_Reg;	
 	reg [31:0] Data2_EX_Reg;
 	reg linkBit_EX_Reg, prePostAddOffset_EX_Reg, upDownOffset_EX_Reg, byteOrWord_EX_Reg, writeBack_EX_Reg, loadStore_EX_Reg, writebackEnable_EX_Reg;
-	reg [3:0] rd_EX_Reg;
-	reg [3:0] rm_EX_Reg;
+	reg [3:0] rd_EX_Reg, rm_EX_Reg, CPSRStatus_EX_Reg;
 	reg [4:0] opcode_EX_Reg;
 	reg [31:0] writeData_EX_Reg;
 	reg [31:0] addrFinal_EX_Reg;
@@ -169,15 +169,17 @@ module cpu(
 	//from
 	wire [31:0]dataMemOutWire;
 	wire [31:0] dataMemOut_DMR_Wire;
-	wire  rd_DMR_Wire;
+	wire [3:0] rd_DMR_Wire;
 	wire linkBit_DMR_Wire;
 	wire writebackEnable_DMR_Wire;
+	wire [3:0] CPSRStatus_DMR_Wire;
 	
 	// pass
-	reg rd_DMR_reg;
+	reg [3:0] rd_DMR_reg;
 	reg readWrite_DMR_Reg;
 	reg linkBit_DMR_Reg;									  
 	reg writebackEnable_DMR_Reg;
+	reg [3:0] CPSRStatus_DMR_Reg;
 	
 	// PROGRAMCOUNTER variables
 		//to
@@ -225,9 +227,9 @@ module cpu(
 	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLocReg), .dataOut(nextInstrWire));
 	
 	
-	instructionFetchRegister instFetch (.instructionIN(nextInstrReg), .pcValIN(instrLocReg),
+	instructionFetchRegister instFetch (.instructionIN(nextInstrReg), .pcValIN(instrLocReg), .CPSRFlags_In(CPSRStatus_DMR_Reg),
 	
-													.instructionOUT(nextInstr_INSTfetch_Wire), .pcValOUT(pcVal_INST_Wire),
+													.instructionOUT(nextInstr_INSTfetch_Wire), .pcValOUT(pcVal_INST_Wire), .CPSRFlags_INST_OUT(CPSRStatus_INST_Wire),
 													
 													.reset(nreset || dataResetReg), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
 	
@@ -244,10 +246,10 @@ module cpu(
 
 
 
-	shifter shifty(.opcode(opcodeReg), .data12In(shifterVals), .branchOffset(branchImmediateReg), .rmData(rmDataReg), 
+	shifter shifty(.opcode(opcodeReg), .data12In(shifterValsReg), .branchOffset(branchImmediateReg), .rmData(rmDataReg), 
 						.shiftedData(shiftedDatatWire), .immediateOperand(immediateOperandReg));  
 	
-	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatusReg), .conditionalExecute(conditionalExecuteWire), .reset(nreset || dataResetReg), .clk(clk));
+	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatus_INST_Reg), .conditionalExecute(conditionalExecuteWire), .reset(nreset || dataResetReg), .clk(clk));
 	
 	
 	registerFetchRegister regFetch (.Data1IN(rnDataReg), .Data2IN(shiftedDataReg), .linkBitIN(linkBitReg), .prePostAddOffsetIN(prePostAddOffsetReg), .upDownOffsetIN(upDownOffsetReg),
@@ -280,12 +282,13 @@ module cpu(
 	executeRegister ex (.Data1_EX(Data1_RFR_Reg), .Data2_EX(Data2_RFR_Reg), .linkBit_EX(linkBit_RFR_Reg), .prePostAddOffset_EX(prePostAddOffset_RFR_Reg),
 								.upDownOffset_EX(upDownOffset_RFR_Reg), .byteOrWord_EX(byteOrWord_RFR_Reg), .writeBack_EX(writeBack_RFR_Reg), .loadStore_EX(loadStore_RFR_Reg),
 								.rd_EX(rd_RFR_Reg), .rm_EX(rm_RFR_Reg), .opcode_EX(opcode_RFR_Reg), .writebackEnable_EX(writebackEnableReg),
-								.writeData_EX(ALUMuxReg), .addrFinalWire_EX(addrFinalReg), .ALUResult_EX(ALUResultReg),
+								.writeData_EX(ALUMuxReg), .addrFinalWire_EX(addrFinalReg), .ALUResult_EX(ALUResultReg), .CPSRFlags_EX_In(CPSRStatusReg), 
 								
 								.Data1_EX_OUT(Data1_EX_Wire), .Data2_EX_OUT(Data2_EX_Wire), .linkBit_EX_OUT(linkBit_EX_Wire), .prePostAddOffset_EX_OUT(prePostAddOffset_EX_Wire),
 								.upDownOffset_EX_OUT(upDownOffset_EX_Wire), .byteOrWord_EX_OUT(byteOrWord_EX_Wire), .writeBack_EX_OUT(writeBack_EX_Wire), .loadStore_EX_OUT(loadStore_EX_Wire),
 								.rd_EX_OUT(rd_EX_Wire), .rm_EX_OUT(rm_EX_Wire), .opcode_EX_OUT(opcode_EX_Wire), .writebackEnable_EX_OUT(writebackEnable_EX_Wire),
 								.writeData_EX_OUT(writeData_EX_Wire), .addrFinalWire_EX_OUT(addrFinal_EX_Wire), .ALUResult_EX_OUT(ALUResult_EX_Wire),
+								.CPSRFlags_EX_OUT(CPSRStatus_EX_Wire),
 								
 								.reset(nreset || dataResetReg), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -299,10 +302,10 @@ module cpu(
 	
 	
 	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutWire), .rd_DMR(rd_EX_Reg), 
-											  .linkBit(linkBit_EX_Reg), .writebackEnable(writebackEnable_EX_Reg),
+											  .linkBit(linkBit_EX_Reg), .writebackEnable(writebackEnable_EX_Reg), .CPSRStatus_In(CPSRStatus_EX_Reg),
 											  
 											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire), .rd_DMR_OUT(rd_DMR_Wire), 
-											  .linkBit_DMR_OUT(linkBit_DMR_Wire), .writebackEnable_DMR_OUT(writebackEnable_DMR_Wire),
+											  .linkBit_DMR_OUT(linkBit_DMR_Wire), .writebackEnable_DMR_OUT(writebackEnable_DMR_Wire), .CPSRStatus_DMR_OUT(CPSRStatus_DMR_Wire),
 											  
 											  .reset(nreset || dataResetReg), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
@@ -329,9 +332,10 @@ always @* begin
 	instrLocReg = instrLocWire;
 	
 	nextInstrReg = nextInstrWire;
-	
+
 	nextInstr_INSTfetch_Reg = nextInstr_INSTfetch_Wire;
 	pcVal_INST_Reg = pcVal_INST_Wire;
+	CPSRStatus_INST_Reg = CPSRStatus_INST_Wire;
 	
 	linkBitReg = linkBitWire;
 	prePostAddOffsetReg = prePostAddOffsetWire;
@@ -406,6 +410,7 @@ always @* begin
 	opcode_EX_Reg = opcode_EX_Wire;
 	writeData_EX_Reg = writeData_EX_Wire;
 	addrFinal_EX_Reg = addrFinal_EX_Wire;
+	CPSRStatus_EX_Reg = CPSRStatus_EX_Wire;
 	
 	writebackEnable_DMR_Reg = writebackEnable_DMR_Wire;
 	linkBit_DMR_Reg = linkBit_DMR_Wire; 
