@@ -2,7 +2,7 @@ module DataMemoryRegister(dataMemOut_DMR, rd_DMR, linkBit,writebackEnable, dataM
 
 input wire linkBit, writebackEnable, reset, clk;	
 input wire [31:0] dataMemOut_DMR;
-input wire [3:0] rd_DMR
+input wire [3:0] rd_DMR;
 
 
 output reg [31:0] dataMemOut_DMR_OUT;

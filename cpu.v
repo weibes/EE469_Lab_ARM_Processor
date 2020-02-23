@@ -277,16 +277,14 @@ module cpu(
 	
 	dataMemory dataMem (.addr(addrFinal_EX_Reg), .dataIn(Data2_EX_Reg), .dataOut(dataMemOutWire), .memoryEnable(opcode_EX_Reg == 5'b10000), 
 							  .readNotWrite(readWrite), .reset(nreset), .clk(clk));
-	
-	
-	//regWriteMux regWmux (.opcode(opcode_EX_Reg), .ALUresult(ALUResult_EX_Reg), .memData(dataMemOutReg), .regWriteDataout(writeBackDataWire));
+
 	
 	
 	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutWire), .rd_DMR(rd_EX_Reg), 
-											  .linkBit(linkBit_EX_Reg), .writebackEnable(writebackEnable_EX_Reg)
+											  .linkBit(linkBit_EX_Reg), .writebackEnable(writebackEnable_EX_Reg),
 											  
 											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire), .rd_DMR_OUT(rd_DMR_Wire), 
-											  .linkBit_DMR_OUT(linkBit_DMR_Wire), writebackEnable_DMR_OUT(writebackEnable_DMR_Wire),
+											  .linkBit_DMR_OUT(linkBit_DMR_Wire), .writebackEnable_DMR_OUT(writebackEnable_DMR_Wire),
 											  
 											  .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
@@ -374,8 +372,6 @@ always @* begin
 	
 	writebackEnableReg = writebackEnableWire;
 	
-	dataWriteEnableReg = dataWriteEnableWire;
-
 	
 	Data1_EX_Reg = Data1_EX_Wire;
 	Data2_EX_Reg = Data2_EX_Wire;
