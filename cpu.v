@@ -40,6 +40,7 @@ module cpu(
 	wire [7:0] rm_shiftSDTWire, immediateValWire;
 	wire [11:0] immediateOffsetWire;
 	wire [23:0] branchImmediateWire;
+	wire [11:0] shifterValsWire;
 	
 	// pass to register
 
@@ -50,6 +51,7 @@ module cpu(
 	reg [7:0] rm_shiftSDTReg, immediateValReg;
 	reg [11:0] immediateOffsetReg;
 	reg [23:0] branchImmediateReg;
+	reg [11:0] shifterValsReg;
 	
 	
 
@@ -217,23 +219,18 @@ module cpu(
 	
 	instructionFetchRegister instFetch (.instructionIN(nextInstrReg),  .instructionOUT(nextInstr_INSTfetch_Wire), .reset(nreset), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
 	
-
 	sortInstruction sortInstr (.instruction(nextInstr_INSTfetch_Reg), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
   												.byteOrWord(byteOrWordWire), .writeBack(writeBackWire), .loadStore(loadStoreWire), .rd(rdWire), .rn(rnWire), .rm(rmWire), .opcode(opcodeWire),
-  												.cond(condWire), .rotateVal(rotateValWire), .rm_shift(rm_shiftWire), .immediateVal(immediateValWire), .immediateOffset(immediateOffsetWire),
-  												.branchImmediate(branchImmediateWire), .reset(nreset), .clk(clk), .CPSRwrite(CPSRwritewire),.shiftType(shiftTypeWire),
-												.immediateOperand(immediateOperandWire), .rm_shiftSDT(rm_shiftSDTWire));										
-
-						
+  												.cond(condWire), .branchImmediate(branchImmediateWire), .reset(nreset), .clk(clk), .CPSRwrite(CPSRwritewire), 
+												.immediateOperand(immediateOperandWire), .shifterVals(shifterValsWire));		
+								
+								
 	registerFile reg_file (.writeDestination(rd_DMR_reg), .writeEnable(readWrite_DMR_Reg), .readReg1(rn), .readReg2(rm),
                           .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(clk), .oldPCVal(instrLoc), .writeToPC(WriteToPCWire));
 
-						 
-	shifter shifty (.rm(rmDataReg), .opcode(opcodeReg), .rotateVal(rotateValReg), .rm_shift(rm_shiftReg), .immediateVal(immediateValReg), .immediateOffset(immediateOffsetReg),
-											  .immediateOperand(immediateOperandReg), .rm_shiftSDT(rm_shiftSDTReg), .shiftType(shiftTypeReg), .shiftedData(shiftedDataWire), 
-											  .clk(clk), .reset(nreset));
-	
-	shifter shifty(.opcode(opcodeReg), .data12In(), .branchOffset(branchImmediateReg), .rmData(rmDataReg), .shiftedData(), .immediateOperand());  
+
+	shifter shifty(.opcode(opcodeReg), .data12In(shifterVals), .branchOffset(branchImmediateReg), .rmData(rmDataReg), 
+						.shiftedData(shiftedDatatWire), .immediateOperand(immediateOperandReg));  
 	
 	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatusReg), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
 	
@@ -339,6 +336,7 @@ always @* begin
 	immediateValReg = immediateValWire;
 	immediateOffsetReg = immediateOffsetWire;
 	branchImmediateReg = branchImmediateWire;
+	shifterValsReg = shifterValsWire;
 
 	rd = rdWire; 
 	rn = rnWire;

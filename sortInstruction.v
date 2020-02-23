@@ -1,21 +1,22 @@
-module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
+module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset, shifterVals,
 												byteOrWord, writeBack, loadStore, rd, rn, rm, opcode,
-												cond, rotateVal, rm_shift, immediateVal, immediateOffset,
-												branchImmediate, reset, clk, CPSRwrite, shiftType, immediateOperand, rm_shiftSDT);
+												cond, branchImmediate, reset, clk, CPSRwrite, immediateOperand);
 
 	input wire [31:0] instruction;
 	input wire reset, clk;
 
 	output reg linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack,
 							 loadStore, CPSRwrite, immediateOperand;
-	output reg [1:0] shiftType;
-	output reg [3:0] rd, rn, rm, cond, rotateVal;
-	output reg [4:0] opcode, rm_shift;
-	output reg [7:0] rm_shiftSDT, immediateVal;
-	output reg [11:0] immediateOffset;
+	output reg [3:0] rd, rn, rm, cond;
+	output reg [4:0] opcode;
 	output reg [23:0] branchImmediate;
+	
+	
+	//no more rotateVal, immediateVal
+	//no more rm_shiftSDT
+	output reg [11:0] shifterVals;
 
-
+	
 
 	always @* begin
 
@@ -27,16 +28,10 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 		rm = 0;
 		
 		// data processing information
-		rm_shift = 0;
-		immediateVal = 0;
-		rotateVal = 0;
-		immediateOperand = 0;
-		shiftType = 0;
 		CPSRwrite = 0;
+		immediateOperand = 0;
 		
 		//single data transfer information
-		rm_shiftSDT = 0;
-		immediateOffset = 0;
 		linkBit = 0;
 		branchImmediate = 0;
 		prePostAddOffset = 0;
@@ -44,6 +39,7 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 		byteOrWord = 0;
 		writeBack = 0;
 		loadStore = 0;
+		shifterVals = 0;
 
 		if (instruction [27:26] == 2'b00)  //if instruction format is "data processing"
 		
@@ -52,10 +48,7 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 			rd = instruction[15:12];
 			rm = instruction[3:0];
 			immediateOperand = instruction[25];
-			rm_shift = instruction[11:7];
-			shiftType = instruction [6:5];
-			immediateVal = instruction[7:0];
-			rotateVal = instruction[11:8];
+			shifterVals = instruction[11:0];
 			CPSRwrite = instruction [20]; 		// Set conditionc codes
 		
 			case (instruction [24:21]) //opcode
@@ -94,8 +87,7 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset,
 			rd = instruction[15:12];
 			rm = instruction[3:0];
 			immediateOperand = instruction[25];
-			rm_shiftSDT = instruction[11:4];
-			immediateOffset = instruction[11:0];
+			shifterVals = instruction[11:0];
 			end
 
 		else if (instruction [27:25] == 3'b101) //if instruction format is branch
