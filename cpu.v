@@ -195,15 +195,15 @@ module cpu(
   // These are how you communicate back to the serial port debugger.
   
   
-//  assign debug_port1 = instrLoc[7:0];
-//  assign debug_port2 = nextInstr[27:20];
-//  assign debug_port3[3:0] = cond;
-//  assign debug_port3[7:4] = rd;
-//  assign debug_port4[3:0] = rm;
-//  assign debug_port4[7:4] = rn;
-//  assign debug_port5 = branchImmediate[7:0];
-//  assign debug_port6 = immediateVal;
-//  assign debug_port7 = 8'h07;
+  assign debug_port1 = 0 ; //instrLoc[7:0];
+  assign debug_port2 = 0; //nextInstr[27:20];
+ assign debug_port3[3:0] = 0 ;// cond;
+  assign debug_port3[7:4] = 0 ;// rd;
+  assign debug_port4[3:0] = 0 ;// rm;
+  assign debug_port4[7:4] = 0 ;// rn;
+  assign debug_port5 = 0 ;// branchImmediate[7:0];
+  assign debug_port6 = 0 ;// immediateVal;
+  assign debug_port7 = 0 ;// 8'h07;
 
 
 //YOUR CODE GOES HERE
@@ -477,7 +477,7 @@ else isBranch = 0;
 endmodule
 
 
-/*
+
 
 module cpu_testbench();
 
@@ -653,4 +653,3 @@ cpu dut ( .clk(clk),
  end
 endmodule
 
-*/
