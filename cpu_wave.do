@@ -2,6 +2,8 @@ onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -noupdate /cpu_testbench/clk
 add wave -noupdate /cpu_testbench/nreset
+add wave -noupdate /cpu_testbench/dut/ps
+add wave -noupdate /cpu_testbench/dut/ns
 add wave -noupdate -group PC /cpu_testbench/dut/PC/Branch
 add wave -noupdate -group PC /cpu_testbench/dut/PC/clk
 add wave -noupdate -group PC /cpu_testbench/dut/PC/writeEnable
@@ -186,9 +188,9 @@ add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMe
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/linkBit_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writebackEnable_DMR_OUT
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {3119 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1884 ps} 0}
 quietly wave cursor active 1
-configure wave -namecolwidth 262
+configure wave -namecolwidth 367
 configure wave -valuecolwidth 100
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
@@ -202,4 +204,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {14604 ps}
+WaveRestoreZoom {0 ps} {12898 ps}

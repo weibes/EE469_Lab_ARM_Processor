@@ -22,7 +22,7 @@ module cpu(
 		//from
 	wire [31:0] nextInstrWire;
 	 // pass to register
-	reg nextInstrReg;
+	reg  [31:0] nextInstrReg;
 	
 	
 	//instructionFetchRegister variables
@@ -196,6 +196,13 @@ module cpu(
   // Controls the LED on the board.
   assign led = 1'b1;
 
+  	
+	//Hotfix: reset isnt being transmitted properly. Therefore, add reset checks, keep reset 1 until its used.
+	//		  aka full cycle of reset before first instruction is read.
+
+	reg dataResetReg, dataResetReg_ns;
+ 
+  
   // These are how you communicate back to the serial port debugger.
   
   
@@ -222,16 +229,16 @@ module cpu(
 	
 													.instructionOUT(nextInstr_INSTfetch_Wire), .pcValOUT(pcVal_INST_Wire),
 													
-													.reset(nreset), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
+													.reset(nreset || dataResetReg), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
 	
 	sortInstruction sortInstr (.instruction(nextInstr_INSTfetch_Reg), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
   												.byteOrWord(byteOrWordWire), .writeBack(writeBackWire), .loadStore(loadStoreWire), .rd(rdWire), .rn(rnWire), .rm(rmWire), .opcode(opcodeWire),
-  												.cond(condWire), .branchImmediate(branchImmediateWire), .reset(nreset), .clk(clk), .CPSRwrite(CPSRwritewire), 
+  												.cond(condWire), .branchImmediate(branchImmediateWire), .reset(nreset || dataResetReg), .clk(clk), .CPSRwrite(CPSRwritewire), 
 												.immediateOperand(immediateOperandWire), .shifterVals(shifterValsWire));		
 								
 								
 	registerFile reg_file (.writeDestination(rd_DMR_reg), .writeEnable(readWrite_DMR_Reg), .readReg1(rn), .readReg2(rm),
-                          .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(instructionFetchGo || PCUpdateGo), 
+                          .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset || dataResetReg), .clk(instructionFetchGo || PCGo), 
 								  .oldPCVal(pcVal_INST_Reg), .writeToPC(WriteToPCWire),
 								  .linkBit(linkBit_DMR_Reg));
 
@@ -240,7 +247,7 @@ module cpu(
 	shifter shifty(.opcode(opcodeReg), .data12In(shifterVals), .branchOffset(branchImmediateReg), .rmData(rmDataReg), 
 						.shiftedData(shiftedDatatWire), .immediateOperand(immediateOperandReg));  
 	
-	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatusReg), .conditionalExecute(conditionalExecuteWire), .reset(nreset), .clk(clk));
+	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatusReg), .conditionalExecute(conditionalExecuteWire), .reset(nreset || dataResetReg), .clk(clk));
 	
 	
 	registerFetchRegister regFetch (.Data1IN(rnDataReg), .Data2IN(shiftedDataReg), .linkBitIN(linkBitReg), .prePostAddOffsetIN(prePostAddOffsetReg), .upDownOffsetIN(upDownOffsetReg),
@@ -255,12 +262,12 @@ module cpu(
 												.CPSRwriteOUT(CPSRwrite_RFR), .immediateOperandOUT(immediateOperand_RFR),
 												.rm_shiftSDTOUT(rm_shiftSDT_RFR),
 												
-												.reset(nreset), .clk(registerFetchGo));	///////////////////////////////////////////////
+												.reset(nreset || dataResetReg), .clk(registerFetchGo));	///////////////////////////////////////////////
 
 	
 
 	ALU numberCrunch (.data1(Data1_RFR_Reg), .data2(Data2_RFR_Reg), .operation(opcode_RFR_Reg), .result(resultWire), 
-							.flags(CPSRStatusWire), .AluWritebackTest(AluWritebackTestWire), .reset(nreset), .clk(clk));
+							.flags(CPSRStatusWire), .AluWritebackTest(AluWritebackTestWire), .reset(nreset || dataResetReg), .clk(clk));
 	
 	
 	aluOutputMux aluOutMux (.opcode(opcode_RFR_Reg), .ALUresult(ALUResultReg), .branchImmediate(Data2_RFR_Reg), 
@@ -280,14 +287,14 @@ module cpu(
 								.rd_EX_OUT(rd_EX_Wire), .rm_EX_OUT(rm_EX_Wire), .opcode_EX_OUT(opcode_EX_Wire), .writebackEnable_EX_OUT(writebackEnable_EX_Wire),
 								.writeData_EX_OUT(writeData_EX_Wire), .addrFinalWire_EX_OUT(addrFinal_EX_Wire), .ALUResult_EX_OUT(ALUResult_EX_Wire),
 								
-								.reset(nreset), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+								.reset(nreset || dataResetReg), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	
 	
 	
 	
 	dataMemory dataMem (.addr(addrFinal_EX_Reg), .dataIn(Data2_EX_Reg), .dataOut(dataMemOutWire), .memoryEnable(opcode_EX_Reg == 5'b10000), 
-							  .readNotWrite(readWrite), .reset(nreset), .clk(clk));
+							  .readNotWrite(readWrite), .reset(nreset || dataResetReg), .clk(clk));
 
 	
 	
@@ -297,12 +304,12 @@ module cpu(
 											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire), .rd_DMR_OUT(rd_DMR_Wire), 
 											  .linkBit_DMR_OUT(linkBit_DMR_Wire), .writebackEnable_DMR_OUT(writebackEnable_DMR_Wire),
 											  
-											  .reset(nreset), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
+											  .reset(nreset || dataResetReg), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
 
 	
 	programCounter PC (.Branch(opcode == 5'b10000), .currData(instrLocWire),
-                    .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData), .reset(nreset));
+                    .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData), .reset(nreset || dataResetReg));
 
 	
 
@@ -403,86 +410,112 @@ always @* begin
 	writebackEnable_DMR_Reg = writebackEnable_DMR_Wire;
 	linkBit_DMR_Reg = linkBit_DMR_Wire; 
 	
-if (opcodeReg == 5'b10001) isBranch = 1; 
-else isBranch = 0;
+	
+	if (opcodeReg == 5'b10001) begin
+		isBranch = 1; 
+	end
+	else begin
+		isBranch = 0;
+	end
 
 
 	
  // State logic
 	case (ps)
-	
-	instructionFetch: 	begin
+		instructionFetch: 	begin
 			
-			instructionFetchGo = 1; 
-			registerFetchGo = 0;
-			executeGo = 0;
-			dataMemoryGo = 0;
-			PCGo = 0;
+			instructionFetchGo = 1'b1; 
+			registerFetchGo = 1'b0;
+			executeGo = 1'b0;
+			dataMemoryGo = 1'b0;
+			PCGo = 1'b0;
 			
 			ns = registerFetch;
-			end
-			
-	registerFetch: 		begin
+
+			dataResetReg_ns = dataResetReg;
+		end
+
+		registerFetch: 		begin
 	
 	//read instruction and send values to register file
 	//read registers
-			instructionFetchGo = 0; 
-			registerFetchGo = 1;
-			executeGo = 0;
-			dataMemoryGo = 0;
-			PCGo = 0;
+			instructionFetchGo = 1'b0; 
+			registerFetchGo = 1'b1;
+			executeGo = 1'b0;
+			dataMemoryGo = 1'b0;
+			PCGo = 1'b0;
 	
 			ns = execute;
-			end
-	
-	execute:					begin 
+			dataResetReg_ns = dataResetReg;
+		end
+		
+		execute:					begin 
 	
 	//send values from registers to the ALU
 	//get value of computation from ALU
-			instructionFetchGo = 0; 
-			registerFetchGo = 0;
-			executeGo = 1;
-			dataMemoryGo = 0;
-			PCGo = 0;
+			instructionFetchGo = 1'b0; 
+			registerFetchGo = 1'b0;
+			executeGo = 1'b1;
+			dataMemoryGo = 1'b0;
+			PCGo = 1'b0;
 			
 			ns = dataMemoryParam;
-			end
+			dataResetReg_ns = dataResetReg;
+		end
 			
-	dataMemoryParam: 			begin
+	
+		dataMemoryParam: 			begin
 	
 	// load or store values into memory
-			instructionFetchGo = 0; 
-			registerFetchGo = 0;
-			executeGo = 0;
-			dataMemoryGo = 1;
-			PCGo = 0;
+			instructionFetchGo = 1'b0; 
+			registerFetchGo = 1'b0;
+			executeGo = 1'b0;
+			dataMemoryGo = 1'b1;
+			PCGo = 1'b0;
 			
 			ns = PCUpdate;
-			end
-			
-	PCUpdate: 				begin
+			dataResetReg_ns = dataResetReg;
+		end
+		
+		PCUpdate: 				begin
 	
 	// write to the registers then update PC
-			instructionFetchGo = 0; 
-			registerFetchGo = 0;
-			executeGo = 0;
-			dataMemoryGo = 0;
-			PCGo = 1;
+			instructionFetchGo = 1'b0; 
+			registerFetchGo = 1'b0;
+			executeGo = 1'b0;
+			dataMemoryGo = 1'b0;
+			PCGo = 1'b1;
 			
-			ns = instructionFetch;
-			end
+			ns = 3'b000;
+			//ns = instructionFetch;
+			dataResetReg_ns = 1'b0;
+		end
 			
+		default:	begin
+			instructionFetchGo = 1'bX;
+			registerFetchGo = 1'bX;
+			executeGo = 1'bX;
+			dataMemoryGo = 1'bX;
+			PCGo = 1'bX;
+			dataResetReg_ns = 1'bX;
+		end
 	endcase
  end
 
 
  // DFFs
  always @(posedge clk) begin
-	if (nreset)
-		ps <= instructionFetch;
-	else
+	if (nreset) begin
+		ps <= 3'b100; //start on PC go since thats technically the "beginning"
+						  //of the process
+						  // last section is dataMemoryGo
+		dataResetReg <= 1'b1;
+	end
+	else begin
+		dataResetReg <= dataResetReg_ns;
 		ps <= ns;
 	end
+ end
 
 
 
