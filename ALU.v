@@ -215,29 +215,29 @@ module  ALU(data1, data2, operation, result, flags, AluWritebackTest, reset, clk
 					if(((negativeData == 2'b00) && (result[31] == 1)) | ((negativeData == 2'b11) && (result[31] == 0)))
 						begin
 						V = 1;
-						//C = 1;
+						C = 0;
 						end
 					else
 						begin
 						V = 0;
-						//C = 0;
+						C = 0;
 						end
 					//if operation is SUB or RSB or CMP
 			else if ((operation == 5'b00010) |  (operation == 5'b00011) | (operation == 5'b01010))
 					if(((negativeData == 2'b01) && (result[31] == 1)) | ((negativeData == 2'b10) && (result[31] == 0))) 
 						begin
 						V = 1;
-						//C = 0;
+						C = 0;
 						end
 					else
 						begin
 						V = 0;
-						//C = 1;
+						C = 0;
 						end
 			else
 				begin
 				V = 0;
-				//C = 0;
+				C = 0;
 				end
 			
 			
