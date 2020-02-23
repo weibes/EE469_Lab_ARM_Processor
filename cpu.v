@@ -124,8 +124,10 @@ module cpu(
 	
 	
 	//aluOutputMux variables
-	wire [31:0] ALUMuxWire;	
+	wire [31:0] ALUMuxWire;
+	wire writebackEnableWire;
 	//pass to register
+	reg writebackEnableReg;
 	reg [31:0] ALUMuxReg;
 
 	//addrInputMux variables
@@ -278,7 +280,7 @@ module cpu(
 	
 	executeRegister ex (.Data1_EX(Data1_RFR_Reg), .Data2_EX(Data2_RFR_Reg), .linkBit_EX(linkBit_RFR_Reg), .prePostAddOffset_EX(prePostAddOffset_RFR_Reg),
 								.upDownOffset_EX(upDownOffset_RFR_Reg), .byteOrWord_EX(byteOrWord_RFR_Reg), .writeBack_EX(writeBack_RFR_Reg), .loadStore_EX(loadStore_RFR_Reg),
-								.rd_EX(rd_RFR_Reg), .rm_EX(rm_RFR_Reg), .opcode_EX(opcode_RFR_Reg), .writebackEnable_EX(conditionalExecute_RFR_Reg), 
+								.rd_EX(rd_RFR_Reg), .rm_EX(rm_RFR_Reg), .opcode_EX(opcode_RFR_Reg), .writebackEnable_EX(writebackEnableReg), 
 								.writeData_EX(ALUMuxReg), .addrFinalWire_EX(addrFinalReg), .ALUResult_EX(ALUResultReg), .CPSRFlags_EX_In(CPSRStatusReg), 
 								
 								.Data1_EX_OUT(Data1_EX_Wire), .Data2_EX_OUT(Data2_EX_Wire), .linkBit_EX_OUT(linkBit_EX_Wire), .prePostAddOffset_EX_OUT(prePostAddOffset_EX_Wire),
@@ -385,8 +387,7 @@ always @* begin
 	
 	
 	ALUMuxReg = ALUMuxWire;
-	
-	
+	writebackEnableReg = writebackEnableWire;
 	
 	
 	Data1_EX_Reg = Data1_EX_Wire;
