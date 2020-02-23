@@ -101,6 +101,7 @@ module cpu(
 	wire [3:0] rd_RFR, rm_RFR;
 	wire [4:0] opcode_RFR;
 	wire  conditionalExecute_RFR;
+	
 
 	reg [31:0] Data1_RFR_Reg;
 	reg [31:0] Data2_RFR_Reg;
@@ -174,7 +175,7 @@ module cpu(
 	wire [3:0] CPSRStatus_DMR_Wire;
 	
 	// pass
-	reg [3:0] rd_DMR_reg;
+	reg [3:0] rd_DMR_Reg;
 	reg readWrite_DMR_Reg;
 	reg linkBit_DMR_Reg;									  
 	reg writebackEnable_DMR_Reg;
@@ -239,7 +240,7 @@ module cpu(
 												.immediateOperand(immediateOperandWire), .shifterVals(shifterValsWire));		
 								
 								
-	registerFile reg_file (.writeDestination(rd_DMR_reg), .writeEnable(writebackEnable_DMR_Reg), .readReg1(rn), .readReg2(rm),
+	registerFile reg_file (.writeDestination(rd_DMR_Reg), .writeEnable(writebackEnable_DMR_Reg), .readReg1(rn), .readReg2(rm),
                           .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset || dataResetReg), .clk(instructionFetchGo || PCGo), 
 								  .oldPCVal(pcVal_INST_Reg), .writeToPC(WriteToPCWire),
 								  .linkBit(linkBit_DMR_Reg));
@@ -253,9 +254,9 @@ module cpu(
 	
 	
 	registerFetchRegister regFetch (.Data1IN(rnDataReg), .Data2IN(shiftedDataReg), .linkBitIN(linkBitReg), .prePostAddOffsetIN(prePostAddOffsetReg), .upDownOffsetIN(upDownOffsetReg),
-												.byteOrWordIN(byteOrWordReg), .writeBackIN(writeBackReg), .loadStoreIN(loadStoreReg), .rdIN(rd), .rmIN(rm), .opcodeIN(opcodeReg),
+												.byteOrWordIN(byteOrWordReg), .writeBackIN(writeBackReg), .loadStoreIN(loadStoreReg), .rdIN(rdReg), .rmIN(rm), .opcodeIN(opcodeReg),
 												.conditionalExecuteIN(conditionalExecuteReg),
-												.CPSRwriteIN(CPSRwriteReg), .immediateOperandIN(immediateOperandReg),
+												.CPSRwriteIN(CPSRwriteReg), .immediateOperandIN(immediateOperandReg), 
 												
 												.Data1OUT(Data1_RFR), .Data2OUT(Data2_RFR), .linkBitOUT(linkBit_RFR), .prePostAddOffsetOUT( prePostAddOffset_RFR), .upDownOffsetOUT(upDownOffset_RFR),
 												.byteOrWordOUT(byteOrWord_RFR), .writeBackOUT(writeBack_RFR), .loadStoreOUT(loadStore_RFR), .rdOUT(rd_RFR), .rmOUT(rm_RFR), .opcodeOUT(opcode_RFR),
@@ -384,7 +385,7 @@ always @* begin
 	conditionalExecute_RFR_Reg = conditionalExecute_RFR;
 	ALUResultReg = resultWire;
 	AluWritebackTestReg = AluWritebackTestWire;
-	
+
 	
 	ALUMuxReg = ALUMuxWire;
 	writebackEnableReg = writebackEnableWire;
@@ -410,7 +411,7 @@ always @* begin
 	writebackEnable_DMR_Reg = writebackEnable_DMR_Wire;
 	linkBit_DMR_Reg = linkBit_DMR_Wire; 
 	CPSRStatus_DMR_Reg = CPSRStatus_DMR_Wire;
-	
+	rd_DMR_Reg = rd_DMR_Wire;
 	
 	if (opcodeReg == 5'b10001) begin
 		isBranch = 1; 
