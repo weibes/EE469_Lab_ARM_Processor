@@ -50,18 +50,18 @@ endmodule
 
 module registerFile_testbench();
 
-	wire writeEnable, reset, clk, linkBit;
+	reg writeEnable, reset, clk, linkBit;
 
-	wire [31:0] writeData, oldPCVal;
-	wire [3:0] writeDestination, readReg1, readReg2;
+	reg [31:0] writeData, oldPCVal;
+	reg  [3:0] writeDestination, readReg1, readReg2;
 
-	reg [31:0] readData1;
-	reg [31:0] readData2;
-	reg writeToPC;
+	wire [31:0] readData1;
+	wire [31:0] readData2;
+	wire writeToPC;
 	
 
 	registerFile dut (.writeData(writeData), .oldPCVal(oldPCVal), .writeDestination(writeDestination), .readReg1(readReg1), .readReg2(readReg2), .readData1(readData1),
-							.readData2(readData2), .writeToPC(writetoPC), .writeEnable(writeEnable), .reset(.reset), .clk(clk), .linkBit(linkBit));
+							.readData2(readData2), .writeToPC(writetoPC), .writeEnable(writeEnable), .reset(reset), .clk(clk), .linkBit(linkBit));
 
 	 // Set up the clock.
 	 parameter CLOCK_PERIOD=100;

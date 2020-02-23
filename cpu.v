@@ -27,7 +27,11 @@ module cpu(
 	
 	//instructionFetchRegister variables
 	//from
-	wire [31:0] nextInstr_INSTfetch_Wire;
+	wire [31:0] nextInstr_INSTfetch_Wire, pcVal_INST_Wire;
+	//to reg
+	//nextInstr in sort Instruction
+	//pcVal_INST_Reg in regFile
+	
 	
 	// SORTINSTRUCTION variables
 		//to
@@ -59,7 +63,7 @@ module cpu(
 	//to
 	reg readWrite;
 	reg [3:0] rd,rm,rn;
-	reg [31:0] writeData;
+	reg [31:0] writeData, pcVal_INST_Reg;
 		//from
 	wire [31:0] rmDataWire, rnDataWire;
 	wire WriteToPCWire;
@@ -214,7 +218,11 @@ module cpu(
 	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLocReg), .dataOut(nextInstrWire));
 	
 	
-	instructionFetchRegister instFetch (.instructionIN(nextInstrReg),  .instructionOUT(nextInstr_INSTfetch_Wire), .reset(nreset), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
+	instructionFetchRegister instFetch (.instructionIN(nextInstrReg), .pcValIN(instrLocReg),
+	
+													.instructionOUT(nextInstr_INSTfetch_Wire), .pcValOUT(pcVal_INST_Wire),
+													
+													.reset(nreset), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
 	
 	sortInstruction sortInstr (.instruction(nextInstr_INSTfetch_Reg), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
   												.byteOrWord(byteOrWordWire), .writeBack(writeBackWire), .loadStore(loadStoreWire), .rd(rdWire), .rn(rnWire), .rm(rmWire), .opcode(opcodeWire),
@@ -223,8 +231,8 @@ module cpu(
 								
 								
 	registerFile reg_file (.writeDestination(rd_DMR_reg), .writeEnable(readWrite_DMR_Reg), .readReg1(rn), .readReg2(rm),
-                          .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(instructionFetchGo || PCUpdatGo), 
-								  .oldPCVal(instrLoc), .writeToPC(WriteToPCWire),
+                          .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset), .clk(instructionFetchGo || PCUpdateGo), 
+								  .oldPCVal(pcVal_INST_Reg), .writeToPC(WriteToPCWire),
 								  .linkBit(linkBit_DMR_Reg));
 
 
@@ -316,6 +324,7 @@ always @* begin
 	nextInstrReg = nextInstrWire;
 	
 	nextInstr_INSTfetch_Reg = nextInstr_INSTfetch_Wire;
+	pcVal_INST_Reg = pcVal_INST_Wire;
 	
 	linkBitReg = linkBitWire;
 	prePostAddOffsetReg = prePostAddOffsetWire;

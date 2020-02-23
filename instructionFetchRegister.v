@@ -1,16 +1,20 @@
-module instructionFetchRegister(instructionIN, instructionOUT, reset, clk);
+module instructionFetchRegister(instructionIN, pcValIN, instructionOUT, pcValOUT, reset, clk);
 
-output reg [31:0] instructionOUT;
+output reg [31:0] instructionOUT, pcValOUT;
 
 input wire reset, clk;
-input wire [31:0] instructionIN;
+input wire [31:0] instructionIN, pcValIN;
 
 
  always @(posedge clk)
- if (reset)
- instructionOUT <= 0; // On reset, set to 0
- 
- else
- instructionOUT <= instructionIN;
-
+	if (reset) 
+	begin
+		instructionOUT <= 0; // On reset, set to 0
+		pcValOUT <= 0;
+	end
+	else
+	begin
+		instructionOUT <= instructionIN;
+		pcValOUT <= pcValIN;
+	end
 endmodule
