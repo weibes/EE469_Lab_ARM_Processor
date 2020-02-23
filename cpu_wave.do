@@ -122,12 +122,9 @@ add wave -noupdate -group ALU /cpu_testbench/dut/numberCrunch/Z
 add wave -noupdate -group ALU /cpu_testbench/dut/numberCrunch/C
 add wave -noupdate -group ALU /cpu_testbench/dut/numberCrunch/N
 add wave -noupdate -group ALU /cpu_testbench/dut/numberCrunch/V
-add wave -noupdate -group {alu out mux} /cpu_testbench/dut/aluOutMux/aluWritebackTest
-add wave -noupdate -group {alu out mux} /cpu_testbench/dut/aluOutMux/conditionalExecute
 add wave -noupdate -group {alu out mux} /cpu_testbench/dut/aluOutMux/opcode
 add wave -noupdate -group {alu out mux} /cpu_testbench/dut/aluOutMux/ALUresult
 add wave -noupdate -group {alu out mux} /cpu_testbench/dut/aluOutMux/branchImmediate
-add wave -noupdate -group {alu out mux} /cpu_testbench/dut/aluOutMux/writebackEnable
 add wave -noupdate -group {alu out mux} /cpu_testbench/dut/aluOutMux/aluMuxout
 add wave -noupdate -group {address mux} /cpu_testbench/dut/addrMux/preCheck
 add wave -noupdate -group {address mux} /cpu_testbench/dut/addrMux/ALUInput
@@ -189,10 +186,10 @@ add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMe
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/linkBit_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writebackEnable_DMR_OUT
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2117 ps} 0}
+WaveRestoreCursors {{Cursor 1} {4159 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 367
-configure wave -valuecolwidth 100
+configure wave -valuecolwidth 218
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
 configure wave -snapdistance 10
@@ -205,4 +202,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {1597 ps} {14495 ps}
+WaveRestoreZoom {0 ps} {10981 ps}
