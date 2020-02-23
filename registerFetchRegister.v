@@ -1,14 +1,10 @@
 module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, upDownOffsetIN,
 												byteOrWordIN, writeBackIN, loadStoreIN, rdIN, rmIN, opcodeIN,
-												conditionalExecuteIN, immediateOffsetIN,
-												CPSRwriteIN, immediateOperandIN,
-												rm_shiftSDTIN,
+												conditionalExecuteIN, CPSRwriteIN, immediateOperandIN,
 												
 												Data1OUT, Data2OUT, linkBitOUT, prePostAddOffsetOUT, upDownOffsetOUT,
 												byteOrWordOUT, writeBackOUT, loadStoreOUT, rdOUT, rmOUT, opcodeOUT,
-												conditionalExecuteOUT, immediateOffsetOUT,
-												CPSRwriteOUT, immediateOperandOUT,
-												rm_shiftSDTOUT, 
+												conditionalExecuteOUT, CPSRwriteOUT, immediateOperandOUT, 
 												
 												reset, clk);
 
@@ -22,8 +18,8 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 	input wire [3:0] rdIN, rmIN;
 	input wire [4:0] opcodeIN;
 	input wire [3:0] conditionalExecuteIN;
-	input wire [11:0] immediateOffsetIN;
-	input wire [7:0] rm_shiftSDTIN;						
+
+					
 
    output reg [31:0] Data1OUT;
 	output reg [31:0] Data2OUT;
@@ -31,8 +27,8 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 	output reg [3:0] rdOUT, rmOUT;
 	output reg [4:0] opcodeOUT;
 	output reg [3:0] conditionalExecuteOUT;
-	output reg [11:0] immediateOffsetOUT;
-	output reg [7:0] rm_shiftSDTOUT;
+
+
 													
 
 													
@@ -52,14 +48,12 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 			rmOUT <= 0;
 			opcodeOUT <= 0;
 			conditionalExecuteOUT <= 0;
-			immediateOffsetOUT <= 0;
 			CPSRwriteOUT <= 0;
 			immediateOperandOUT <= 0;
-			rm_shiftSDTOUT <= 0;
 		 end
 		 else begin
 			Data1OUT <= Data1IN;
-			Data1OUT <= Data1IN;
+			Data2OUT <= Data2IN;
 			linkBitOUT <= linkBitIN;
 			prePostAddOffsetOUT <= prePostAddOffsetIN;
 			upDownOffsetOUT <= upDownOffsetIN;
@@ -70,10 +64,8 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 			rmOUT <= rmIN;
 			opcodeOUT <= opcodeIN;
 			conditionalExecuteOUT <= conditionalExecuteIN;
-			immediateOffsetOUT <= immediateOffsetIN;
 			CPSRwriteOUT <= CPSRwriteIN;
-			immediateOperandOUT <= immediateOperandIN;
-			rm_shiftSDTOUT <= rm_shiftSDTIN;										
+			immediateOperandOUT <= immediateOperandIN;							
 		end			
 	 end
 endmodule

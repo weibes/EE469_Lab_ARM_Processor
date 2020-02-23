@@ -76,40 +76,36 @@ add wave -noupdate -group condTest /cpu_testbench/dut/condTest/Z
 add wave -noupdate -group condTest /cpu_testbench/dut/condTest/C
 add wave -noupdate -group condTest /cpu_testbench/dut/condTest/N
 add wave -noupdate -group condTest /cpu_testbench/dut/condTest/V
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/Data1IN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/Data2IN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/linkBitIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/prePostAddOffsetIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/upDownOffsetIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/byteOrWordIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/writeBackIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/loadStoreIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/CPSRwriteIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/immediateOperandIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/reset
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/clk
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/rdIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/rmIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/opcodeIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/conditionalExecuteIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/immediateOffsetIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/rm_shiftSDTIN
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/Data1OUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/Data2OUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/linkBitOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/prePostAddOffsetOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/upDownOffsetOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/byteOrWordOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/writeBackOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/loadStoreOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/CPSRwriteOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/immediateOperandOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/rdOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/rmOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/opcodeOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/conditionalExecuteOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/immediateOffsetOUT
-add wave -noupdate -group {Reg Read Register ------} /cpu_testbench/dut/regFetch/rm_shiftSDTOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/Data1IN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/Data2IN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/linkBitIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/prePostAddOffsetIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/upDownOffsetIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/byteOrWordIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/writeBackIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/loadStoreIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/CPSRwriteIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/immediateOperandIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/reset
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/clk
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/rdIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/rmIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/opcodeIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/conditionalExecuteIN
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/Data1OUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/Data2OUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/linkBitOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/prePostAddOffsetOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/upDownOffsetOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/byteOrWordOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/writeBackOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/loadStoreOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/CPSRwriteOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/immediateOperandOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/rdOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/rmOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/opcodeOUT
+add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/conditionalExecuteOUT
 add wave -noupdate -group ALU /cpu_testbench/dut/numberCrunch/data1
 add wave -noupdate -group ALU /cpu_testbench/dut/numberCrunch/data2
 add wave -noupdate -group ALU /cpu_testbench/dut/numberCrunch/operation
@@ -193,7 +189,7 @@ add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMe
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/linkBit_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writebackEnable_DMR_OUT
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1906 ps} 0}
+WaveRestoreCursors {{Cursor 1} {2117 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 367
 configure wave -valuecolwidth 100

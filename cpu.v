@@ -42,9 +42,8 @@ module cpu(
 	wire linkBitWire, prePostAddOffsetWire, upDownOffsetWire, byteOrWordWire, writeBackWire, loadStoreWire, CPSRwritewire, immediateOperandWire;
 	wire [1:0] shiftTypeWire;
 	wire [3:0] rdWire, rnWire, rmWire, condWire, rotateValWire;
-	wire [4:0] opcodeWire, rm_shiftWire;
-	wire [7:0] rm_shiftSDTWire, immediateValWire;
-	wire [11:0] immediateOffsetWire;
+	wire [4:0] opcodeWire;
+	wire [7:0] immediateValWire;
 	wire [23:0] branchImmediateWire;
 	wire [11:0] shifterValsWire;
 	
@@ -53,9 +52,8 @@ module cpu(
 	reg linkBitReg, prePostAddOffsetReg, upDownOffsetReg, byteOrWordReg, writeBackReg, loadStoreReg, CPSRwriteReg, immediateOperandReg;
 	reg [1:0] shiftTypeReg;
 	reg [3:0] rdReg, rnReg, rmReg, condReg, rotateValReg;
-	reg [4:0] opcodeReg, rm_shiftReg;
-	reg [7:0] rm_shiftSDTReg, immediateValReg;
-	reg [11:0] immediateOffsetReg;
+	reg [4:0] opcodeReg;
+	reg [7:0] immediateValReg;
 	reg [23:0] branchImmediateReg;
 	reg [11:0] shifterValsReg;
 	
@@ -101,8 +99,6 @@ module cpu(
 	wire [3:0] rd_RFR, rm_RFR;
 	wire [4:0] opcode_RFR;
 	wire [3:0] conditionalExecute_RFR;
-	wire [11:0] immediateOffset_RFR;
-	wire [7:0] rm_shiftSDT_RFR;
 
 	reg [31:0] Data1_RFR_Reg;
 	reg [31:0] Data2_RFR_Reg;
@@ -110,8 +106,7 @@ module cpu(
 	reg [3:0] rd_RFR_Reg, rm_RFR_Reg;
 	reg [4:0] opcode_RFR_Reg;
 	reg [3:0] conditionalExecute_RFR_Reg;
-	reg [11:0] immediateOffset_RFR_Reg;
-	reg [7:0] rm_shiftSDT_RFR_Reg;
+
 
   
   	// ALU variables
@@ -119,10 +114,8 @@ module cpu(
 		//from
 	wire [31:0] resultWire;
 	wire [3:0] CPSRStatusWire;
-	wire AluWritebackTestWire;
 	 //pass to register
-	reg ALUResultReg;
-	reg AluWritebackTestReg;
+	reg  [31:0] ALUResultReg;
 
 	//aluOutputMux variables
 	wire [31:0] ALUMuxWire;
@@ -247,22 +240,20 @@ module cpu(
 
 
 	shifter shifty(.opcode(opcodeReg), .data12In(shifterValsReg), .branchOffset(branchImmediateReg), .rmData(rmDataReg), 
-						.shiftedData(shiftedDatatWire), .immediateOperand(immediateOperandReg));  
-	
+						.shiftedData(shiftedDataWire), .immediateOperand(immediateOperandReg));  
+										
 	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatus_INST_Reg), .conditionalExecute(conditionalExecuteWire), .reset(nreset || dataResetReg), .clk(clk));
 	
 	
 	registerFetchRegister regFetch (.Data1IN(rnDataReg), .Data2IN(shiftedDataReg), .linkBitIN(linkBitReg), .prePostAddOffsetIN(prePostAddOffsetReg), .upDownOffsetIN(upDownOffsetReg),
 												.byteOrWordIN(byteOrWordReg), .writeBackIN(writeBackReg), .loadStoreIN(loadStoreReg), .rdIN(rd), .rmIN(rm), .opcodeIN(opcodeReg),
-												.conditionalExecuteIN(conditionalExecuteReg), .immediateOffsetIN(immediateOffsetReg),
+												.conditionalExecuteIN(conditionalExecuteReg),
 												.CPSRwriteIN(CPSRwriteReg), .immediateOperandIN(immediateOperandReg),
-												.rm_shiftSDTIN(rm_shiftSDTReg), 
 												
 												.Data1OUT(Data1_RFR), .Data2OUT(Data2_RFR), .linkBitOUT(linkBit_RFR), .prePostAddOffsetOUT( prePostAddOffset_RFR), .upDownOffsetOUT(upDownOffset_RFR),
 												.byteOrWordOUT(byteOrWord_RFR), .writeBackOUT(writeBack_RFR), .loadStoreOUT(loadStore_RFR), .rdOUT(rd_RFR), .rmOUT(rm_RFR), .opcodeOUT(opcode_RFR),
-												.conditionalExecuteOUT(conditionalExecute_RFR), .immediateOffsetOUT(immediateOffset_RFR),
+												.conditionalExecuteOUT(conditionalExecute_RFR),
 												.CPSRwriteOUT(CPSRwrite_RFR), .immediateOperandOUT(immediateOperand_RFR),
-												.rm_shiftSDTOUT(rm_shiftSDT_RFR),
 												
 												.reset(nreset || dataResetReg), .clk(registerFetchGo));	///////////////////////////////////////////////
 
@@ -272,9 +263,7 @@ module cpu(
 							.flags(CPSRStatusWire), .AluWritebackTest(AluWritebackTestWire), .reset(nreset || dataResetReg), .clk(clk));
 	
 	
-	aluOutputMux aluOutMux (.opcode(opcode_RFR_Reg), .ALUresult(ALUResultReg), .branchImmediate(Data2_RFR_Reg), 
-									.aluWritebackTest(AluWritebackTestReg), .conditionalExecute(conditionalExecute_RFR_Reg),
-									.writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
+	aluOutputMux aluOutMux (.opcode(opcode_RFR_Reg), .ALUresult(ALUResultReg), .branchImmediate(Data2_RFR_Reg), .aluMuxout(ALUMuxWire));
 	
 	addrInputMux addrMux (.preCheck(prePostAddOffset_RFR), .ALUInput(ALUResultReg), .dataOut(addrFinalWire), .d0Input(Data1_RFR));
 
@@ -352,10 +341,7 @@ always @* begin
 	condReg = condWire;
 	rotateValReg = rotateValWire;
 	opcodeReg = opcodeWire;
-	rm_shiftReg = rm_shiftWire;
-	rm_shiftSDTReg = rm_shiftSDTWire;
 	immediateValReg = immediateValWire;
-	immediateOffsetReg = immediateOffsetWire;
 	branchImmediateReg = branchImmediateWire;
 	shifterValsReg = shifterValsWire;
 
@@ -384,14 +370,11 @@ always @* begin
 	rm_RFR_Reg = rm_RFR; 
 	opcode_RFR_Reg = opcode_RFR; 
 	conditionalExecute_RFR_Reg = conditionalExecute_RFR;
-	immediateOffset_RFR_Reg =immediateOffset_RFR;
-	rm_shiftSDT_RFR_Reg = rm_shiftSDT_RFR;
 	
 	ALUResultReg = resultWire;
 	
 	ALUMuxReg = ALUMuxWire;
 	
-	AluWritebackTestReg = AluWritebackTestWire;
 	
 	writebackEnableReg = writebackEnableWire;
 	
@@ -411,9 +394,11 @@ always @* begin
 	writeData_EX_Reg = writeData_EX_Wire;
 	addrFinal_EX_Reg = addrFinal_EX_Wire;
 	CPSRStatus_EX_Reg = CPSRStatus_EX_Wire;
+	addrFinalReg = addrFinalWire;
 	
 	writebackEnable_DMR_Reg = writebackEnable_DMR_Wire;
 	linkBit_DMR_Reg = linkBit_DMR_Wire; 
+	CPSRStatus_DMR_Reg = CPSRStatus_DMR_Wire;
 	
 	
 	if (opcodeReg == 5'b10001) begin

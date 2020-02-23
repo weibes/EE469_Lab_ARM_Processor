@@ -67,8 +67,8 @@ module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOpe
 										5'b11010:	shiftedData = {rmData[25:0], rmData[31:26]};
 										5'b11011:	shiftedData = {rmData[26:0], rmData[31:27]};
 										5'b11100:	shiftedData = {rmData[27:0], rmData[31:28]};
-										5'b11101:	shiftedData = {rmData[28:0], rmData[31:29]};
-										5'b11111:	shiftedData = {rmData[29:0], rmData[31:30]};
+										5'b11110:	shiftedData = {rmData[29:0], rmData[31:30]};
+										5'b11111:	shiftedData = {rmData[30:0], rmData[31]};
 						
 										default:		shiftedData = 32'bXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
 													
@@ -111,7 +111,8 @@ module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOpe
 					//5'b11011:	shiftedData = {rmData[26:0], rmData[31:27]};
 					5'b11100:	shiftedData = {rmData[27:0], rmData[31:28]};
 					//5'b11101:	shiftedData = {rmData[28:0], rmData[31:29]};
-					//5'b11111:	shiftedData = {rmData[29:0], rmData[31:30]};
+					5'b11110:	shiftedData = {rmData[29:0], rmData[31:30]};
+					//5'b11111:	shiftedData = {rmData[30:0], rmData[31]};
 						
 					default:		shiftedData = 32'bXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
 													
