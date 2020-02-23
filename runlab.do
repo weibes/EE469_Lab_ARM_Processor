@@ -19,6 +19,7 @@ vlog "./DataMemoryRegister.v"
 vlog "./dataMemory.v"
 vlog "./ALUOutputMux.v"
 vlog "./addrInputMux.v"
+vlog "./WriteDataMux.v"
 
 # Call vsim to invoke simulator
 #     Make sure the last item on the line is the name of the

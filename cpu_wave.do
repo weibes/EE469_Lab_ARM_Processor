@@ -176,20 +176,26 @@ add wave -noupdate -group dataMemory /cpu_testbench/dut/dataMem/clk
 add wave -noupdate -group dataMemory /cpu_testbench/dut/dataMem/dataOut
 add wave -noupdate -group dataMemory /cpu_testbench/dut/dataMem/internalDataHold
 add wave -noupdate -group dataMemory /cpu_testbench/dut/dataMem/mainMemory
+add wave -noupdate -group writeDataMux /cpu_testbench/dut/whatWrite/dMemIn
+add wave -noupdate -group writeDataMux /cpu_testbench/dut/whatWrite/ALUIn
+add wave -noupdate -group writeDataMux /cpu_testbench/dut/whatWrite/isDataAccess
+add wave -noupdate -group writeDataMux /cpu_testbench/dut/whatWrite/regWriteDataOut
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/linkBit
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writebackEnable
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/reset
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/clk
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/dataMemOut_DMR
+add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writeData_DMR
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/rd_DMR
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/CPSRStatus_In
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/dataMemOut_DMR_OUT
-add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/CPSRStatus_DMR_OUT
+add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writeData_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/rd_DMR_OUT
+add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/CPSRStatus_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/linkBit_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writebackEnable_DMR_OUT
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {5303 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1300 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 367
 configure wave -valuecolwidth 218
@@ -205,4 +211,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {3419 ps} {14400 ps}
+WaveRestoreZoom {0 ps} {10981 ps}

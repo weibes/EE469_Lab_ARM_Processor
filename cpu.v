@@ -147,6 +147,7 @@ module cpu(
 	//from
 	wire [31:0] Data1_EX_Wire;
 	wire [31:0] Data2_EX_Wire;
+	wire [31:0] ALUResult_EX_Wire;
 	wire linkBit_EX_Wire, prePostAddOffset_EX_Wire, upDownOffset_EX_Wire, byteOrWord_EX_Wire, writeBack_EX_Wire, loadStore_EX_Wire, writebackEnable_EX_Wire;
 	wire [3:0] rd_EX_Wire, rm_EX_Wire, CPSRStatus_EX_Wire;
 	wire [4:0]opcode_EX_Wire;
@@ -156,6 +157,7 @@ module cpu(
 	// pass to register
 	reg [31:0] Data1_EX_Reg;	
 	reg [31:0] Data2_EX_Reg;
+	reg [31:0] ALUResult_EX_Reg;
 	reg linkBit_EX_Reg, prePostAddOffset_EX_Reg, upDownOffset_EX_Reg, byteOrWord_EX_Reg, writeBack_EX_Reg, loadStore_EX_Reg, writebackEnable_EX_Reg;
 	reg [3:0] rd_EX_Reg, rm_EX_Reg, CPSRStatus_EX_Reg;
 	reg [4:0] opcode_EX_Reg;
@@ -163,12 +165,24 @@ module cpu(
 	reg [31:0] addrFinal_EX_Reg;
 	
 	
+	//dataMem
+	//from
+	wire [31:0] dataMemOutWire;
+	//to reg
+	reg [31:0] dataMemOutReg;
+	
+	//WriteDataMux variables
+	//from
+	wire [31:0] writeDataWire;
+	//to reg
+	reg [31:0] writeDataReg;
+	
+	
 	//DATAMEMORY REGISTER variables
 	//to
 	
 	//from
-	wire [31:0]dataMemOutWire;
-	wire [31:0] dataMemOut_DMR_Wire;
+	wire [31:0] dataMemOut_DMR_Wire, writeData_DMR_Wire;
 	wire [3:0] rd_DMR_Wire;
 	wire linkBit_DMR_Wire;
 	wire writebackEnable_DMR_Wire;
@@ -180,6 +194,7 @@ module cpu(
 	reg linkBit_DMR_Reg;									  
 	reg writebackEnable_DMR_Reg;
 	reg [3:0] CPSRStatus_DMR_Reg;
+	reg [31:0] writeData_DMR_Reg;
 	
 	// PROGRAMCOUNTER variables
 		//to
@@ -241,7 +256,7 @@ module cpu(
 								
 								
 	registerFile reg_file (.writeDestination(rd_DMR_Reg), .writeEnable(writebackEnable_DMR_Reg), .readReg1(rn), .readReg2(rm),
-                          .writeData(writeData), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset || dataResetReg), .clk(instructionFetchGo || PCGo), 
+                          .writeData(writeData_DMR_Reg), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset || dataResetReg), .clk(instructionFetchGo || PCGo), 
 								  .oldPCVal(pcVal_INST_Reg), .writeToPC(WriteToPCWire),
 								  .linkBit(linkBit_DMR_Reg));
 
@@ -300,19 +315,21 @@ module cpu(
 							  .readNotWrite(loadStore_EX_Reg), .reset(nreset || dataResetReg), .clk(clk));
 
 	
+	WriteDataMux whatWrite (.dMemIn(dataMemOutReg), .ALUIn(ALUResult_EX_Reg), .isDataAccess(opcode_EX_Reg == 5'b10000), .regWriteDataOut(writeDataWire));
 	
-	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutWire), .rd_DMR(rd_EX_Reg), 
+	
+	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutReg), .rd_DMR(rd_EX_Reg), .writeData_DMR(writeDataReg), 
 											  .linkBit(linkBit_EX_Reg), .writebackEnable(writebackEnable_EX_Reg), .CPSRStatus_In(CPSRStatus_EX_Reg),
 											  
-											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire), .rd_DMR_OUT(rd_DMR_Wire), 
+											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire), .rd_DMR_OUT(rd_DMR_Wire), .writeData_DMR_OUT(writeData_DMR_Wire),
 											  .linkBit_DMR_OUT(linkBit_DMR_Wire), .writebackEnable_DMR_OUT(writebackEnable_DMR_Wire), .CPSRStatus_DMR_OUT(CPSRStatus_DMR_Wire),
 											  
 											  .reset(nreset || dataResetReg), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
 
 	
-	programCounter PC (.Branch(opcode == 5'b10000), .currData(instrLocWire),
-                    .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData), .reset(nreset || dataResetReg));
+	programCounter PC (.Branch(opcode == 5'b10001), .currData(instrLocWire),
+                    .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData_DMR_Reg), .reset(nreset || dataResetReg));
 
 	
 
@@ -407,11 +424,18 @@ always @* begin
 	addrFinal_EX_Reg = addrFinal_EX_Wire;
 	CPSRStatus_EX_Reg = CPSRStatus_EX_Wire;
 	addrFinalReg = addrFinalWire;
+	ALUResult_EX_Reg = ALUResult_EX_Wire;
+	
+	dataMemOutReg = dataMemOutWire;
+	
+	writeDataReg = writeDataWire;
+	
 	
 	writebackEnable_DMR_Reg = writebackEnable_DMR_Wire;
 	linkBit_DMR_Reg = linkBit_DMR_Wire; 
 	CPSRStatus_DMR_Reg = CPSRStatus_DMR_Wire;
 	rd_DMR_Reg = rd_DMR_Wire;
+	writeData_DMR_Reg = writeData_DMR_Wire;
 	
 	if (opcodeReg == 5'b10001) begin
 		isBranch = 1; 
