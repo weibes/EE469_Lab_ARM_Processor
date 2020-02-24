@@ -33,13 +33,14 @@ module dataMemory(addr, dataIn, dataOut, memoryEnable, readNotWrite, reset, clk)
 	end
 endmodule
 
-/*
-TODO: finish writing testbench, make sure it works
-module dataMemory_testbench() begin
-	wire [31:0] addr, dataIn;
-	wire readNotWrite, enable, reset, clk;
-	reg [31:0] dataOut;
-	dataMemory dut (.addr, .dataIn, .dataOut, .readNotWrite, .enable, .reset, .clk, .dataOut);
+
+module dataMemory_testbench();
+	
+	reg [31:0] addr, dataIn;
+	reg readNotWrite, memoryEnable, reset, clk;
+	wire [31:0] dataOut;
+	
+	dataMemory dut (.addr(addr), .dataIn(dataIn), .dataOut(dataOut), .readNotWrite(readNotWrite), .memoryEnable(memoryEnable), .reset(reset), .clk(clk));
 	
 	
 	// Set up the clock.
@@ -51,10 +52,13 @@ module dataMemory_testbench() begin
 	
 	
 	initial begin
-		addr = 0;	dataIn = 0;	readNotWrite = 0;	enable = 0;	reset = 0;	@(posedge clk);
-		
-		
+		addr = 0;	dataIn = 0;	readNotWrite = 0;	memoryEnable = 0;	reset = 1;	@(posedge clk);
+		reset = 0;	dataIn = 32'h00000008;													@(posedge clk);
+		memoryEnable = 1;																			@(posedge clk);
+		readNotWrite = 1;																			@(posedge clk);
+		readNotWrite = 0; dataIn = 32'h12345678; memoryEnable = 0;					@(posedge clk);
+		memoryEnable = 1;																			@(posedge clk);
 		
 		$stop;
+	end
 endmodule
-*/

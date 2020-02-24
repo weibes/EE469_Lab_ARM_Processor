@@ -7,12 +7,12 @@ add wave -noupdate /dataMemory_testbench/dut/memoryEnable
 add wave -noupdate /dataMemory_testbench/dut/reset
 add wave -noupdate /dataMemory_testbench/dut/clk
 add wave -noupdate /dataMemory_testbench/dut/dataOut
-add wave -noupdate /dataMemory_testbench/dut/internalData
+add wave -noupdate /dataMemory_testbench/dut/internalDataHold
 add wave -noupdate /dataMemory_testbench/dut/mainMemory
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {55 ps} 0}
+WaveRestoreCursors {{Cursor 1} {99 ps} 0}
 quietly wave cursor active 1
-configure wave -namecolwidth 142
+configure wave -namecolwidth 143
 configure wave -valuecolwidth 191
 configure wave -justifyvalue left
 configure wave -signalnamewidth 1
@@ -26,4 +26,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {902 ps}
+WaveRestoreZoom {0 ps} {901 ps}
