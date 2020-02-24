@@ -12,6 +12,91 @@ module cpu(
   );
 
   
+	//debug port reg and wire bs
+  	reg [7:0] debug_port1_Reg;
+	reg [7:0] debug_port2_Reg;
+	reg [7:0] debug_port3_Reg;
+	reg [7:0] debug_port4_Reg;
+	reg [7:0] debug_port5_Reg;
+	reg [7:0] debug_port6_Reg;
+	reg [7:0] debug_port7_Reg;
+	
+	assign debug_port1 = debug_port1_Reg;
+	assign debug_port2 = debug_port2_Reg;
+	assign debug_port3 = debug_port3_Reg;
+	assign debug_port4 = debug_port4_Reg;
+	assign debug_port5 = debug_port5_Reg;
+	assign debug_port6 = debug_port6_Reg;
+	assign debug_port7 = debug_port7_Reg;
+	
+
+ 
+  //debug port settings
+  always @* begin
+
+		
+  
+//  for reference
+parameter 	instructionFetch = 3'b000,
+				registerFetch = 3'b001,
+				execute = 3'b010,
+				dataMemoryParam = 3'b011,
+				PCUpdate = 3'b100;
+				
+				
+	  case (ps)
+	  
+			PCUpdate: begin
+				//bottom of PC
+				debug_port1_Reg = instrLocReg[7:0];
+				debug_port2_Reg = instrLocReg[15:8];
+				debug_port3_Reg = instrLocReg[23:16];
+				debug_port4_Reg = instrLocReg[31:24];
+				debug_port5_Reg = 0;
+				debug_port6_Reg = 0;
+				//instruction Val in 4 chunks
+				debug_port7_Reg = PCUpdate; //for python script to detect
+			end
+			
+			instructionFetch: begin
+				debug_port1_Reg = nextInstrReg[7:0];
+				debug_port2_Reg = nextInstrReg[15:8];
+				debug_port3_Reg = nextInstrReg[23:16];
+				debug_port4_Reg = nextInstrReg[31:24];
+				debug_port5_Reg = 0;
+				debug_port6_Reg = 0;
+				debug_port7_Reg = instructionFetch;
+			end
+			registerFetch: begin
+				debug_port1_Reg = rnDataReg[7:0];
+				debug_port2_Reg = shiftedDataReg[7:0];
+				debug_port3_Reg = rd;
+				debug_port4_Reg = {rm, rn};
+				debug_port5_Reg = opcodeReg;
+				debug_port6_Reg = condReg;
+				debug_port7_Reg = registerFetch;			
+			end
+			execute: begin
+				debug_port1_Reg = ALUResultReg[7:0];
+				debug_port2_Reg = ALUResultReg[15:8];
+				debug_port3_Reg = ALUResultReg[23:16];
+				debug_port4_Reg = ALUResultReg[31:24];
+				debug_port5_Reg = 0;
+				debug_port6_Reg = 0;
+				debug_port7_Reg = execute;			
+			end
+			dataMemoryParam: begin
+				debug_port1_Reg = addrFinal_EX_Reg[7:0];
+				debug_port2_Reg = addrFinal_EX_Reg[15:8];
+				debug_port3_Reg = dataMemOutWire[7:0];
+				debug_port4_Reg = dataMemOutWire[15:8];
+				debug_port5_Reg = dataMemOutWire[23:16];
+				debug_port6_Reg = dataMemOutWire[31:24];
+				debug_port7_Reg = dataMemoryParam;			
+			end
+		endcase
+  end
+	
 
 	
 
@@ -222,20 +307,6 @@ module cpu(
 	reg dataResetReg, dataResetReg_ns;
  
   
-  // These are how you communicate back to the serial port debugger.
-  
-  
-  assign debug_port1 = 0 ; //instrLoc[7:0];
-  assign debug_port2 = 0; //nextInstr[27:20];
- assign debug_port3[3:0] = 0 ;// cond;
-  assign debug_port3[7:4] = 0 ;// rd;
-  assign debug_port4[3:0] = 0 ;// rm;
-  assign debug_port4[7:4] = 0 ;// rn;
-  assign debug_port5 = 0 ;// branchImmediate[7:0];
-  assign debug_port6 = 0 ;// immediateVal;
-  assign debug_port7 = 0 ;// 8'h07;
-
-
 //YOUR CODE GOES HERE
 
 

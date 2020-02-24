@@ -12,12 +12,12 @@ add wave -noupdate -group PC /cpu_testbench/dut/PC/branchImmediate
 add wave -noupdate -group PC /cpu_testbench/dut/PC/writeData
 add wave -noupdate -group PC /cpu_testbench/dut/PC/currData
 add wave -noupdate -group PC /cpu_testbench/dut/PC/nextData
-add wave -noupdate -expand -group instrMem /cpu_testbench/dut/Memory/clk
-add wave -noupdate -expand -group instrMem /cpu_testbench/dut/Memory/nreset
-add wave -noupdate -expand -group instrMem /cpu_testbench/dut/Memory/addr
-add wave -noupdate -expand -group instrMem /cpu_testbench/dut/Memory/dataOut
-add wave -noupdate -expand -group instrMem /cpu_testbench/dut/Memory/memory
-add wave -noupdate -expand -group instrMem /cpu_testbench/dut/Memory/addrReg
+add wave -noupdate -group instrMem /cpu_testbench/dut/Memory/clk
+add wave -noupdate -group instrMem /cpu_testbench/dut/Memory/nreset
+add wave -noupdate -group instrMem /cpu_testbench/dut/Memory/addr
+add wave -noupdate -group instrMem /cpu_testbench/dut/Memory/dataOut
+add wave -noupdate -group instrMem /cpu_testbench/dut/Memory/memory
+add wave -noupdate -group instrMem /cpu_testbench/dut/Memory/addrReg
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/instructionOUT
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/pcValOUT
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/CPSRFlags_INST_OUT
@@ -197,7 +197,7 @@ add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMe
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writebackEnable_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/opcode_DMR_OUT
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2061 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1560 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 367
 configure wave -valuecolwidth 218
