@@ -33,7 +33,7 @@ module dataMemory(addr, dataIn, dataOut, memoryEnable, readNotWrite, reset, clk)
 	end
 endmodule
 
-
+/*
 module dataMemory_testbench();
 	
 	reg [31:0] addr, dataIn;
@@ -62,3 +62,4 @@ module dataMemory_testbench();
 		$stop;
 	end
 endmodule
+*/

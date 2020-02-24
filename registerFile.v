@@ -64,7 +64,7 @@ module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 endmodule
 	
 	
-
+/*
 module registerFile_testbench();
 
 	reg writeEnable, reset, clk, linkBit;
@@ -159,3 +159,4 @@ module registerFile_testbench();
 	 end
 endmodule
 
+*/

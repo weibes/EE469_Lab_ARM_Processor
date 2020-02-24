@@ -29,77 +29,6 @@ module cpu(
 	assign debug_port6 = debug_port6_Reg;
 	assign debug_port7 = debug_port7_Reg;
 	
-
- 
-  //debug port settings
-  always @* begin
-
-		
-  
-//  for reference
-parameter 	instructionFetch = 3'b000,
-				registerFetch = 3'b001,
-				execute = 3'b010,
-				dataMemoryParam = 3'b011,
-				PCUpdate = 3'b100;
-				
-				
-	  case (ps)
-	  
-			PCUpdate: begin
-				//bottom of PC
-				debug_port1_Reg = instrLocReg[7:0];
-				debug_port2_Reg = instrLocReg[15:8];
-				debug_port3_Reg = instrLocReg[23:16];
-				debug_port4_Reg = instrLocReg[31:24];
-				debug_port5_Reg = 0;
-				debug_port6_Reg = 0;
-				//instruction Val in 4 chunks
-				debug_port7_Reg = PCUpdate; //for python script to detect
-			end
-			
-			instructionFetch: begin
-				debug_port1_Reg = nextInstrReg[7:0];
-				debug_port2_Reg = nextInstrReg[15:8];
-				debug_port3_Reg = nextInstrReg[23:16];
-				debug_port4_Reg = nextInstrReg[31:24];
-				debug_port5_Reg = 0;
-				debug_port6_Reg = 0;
-				debug_port7_Reg = instructionFetch;
-			end
-			registerFetch: begin
-				debug_port1_Reg = rnDataReg[7:0];
-				debug_port2_Reg = shiftedDataReg[7:0];
-				debug_port3_Reg = rd;
-				debug_port4_Reg = {rm, rn};
-				debug_port5_Reg = opcodeReg;
-				debug_port6_Reg = condReg;
-				debug_port7_Reg = registerFetch;			
-			end
-			execute: begin
-				debug_port1_Reg = ALUResultReg[7:0];
-				debug_port2_Reg = ALUResultReg[15:8];
-				debug_port3_Reg = ALUResultReg[23:16];
-				debug_port4_Reg = ALUResultReg[31:24];
-				debug_port5_Reg = 0;
-				debug_port6_Reg = 0;
-				debug_port7_Reg = execute;			
-			end
-			dataMemoryParam: begin
-				debug_port1_Reg = addrFinal_EX_Reg[7:0];
-				debug_port2_Reg = addrFinal_EX_Reg[15:8];
-				debug_port3_Reg = dataMemOutWire[7:0];
-				debug_port4_Reg = dataMemOutWire[15:8];
-				debug_port5_Reg = dataMemOutWire[23:16];
-				debug_port6_Reg = dataMemOutWire[31:24];
-				debug_port7_Reg = dataMemoryParam;			
-			end
-		endcase
-  end
-	
-
-	
-
 	
 	// INSTRUCTIONMEMORY variables
 		//to
@@ -604,6 +533,59 @@ always @* begin
 			dataResetReg_ns = 1'bX;
 		end
 	endcase
+	
+	//debug port garbo
+//	case (ps)
+//	  
+//			3'b100: begin
+//				//bottom of PC
+//				debug_port1_Reg = instrLocReg[7:0];
+//				debug_port2_Reg = instrLocReg[15:8];
+//				debug_port3_Reg = instrLocReg[23:16];
+//				debug_port4_Reg = instrLocReg[31:24];
+//				debug_port5_Reg = 0;
+//				debug_port6_Reg = 0;
+//				//instruction Val in 4 chunks
+//				debug_port7_Reg = 3'b1000; //for python script to detect
+//			end
+//			
+//			3'b000: begin
+//				debug_port1_Reg = nextInstrReg[7:0];
+//				debug_port2_Reg = nextInstrReg[15:8];
+//				debug_port3_Reg = nextInstrReg[23:16];
+//				debug_port4_Reg = nextInstrReg[31:24];
+//				debug_port5_Reg = 0;
+//				debug_port6_Reg = 0;
+//				debug_port7_Reg = 3'b000;
+//			end
+//			3'b001: begin
+//				debug_port1_Reg = rnDataReg[7:0];
+//				debug_port2_Reg = shiftedDataReg[7:0];
+//				debug_port3_Reg = rd;
+//				debug_port4_Reg = {rm, rn};
+//				debug_port5_Reg = opcodeReg;
+//				debug_port6_Reg = condReg;
+//				debug_port7_Reg = 3'b001;			
+//			end
+//			3'b010: begin
+//				debug_port1_Reg = ALUResultReg[7:0];
+//				debug_port2_Reg = ALUResultReg[15:8];
+//				debug_port3_Reg = ALUResultReg[23:16];
+//				debug_port4_Reg = ALUResultReg[31:24];
+//				debug_port5_Reg = 0;
+//				debug_port6_Reg = 0;
+//				debug_port7_Reg = 3'b010;			
+//			end
+//			3'b011: begin
+//				debug_port1_Reg = addrFinal_EX_Reg[7:0];
+//				debug_port2_Reg = addrFinal_EX_Reg[15:8];
+//				debug_port3_Reg = dataMemOutWire[7:0];
+//				debug_port4_Reg = dataMemOutWire[15:8];
+//				debug_port5_Reg = dataMemOutWire[23:16];
+//				debug_port6_Reg = dataMemOutWire[31:24];
+//				debug_port7_Reg = 3'b011;			
+//			end
+//		endcase
  end
 
 
@@ -626,7 +608,7 @@ always @* begin
 endmodule
 
 
-
+/*
 
 module cpu_testbench();
 
@@ -802,3 +784,4 @@ cpu dut ( .clk(clk),
  end
 endmodule
 
+*/
