@@ -188,12 +188,14 @@ add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMe
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writeData_DMR
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/rd_DMR
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/CPSRStatus_In
+add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/opcode
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/dataMemOut_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writeData_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/rd_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/CPSRStatus_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/linkBit_DMR_OUT
 add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/writebackEnable_DMR_OUT
+add wave -noupdate -group {dataMem REgister ---------} /cpu_testbench/dut/DataMemReg/opcode_DMR_OUT
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {1300 ps} 0}
 quietly wave cursor active 1
@@ -211,4 +213,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {10981 ps}
+WaveRestoreZoom {3419 ps} {14400 ps}

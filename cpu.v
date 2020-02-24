@@ -182,11 +182,12 @@ module cpu(
 	//to
 	
 	//from
-	wire [31:0] dataMemOut_DMR_Wire, writeData_DMR_Wire;
+	wire [31:0] dataMemOut_DMR_Wire, writeData_DMR_Wire, data2_DMR_Wire;
 	wire [3:0] rd_DMR_Wire;
 	wire linkBit_DMR_Wire;
 	wire writebackEnable_DMR_Wire;
 	wire [3:0] CPSRStatus_DMR_Wire;
+	wire [4:0] opcode_DMR_Wire;
 	
 	// pass
 	reg [3:0] rd_DMR_Reg;
@@ -194,7 +195,8 @@ module cpu(
 	reg linkBit_DMR_Reg;									  
 	reg writebackEnable_DMR_Reg;
 	reg [3:0] CPSRStatus_DMR_Reg;
-	reg [31:0] writeData_DMR_Reg;
+	reg [31:0] writeData_DMR_Reg, data2_DMR_Reg;
+	reg [4:0] opcode_DMR_Reg;
 	
 	// PROGRAMCOUNTER variables
 		//to
@@ -315,21 +317,24 @@ module cpu(
 							  .readNotWrite(loadStore_EX_Reg), .reset(nreset || dataResetReg), .clk(clk));
 
 	
-	WriteDataMux whatWrite (.dMemIn(dataMemOutReg), .ALUIn(ALUResult_EX_Reg), .isDataAccess(opcode_EX_Reg == 5'b10000), .regWriteDataOut(writeDataWire));
+	WriteDataMux whatWrite (.dMemIn(dataMemOutReg), .ALUIn(writeData_EX_Reg), .isDataAccess(opcode_EX_Reg == 5'b10000), .regWriteDataOut(writeDataWire));
 	
 	
 	DataMemoryRegister DataMemReg ( .dataMemOut_DMR(dataMemOutReg), .rd_DMR(rd_EX_Reg), .writeData_DMR(writeDataReg), 
 											  .linkBit(linkBit_EX_Reg), .writebackEnable(writebackEnable_EX_Reg), .CPSRStatus_In(CPSRStatus_EX_Reg),
+											  .opcode(opcode_EX_Reg), .data2In(Data2_EX_Reg), 
 											  
 											  .dataMemOut_DMR_OUT(dataMemOut_DMR_Wire), .rd_DMR_OUT(rd_DMR_Wire), .writeData_DMR_OUT(writeData_DMR_Wire),
 											  .linkBit_DMR_OUT(linkBit_DMR_Wire), .writebackEnable_DMR_OUT(writebackEnable_DMR_Wire), .CPSRStatus_DMR_OUT(CPSRStatus_DMR_Wire),
+											  .opcode_DMR_OUT(opcode_DMR_Wire), .data2_DMR_OUT(data2_DMR_Wire),
 											  
 											  .reset(nreset || dataResetReg), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
 
 	
-	programCounter PC (.Branch(opcode == 5'b10001), .currData(instrLocWire),
-                    .branchImmediate(branchImmediate), .clk(PCGo), .writeEnable(writeToPC), .writeData(writeData_DMR_Reg), .reset(nreset || dataResetReg));
+	programCounter PC (.Branch(opcode_DMR_Reg == 5'b10001), .currData(instrLocWire),
+                    .branchImmediate(data2_DMR_Reg), .clk(PCGo), .writeEnable((rd_DMR_Reg == 4'b1111 && writebackEnable_DMR_Reg)), 
+						  .writeData(writeData_DMR_Reg), .reset(nreset || dataResetReg));
 
 	
 
@@ -436,6 +441,8 @@ always @* begin
 	CPSRStatus_DMR_Reg = CPSRStatus_DMR_Wire;
 	rd_DMR_Reg = rd_DMR_Wire;
 	writeData_DMR_Reg = writeData_DMR_Wire;
+	opcode_DMR_Reg = opcode_DMR_Wire;
+	data2_DMR_Reg = data2_DMR_Wire;
 	
 	if (opcodeReg == 5'b10001) begin
 		isBranch = 1; 
