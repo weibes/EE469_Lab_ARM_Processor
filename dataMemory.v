@@ -11,19 +11,20 @@ module dataMemory(addr, dataIn, dataOut, memoryEnable, readNotWrite, reset, clk)
 	
 	//memory needs to be clocked for simplicity
 	always @* begin
-		if (memoryEnable) begin
-			// im not going to initialize all 1024 bytes of memory 
-			// just let it be ambiguous untl referenced
-			internalDataHold = mainMemory[addr];
-		end
-			else internalDataHold = 0;
+		
+		if (readNotWrite == 1)
+		internalDataHold = mainMemory[addr];
+		else
+		internalDataHold = dataIn;
+	
 	end
 	
 	always @(posedge clk) begin
-		if (readNotWrite) //read
+		if (memoryEnable == 1)
 			dataOut <= internalDataHold;
 		else
-			mainMemory[addr] <= dataIn;	
+			dataOut <= 0;
+			
 	end
 endmodule
 
