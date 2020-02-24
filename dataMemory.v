@@ -13,10 +13,10 @@ module dataMemory(addr, dataIn, dataOut, memoryEnable, readNotWrite, reset, clk)
 	always @* begin
 		
 		if ((readNotWrite == 0) && (memoryEnable == 1))
-			internalData = dataIn;
+			internalDataHold = dataIn;
 	
 		else
-			internalData = mainMemory[addr];
+			internalDataHold = mainMemory[addr];
 		
 	end
 	

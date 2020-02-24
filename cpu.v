@@ -244,7 +244,7 @@ module cpu(
                     .branchImmediate(data2_DMR_Reg), .clk(PCGo), .writeEnable((rd_DMR_Reg == 4'b1111 && writebackEnable_DMR_Reg)), 
 						  .writeData(writeData_DMR_Reg), .reset(nreset || dataResetReg));
 						  
-	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLocReg), .dataOut(nextInstrWire));
+	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLocWire), .dataOut(nextInstrWire));
 	
 	
 	instructionFetchRegister instFetch (.instructionIN(nextInstrReg), .pcValIN(instrLocReg), .CPSRFlags_In(CPSRStatus_DMR_Reg),

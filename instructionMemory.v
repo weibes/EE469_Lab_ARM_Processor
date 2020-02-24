@@ -13,33 +13,34 @@ module instructionMemory(clk, nreset, addr, dataOut);
     addrReg = addr;
 
 
-	dataOut[7:0] = memory[addrReg];
-	dataOut[15:8] = memory[addrReg + 3'b100];
-   dataOut[23:16] = memory[addrReg + 4'b1000];
-   dataOut[31:24] = memory[addrReg + 4'b1100];
+	dataOut[7:0] = memory[addrReg + 2'b11];
+	dataOut[15:8] = memory[addrReg + 2'b10];
+   dataOut[23:16] = memory[addrReg + 2'b01];
+   dataOut[31:24] = memory[addrReg + 2'b00];
 
 	//PUT MEMORY HERE, PROBABLY DON'T DIRECTLY INTERACT W COMPUTER
 
-    memory[0] = 8'he3;
-    memory[1] = 8'ha0;
+    
+	 memory[0] = 8'h00;
+    memory[1] = 8'h00;
     memory[2] = 8'h00;
-    memory[3] = 8'h08; //mov r0, #8
-    memory[4] = 8'he3;
+    memory[3] = 8'h00;
+	 memory[4] = 8'he3;
     memory[5] = 8'ha0;
-    memory[6] = 8'h10;
-    memory[7] = 8'h10;	// mov r1, #16
-    memory[8] = 8'he5;
-    memory[9] = 8'h81;
-    memory[10] = 8'h00;
-    memory[11] = 8'h00;	//str r0, [r1]
+    memory[6] = 8'h00;
+    memory[7] = 8'h08; //mov r0, #8
+    memory[8] = 8'he3;
+    memory[9] = 8'ha0;
+    memory[10] = 8'h10;
+    memory[11] = 8'h10;	// mov r1, #16
     memory[12] = 8'he5;
-    memory[13] = 8'h91;
-    memory[14] = 8'h20;
-    memory[15] = 8'h00;	//ldr	r2, [r1]
-    memory[16] = 8'h00;
-    memory[17] = 8'h00;
-    memory[18] = 8'h00;
-    memory[19] = 8'h00;
+    memory[13] = 8'h81;
+    memory[14] = 8'h00;
+    memory[15] = 8'h00;	//str r0, [r1]
+    memory[16] = 8'he5;
+    memory[17] = 8'h91;
+    memory[18] = 8'h20;
+    memory[19] = 8'h00;	//ldr	r2, [r1]
     memory[20] = 8'h00;
     memory[21] = 8'h00;
     memory[22] = 8'h00;
