@@ -37,21 +37,21 @@ module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 	
 	always @(posedge clk) begin
 		if (reset) begin
-			regFile[0] <= 25;
-			regFile[1] <= 35;
-			regFile[2] <= 6;
-			regFile[3] <= 8;
-			regFile[4] <= 22;
-			regFile[5] <= 5;
-			regFile[6] <= 12;
-			regFile[7] <= 7;
-			regFile[8] <= 9;
-			regFile[9] <= 10;
-			regFile[10] <= 19;
-			regFile[11] <= 14;
-			regFile[12] <= 6;
-			regFile[13] <= 7;
-			regFile[14] <= 8;
+			regFile[0] <= 0;
+			regFile[1] <= 0;
+			regFile[2] <= 0;
+			regFile[3] <= 0;
+			regFile[4] <= 0;
+			regFile[5] <= 0;
+			regFile[6] <= 0;
+			regFile[7] <= 0;
+			regFile[8] <= 0;
+			regFile[9] <= 0;
+			regFile[10] <= 0;
+			regFile[11] <= 0;
+			regFile[12] <= 0;
+			regFile[13] <= 0;
+			regFile[14] <= 0;
 		end
 		if (writeEnable)
 			regFile[writeDestination] <= writeData;	

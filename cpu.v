@@ -10,98 +10,89 @@ module cpu(
   output wire [7:0] debug_port6,
   output wire [7:0] debug_port7
   );
-	
-	//back up if I cant get preferred design to work
-	always @(posedge clk) begin
-//		debug_port1_Reg = instrLocReg[9:2];
-//		debug_port2_Reg = {rd, rm};
-//		debug_port3_Reg = {rn[2:0]	, opcodeReg};
-//		debug_port4_Reg = ALUResultReg[7:0];
-//		debug_port5_Reg = ALUResultReg[15:8];
-//		debug_port6_Reg = dataMemOutReg[7:0];
-//		debug_port7_Reg = dataMemOutReg[15:8];
-//		
+
 		
-			//debug port garbo
-			if (ps == 3'b100) begin
-				//bottom of PC
-				debug_port1_Reg <= instrLocReg[7:0];
-				debug_port2_Reg <= instrLocReg[15:8];
-				debug_port3_Reg <= instrLocReg[23:16];
-				debug_port4_Reg <= instrLocReg[31:24];
-				debug_port5_Reg <= 0;
-				debug_port6_Reg <= 0;
-				//instruction Val in 4 chunks
-				debug_port7_Reg <= 3'b1000; //for python script to detect
-			end
-			
-			else if (ps == 3'b000) begin
-				debug_port1_Reg <= nextInstrReg[7:0];
-				debug_port2_Reg <= nextInstrReg[15:8];
-				debug_port3_Reg <= nextInstrReg[23:16];
-				debug_port4_Reg <= nextInstrReg[31:24];
-				debug_port5_Reg <= 0;
-				debug_port6_Reg <= 0;
-				debug_port7_Reg <= 3'b000;
-			end
-			else if (ps ==3'b001) begin
-				debug_port1_Reg <= rnDataReg[7:0];
-				debug_port2_Reg <= shiftedDataReg[7:0];
-				debug_port3_Reg <= rd;
-				debug_port4_Reg <= {rm, rn};
-				debug_port5_Reg <= opcodeReg;
-				debug_port6_Reg <= condReg;
-				debug_port7_Reg <= 3'b001;			
-			end
-			else if (ps == 3'b010) begin
-				debug_port1_Reg <= ALUResultReg[7:0];
-				debug_port2_Reg <= ALUResultReg[15:8];
-				debug_port3_Reg <= ALUResultReg[23:16];
-				debug_port4_Reg <= ALUResultReg[31:24];
-				debug_port5_Reg <= 0;
-				debug_port6_Reg <= 0;
-				debug_port7_Reg <= 3'b010;			
-			end
-			else if (ps == 3'b011) begin
-				debug_port1_Reg <= addrFinal_EX_Reg[7:0];
-				debug_port2_Reg <= addrFinal_EX_Reg[15:8];
-				debug_port3_Reg <= dataMemOutWire[7:0];
-				debug_port4_Reg <= dataMemOutWire[15:8];
-				debug_port5_Reg <= dataMemOutWire[23:16];
-				debug_port6_Reg <= dataMemOutWire[31:24];
-				debug_port7_Reg <= 3'b011;	
-			end
-			else begin
-				debug_port1_Reg <= 0;
-				debug_port2_Reg <= 0;
-				debug_port3_Reg <= 0;
-				debug_port4_Reg <= 0;
-				debug_port5_Reg <= 0;
-				debug_port6_Reg <= 0;
-				debug_port7_Reg <= 3'b111;	
-			end
-	end
+//		always @(posedge clk) begin	
+//			//debug port garbo
+//			if (ps == 3'b100) begin
+//				//bottom of PC
+//				debug_port1_Reg <= instrLocReg[7:0];
+//				debug_port2_Reg <= instrLocReg[15:8];
+//				debug_port3_Reg <= instrLocReg[23:16];
+//				debug_port4_Reg <= instrLocReg[31:24];
+//				debug_port5_Reg <= 0;
+//				debug_port6_Reg <= 0;
+//				//instruction Val in 4 chunks
+//				debug_port7_Reg <= 3'b1000; //for python script to detect
+//			end
+//			
+//			else if (ps == 3'b000) begin
+//				debug_port1_Reg <= nextInstrReg[7:0];
+//				debug_port2_Reg <= nextInstrReg[15:8];
+//				debug_port3_Reg <= nextInstrReg[23:16];
+//				debug_port4_Reg <= nextInstrReg[31:24];
+//				debug_port5_Reg <= 0;
+//				debug_port6_Reg <= 0;
+//				debug_port7_Reg <= 3'b000;
+//			end
+//			else if (ps ==3'b001) begin
+//				debug_port1_Reg <= rnDataReg[7:0];
+//				debug_port2_Reg <= shiftedDataReg[7:0];
+//				debug_port3_Reg <= rd;
+//				debug_port4_Reg <= {rm, rn};
+//				debug_port5_Reg <= opcodeReg;
+//				debug_port6_Reg <= condReg;
+//				debug_port7_Reg <= 3'b001;			
+//			end
+//			else if (ps == 3'b010) begin
+//				debug_port1_Reg <= ALUResultReg[7:0];
+//				debug_port2_Reg <= ALUResultReg[15:8];
+//				debug_port3_Reg <= ALUResultReg[23:16];
+//				debug_port4_Reg <= ALUResultReg[31:24];
+//				debug_port5_Reg <= 0;
+//				debug_port6_Reg <= 0;
+//				debug_port7_Reg <= 3'b010;			
+//			end
+//			else if (ps == 3'b011) begin
+//				debug_port1_Reg <= addrFinal_EX_Reg[7:0];
+//				debug_port2_Reg <= addrFinal_EX_Reg[15:8];
+//				debug_port3_Reg <= dataMemOutWire[7:0];
+//				debug_port4_Reg <= dataMemOutWire[15:8];
+//				debug_port5_Reg <= dataMemOutWire[23:16];
+//				debug_port6_Reg <= dataMemOutWire[31:24];
+//				debug_port7_Reg <= 3'b011;	
+//			end
+//			else begin
+//				debug_port1_Reg <= 0;
+//				debug_port2_Reg <= 0;
+//				debug_port3_Reg <= 0;
+//				debug_port4_Reg <= 0;
+//				debug_port5_Reg <= 0;
+//				debug_port6_Reg <= 0;
+//				debug_port7_Reg <= 3'b111;	
+//			end
+//	end
   
-  
-  
-  
-	//debug port reg and wire bs
-  	reg [7:0] debug_port1_Reg;
-	reg [7:0] debug_port2_Reg;
-	reg [7:0] debug_port3_Reg;
-	reg [7:0] debug_port4_Reg;
-	reg [7:0] debug_port5_Reg;
-	reg [7:0] debug_port6_Reg;
-	reg [7:0] debug_port7_Reg;
-	
-	assign debug_port1 = debug_port1_Reg;
-	assign debug_port2 = debug_port2_Reg;
-	assign debug_port3 = debug_port3_Reg;
-	assign debug_port4 = debug_port4_Reg;
-	assign debug_port5 = debug_port5_Reg;
-	assign debug_port6 = debug_port6_Reg;
-	assign debug_port7 = debug_port7_Reg;
-	
+//  
+//  
+//  
+//	//debug port reg and wire bs
+//  	reg [7:0] debug_port1_Reg;
+//	reg [7:0] debug_port2_Reg;
+//	reg [7:0] debug_port3_Reg;
+//	reg [7:0] debug_port4_Reg;
+//	reg [7:0] debug_port5_Reg;
+//	reg [7:0] debug_port6_Reg;
+//	reg [7:0] debug_port7_Reg;
+//	
+//	assign debug_port1 = debug_port1_Reg;
+//	assign debug_port2 = debug_port2_Reg;
+//	assign debug_port3 = debug_port3_Reg;
+//	assign debug_port4 = debug_port4_Reg;
+//	assign debug_port5 = debug_port5_Reg;
+//	assign debug_port6 = debug_port6_Reg;
+//	assign debug_port7 = debug_port7_Reg;
+//	
 	
 	// INSTRUCTIONMEMORY variables
 		//to
@@ -359,7 +350,6 @@ module cpu(
 												.reset(nreset || dataResetReg), .clk(registerFetchGo));	///////////////////////////////////////////////
 
 	
-
 	ALU numberCrunch (.data1(Data1_RFR_Reg), .data2(Data2_RFR_Reg), .operation(opcode_RFR_Reg), .result(resultWire), 
 							.flags(CPSRStatusWire), .AluWritebackTest(AluWritebackTestWire), .reset(nreset || dataResetReg), .clk(clk));
 	
@@ -626,11 +616,22 @@ always @* begin
  end
 
 
+ 	
+	//back up if I cant get preferred design to work
+
+		assign debug_port1 = instrLocReg[9:2];
+		assign debug_port2 = {rd, rm};
+		assign debug_port3 = {rn[2:0]	, opcodeReg};
+		assign debug_port4 = ALUResultReg[7:0];
+		assign debug_port5 = ALUResultReg[15:8];
+		assign debug_port6 = dataMemOutReg[7:0];
+		assign debug_port7 = dataMemOutReg[15:8];
+ 
 
 endmodule
 
 
-/*
+
 
 module cpu_testbench();
 
@@ -806,4 +807,3 @@ cpu dut ( .clk(clk),
  end
 endmodule
 
-*/
