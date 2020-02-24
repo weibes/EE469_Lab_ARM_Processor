@@ -20,22 +20,22 @@ module instructionMemory(clk, nreset, addr, dataOut);
 
 	//PUT MEMORY HERE, PROBABLY DON'T DIRECTLY INTERACT W COMPUTER
 
-    memory[0] = 8'h00;
-    memory[1] = 8'h00;
+    memory[0] = 8'he3;
+    memory[1] = 8'ha0;
     memory[2] = 8'h00;
-    memory[3] = 8'h00;
-    memory[4] = 8'h00;
-    memory[5] = 8'h00;
-    memory[6] = 8'h00;
-    memory[7] = 8'h00;
-    memory[8] = 8'h00;
-    memory[9] = 8'h00;
+    memory[3] = 8'h08; //mov r0, #8
+    memory[4] = 8'he3;
+    memory[5] = 8'ha0;
+    memory[6] = 8'h10;
+    memory[7] = 8'h10;	// mov r1, #16
+    memory[8] = 8'he5;
+    memory[9] = 8'h81;
     memory[10] = 8'h00;
-    memory[11] = 8'h00;
-    memory[12] = 8'h00;
-    memory[13] = 8'h00;
-    memory[14] = 8'h00;
-    memory[15] = 8'h00;
+    memory[11] = 8'h00;	//str r0, [r1]
+    memory[12] = 8'he5;
+    memory[13] = 8'h91;
+    memory[14] = 8'h20;
+    memory[15] = 8'h00;	//ldr	r2, [r1]
     memory[16] = 8'h00;
     memory[17] = 8'h00;
     memory[18] = 8'h00;

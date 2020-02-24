@@ -121,7 +121,7 @@ module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOpe
 			end
 			
 			else  //something else, who cares
-				shiftedData = 32'bXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
+				shiftedData = {20'b00000000000000000000, data12In};
 			
 				
 	end	
