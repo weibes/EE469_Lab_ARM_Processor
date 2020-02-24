@@ -239,7 +239,10 @@ module cpu(
 //YOUR CODE GOES HERE
 
 
-	
+		
+	programCounter PC (.Branch(opcode_DMR_Reg == 5'b10001), .currData(instrLocWire),
+                    .branchImmediate(data2_DMR_Reg), .clk(PCGo), .writeEnable((rd_DMR_Reg == 4'b1111 && writebackEnable_DMR_Reg)), 
+						  .writeData(writeData_DMR_Reg), .reset(nreset || dataResetReg));
 						  
 	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLocReg), .dataOut(nextInstrWire));
 	
@@ -331,10 +334,7 @@ module cpu(
 											  .reset(nreset || dataResetReg), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
 	
 
-	
-	programCounter PC (.Branch(opcode_DMR_Reg == 5'b10001), .currData(instrLocWire),
-                    .branchImmediate(data2_DMR_Reg), .clk(PCGo), .writeEnable((rd_DMR_Reg == 4'b1111 && writebackEnable_DMR_Reg)), 
-						  .writeData(writeData_DMR_Reg), .reset(nreset || dataResetReg));
+
 
 	
 

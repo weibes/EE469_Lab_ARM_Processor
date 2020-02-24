@@ -12,9 +12,11 @@ module dataMemory(addr, dataIn, dataOut, memoryEnable, readNotWrite, reset, clk)
 	//memory needs to be clocked for simplicity
 	always @* begin
 		if ((readNotWrite == 0) && (memoryEnable == 1))
-			internalData = dataIn;
+		internalData = dataIn;
+	
 		else
-			internalData = mainMemory[addr];
+		internalData = mainMemory[addr];
+		
 	end
 	
 	always @(posedge clk) begin
