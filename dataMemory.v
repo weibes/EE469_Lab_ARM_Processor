@@ -6,36 +6,40 @@ module dataMemory(addr, dataIn, dataOut, memoryEnable, readNotWrite, reset, clk)
 	
 	output reg [31:0] dataOut;
 	
-	reg [31:0] internalData;
+	reg [31:0] internalDataHold;
 	reg [31:0] mainMemory [255:0]; //1 kB memory
 	
 	//memory needs to be clocked for simplicity
 	always @* begin
+		
 		if ((readNotWrite == 0) && (memoryEnable == 1))
-			internalData = dataIn;
+		internalDataHold = dataIn;
 		else
-			internalData = mainMemory[addr];
+		internalDataHold = mainMemory[addr];
+		
 	end
 	
 	always @(posedge clk) begin
-		mainMemory[addr] <= internalData;	
+	
+		mainMemory[addr] <= internalDataHold;
+	
+	
 		if (memoryEnable == 1)
-			dataOut <= internalData;
+			dataOut <= internalDataHold;
 		else
 			dataOut <= 0;
+			
 	end
 endmodule
 
-
-
-//TODO: finish writing testbench, make sure it works
-module dataMemory_testbench();
+/*
+TODO: finish writing testbench, make sure it works
+module dataMemory_testbench() begin
+	wire [31:0] addr, dataIn;
+	wire readNotWrite, enable, reset, clk;
+	reg [31:0] dataOut;
+	dataMemory dut (.addr, .dataIn, .dataOut, .readNotWrite, .enable, .reset, .clk, .dataOut);
 	
-	reg [31:0] addr, dataIn;
-	reg readNotWrite, memoryEnable, reset, clk;
-	wire [31:0] dataOut;
-	
-	dataMemory dut(.addr(addr), .dataIn(dataIn), .dataOut(dataOut), .readNotWrite(readNotWrite), .memoryEnable(memoryEnable), .reset(reset), .clk(clk));
 	
 	// Set up the clock.
 	parameter CLOCK_PERIOD=100;
@@ -46,19 +50,10 @@ module dataMemory_testbench();
 	
 	
 	initial begin
-		addr = 0; dataIn = 0; readNotWrite = 0; memoryEnable = 0; reset = 1;	@(posedge clk);
-		reset = 0;	addr = 32'h00000008;													@(posedge clk);
-		memoryEnable = 1;																		@(posedge clk);
-		readNotWrite = 1;																		@(posedge clk);
-		addr = 32'h00000010; readNotWrite = 0;											@(posedge clk);
-		addr = 32'h00000008;	readNotWrite = 1;											@(posedge clk);
-		addr = 32'h00000010;	memoryEnable = 0;											@(posedge clk);
-																									@(posedge clk);
-		
+		addr = 0;	dataIn = 0;	readNotWrite = 0;	enable = 0;	reset = 0;	@(posedge clk);
 		
 		
 		
 		$stop;
-	end
 endmodule
-
+*/
