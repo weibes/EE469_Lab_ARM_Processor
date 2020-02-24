@@ -24,12 +24,12 @@ module registerFile(writeDestination, writeEnable, readReg1, readReg2,
 				writeToPC = 0;
 			
 			if (readReg1 == 4'b1111)
-				readData1 = regFile[oldPCVal];
+				readData1 = oldPCVal;
 			else
 				readData1 = regFile[readReg1];
 			
 			if (readReg2 == 4'b1111)
-				readData2 = regFile[oldPCVal];
+				readData2 = oldPCVal;
 			else
 				readData2 = regFile[readReg2];
 			
