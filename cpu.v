@@ -631,7 +631,7 @@ always @* begin
 endmodule
 
 
-
+/*
 
 module cpu_testbench();
 
@@ -807,3 +807,4 @@ cpu dut ( .clk(clk),
  end
 endmodule
 
+*/
