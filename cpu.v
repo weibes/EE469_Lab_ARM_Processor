@@ -305,7 +305,7 @@ module cpu(
 
 		
 	programCounter PC (.Branch(opcode_DMR_Reg == 5'b10001), .currData(instrLocWire),
-                    .branchImmediate(data2_DMR_Reg), .clk(PCGo), .writeEnable((rd_DMR_Reg == 4'b1111 && writebackEnable_DMR_Reg)), 
+                    .branchImmediate(data2_DMR_Reg), .clk(clk), .writeEnable((rd_DMR_Reg == 4'b1111 && writebackEnable_DMR_Reg)), 
 						  .writeData(writeData_DMR_Reg), .reset(nreset || dataResetReg));
 						  
 	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLocWire), .dataOut(nextInstrWire));
@@ -315,7 +315,7 @@ module cpu(
 	
 													.instructionOUT(nextInstr_INSTfetch_Wire), .pcValOUT(pcVal_INST_Wire), .CPSRFlags_INST_OUT(CPSRStatus_INST_Wire),
 													
-													.reset(nreset || dataResetReg), .clk(instructionFetchGo));////////////////////////////////////////////////////////////////////////
+													.reset(nreset || dataResetReg), .clk(clk));////////////////////////////////////////////////////////////////////////
 	
 	sortInstruction sortInstr (.instruction(nextInstr_INSTfetch_Reg), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
   												.byteOrWord(byteOrWordWire), .writeBack(writeBackWire),
@@ -325,7 +325,7 @@ module cpu(
 								
 								
 	registerFile reg_file (.writeDestination(rd_DMR_Reg), .writeEnable(writebackEnable_DMR_Reg), .readReg1(rn), .readReg2(rm),
-                          .writeData(writeData_DMR_Reg), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset || dataResetReg), .clk(instructionFetchGo || PCGo), 
+                          .writeData(writeData_DMR_Reg), .readData1(rnDataWire), .readData2(rmDataWire), .reset(nreset || dataResetReg), .clk(clk), 
 								  .oldPCVal(pcVal_INST_Reg), .writeToPC(WriteToPCWire),
 								  .linkBit(linkBit_DMR_Reg));
 
@@ -347,7 +347,7 @@ module cpu(
 												.conditionalExecuteOUT(conditionalExecute_RFR),
 												.CPSRwriteOUT(CPSRwrite_RFR), .immediateOperandOUT(immediateOperand_RFR),
 												
-												.reset(nreset || dataResetReg), .clk(registerFetchGo));	///////////////////////////////////////////////
+												.reset(nreset || dataResetReg), .clk(clk));	///////////////////////////////////////////////
 
 	
 	ALU numberCrunch (.data1(Data1_RFR_Reg), .data2(Data2_RFR_Reg), .operation(opcode_RFR_Reg), .result(resultWire), 
@@ -373,7 +373,7 @@ module cpu(
 								.writeData_EX_OUT(writeData_EX_Wire), .addrFinalWire_EX_OUT(addrFinal_EX_Wire), .ALUResult_EX_OUT(ALUResult_EX_Wire),
 								.CPSRFlags_EX_OUT(CPSRStatus_EX_Wire),
 								
-								.reset(nreset || dataResetReg), .clk(executeGo));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+								.reset(nreset || dataResetReg), .clk(clk));  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	
 	
@@ -394,7 +394,7 @@ module cpu(
 											  .linkBit_DMR_OUT(linkBit_DMR_Wire), .writebackEnable_DMR_OUT(writebackEnable_DMR_Wire), .CPSRStatus_DMR_OUT(CPSRStatus_DMR_Wire),
 											  .opcode_DMR_OUT(opcode_DMR_Wire), .data2_DMR_OUT(data2_DMR_Wire),
 											  
-											  .reset(nreset || dataResetReg), .clk(dataMemoryGo)); //////////////////////////////////////////////////////////////////////////////////
+											  .reset(nreset || dataResetReg), .clk(clk)); //////////////////////////////////////////////////////////////////////////////////
 	
 
 
@@ -806,5 +806,7 @@ cpu dut ( .clk(clk),
 
  end
 endmodule
+
+
 
 */
