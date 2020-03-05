@@ -334,7 +334,7 @@ module cpu(
 	shifter shifty(.opcode(opcodeReg), .data12In(shifterValsReg), .branchOffset(branchImmediateReg), .rmData(rmDataReg), 
 						.shiftedData(shiftedDataWire), .immediateOperand(immediateOperandReg));  
 										
-	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatus_INST_Reg), .conditionalExecute(conditionalExecuteWire), .reset(nreset || dataResetReg), .clk(clk));
+	conditionTest condTest (.cond(condReg), .CPSRIn(CPSRStatus_EX_Reg), .conditionalExecute(conditionalExecuteWire), .reset(nreset || dataResetReg), .clk(clk));
 	
 	
 	registerFetchRegister regFetch (.Data1IN(rnDataReg), .Data2IN(shiftedDataReg), .linkBitIN(linkBitReg), .prePostAddOffsetIN(prePostAddOffsetReg), .upDownOffsetIN(upDownOffsetReg),
