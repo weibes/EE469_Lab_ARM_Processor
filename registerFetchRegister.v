@@ -1,10 +1,10 @@
 module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, upDownOffsetIN,
 												byteOrWordIN, writeBackIN, loadStoreIN, rdIN, rmIN, opcodeIN,
-												conditionalExecuteIN, CPSRwriteIN, immediateOperandIN,
+												condIN, CPSRwriteIN, immediateOperandIN,
 												
 												Data1OUT, Data2OUT, linkBitOUT, prePostAddOffsetOUT, upDownOffsetOUT,
 												byteOrWordOUT, writeBackOUT, loadStoreOUT, rdOUT, rmOUT, opcodeOUT,
-												conditionalExecuteOUT, CPSRwriteOUT, immediateOperandOUT, 
+												condOUT, CPSRwriteOUT, immediateOperandOUT, 
 												
 												reset, clk);
 
@@ -17,7 +17,7 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 	input wire linkBitIN, prePostAddOffsetIN, upDownOffsetIN, byteOrWordIN, writeBackIN, loadStoreIN, CPSRwriteIN, immediateOperandIN, reset, clk;
 	input wire [3:0] rdIN, rmIN;
 	input wire [4:0] opcodeIN;
-	input wire  conditionalExecuteIN;
+	input wire [3:0] condIN;
 
 					
 
@@ -26,7 +26,7 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 	output reg linkBitOUT, prePostAddOffsetOUT, upDownOffsetOUT, byteOrWordOUT, writeBackOUT, loadStoreOUT, CPSRwriteOUT, immediateOperandOUT;
 	output reg [3:0] rdOUT, rmOUT;
 	output reg [4:0] opcodeOUT;
-	output reg  conditionalExecuteOUT;
+	output reg [3:0] condOUT;
 
 
 													
@@ -47,7 +47,7 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 			rdOUT <= 0;
 			rmOUT <= 0;
 			opcodeOUT <= 0;
-			conditionalExecuteOUT <= 0;
+			condOUT <= 0;
 			CPSRwriteOUT <= 0;
 			immediateOperandOUT <= 0;
 		 end
@@ -63,7 +63,7 @@ module registerFetchRegister(Data1IN, Data2IN, linkBitIN, prePostAddOffsetIN, up
 			rdOUT <= rdIN;
 			rmOUT <= rmIN;
 			opcodeOUT <= opcodeIN;
-			conditionalExecuteOUT <= conditionalExecuteIN;
+			condOUT <= condIN;
 			CPSRwriteOUT <= CPSRwriteIN;
 			immediateOperandOUT <= immediateOperandIN;							
 		end			
