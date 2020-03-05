@@ -18,9 +18,9 @@ module shifter(opcode, data12In, branchOffset, rmData, shiftedData, immediateOpe
 			
 			if (opcode == 5'b10001) begin //input is branch
 				if (branchOffset[23] == 1'b1)
-					shiftedData = {6'b100000, (branchOffset[22:0] <<< 2'b10)};
+					shiftedData = {6'b111111, branchOffset, 2'b00};
 				else 
-					shiftedData = {6'b000000, (branchOffset[22:0] <<< 2'b10)};
+					shiftedData = {6'b000000, branchOffset, 2'b00};
 			end
 			
 			//data proc && not im offset OR (data transfer AND immediate offset)

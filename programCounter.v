@@ -4,15 +4,16 @@ module programCounter(Branch, currData, branchImmediate, clk, writeEnable, write
   
   output reg [31:0] currData;
 
-  reg [31:0] nextData;
+  reg [31:0] nextData, temp;
 
 
   always @* begin
 	 if (Branch == 1'b1) begin
-		if (branchImmediate[31] == 1'b1)
-			nextData = currData + 4'b1000 - branchImmediate[30:0];
-		else 
-			nextData = currData + 4'b1000 + branchImmediate[30:0];
+		if (branchImmediate[31] == 1'b1) 
+			nextData = currData - (~branchImmediate + 1'b1) - 4'b1000;
+			
+		else
+			nextData = currData + branchImmediate + 4'b1000;
 	 end
     else if (writeEnable)
 		nextData = writeData;
@@ -23,8 +24,12 @@ module programCounter(Branch, currData, branchImmediate, clk, writeEnable, write
   always @(posedge clk) begin
 	if (reset)
 		currData <= 0;
-	else
-		currData <= nextData;
+	else begin
+		if (nextData[31] == 1'b0)
+			currData <= nextData;
+		else 
+			currData <= (~nextData + 1'b1);
+		end
 	end
 endmodule
 
