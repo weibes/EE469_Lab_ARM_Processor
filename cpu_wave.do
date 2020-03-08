@@ -23,6 +23,8 @@ add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFe
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/CPSRFlags_INST_OUT
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/reset
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/clk
+add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/noopIN
+add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/noopOUT
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/CPSRFlags_In
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/instructionIN
 add wave -noupdate -group {IF Register --------------} /cpu_testbench/dut/instFetch/pcValIN
@@ -41,6 +43,7 @@ add wave -noupdate -group {sort Instr} /cpu_testbench/dut/sortInstr/rd
 add wave -noupdate -group {sort Instr} /cpu_testbench/dut/sortInstr/rn
 add wave -noupdate -group {sort Instr} /cpu_testbench/dut/sortInstr/rm
 add wave -noupdate -group {sort Instr} /cpu_testbench/dut/sortInstr/cond
+add wave -noupdate -group {sort Instr} /cpu_testbench/dut/sortInstr/noop
 add wave -noupdate -group {sort Instr} /cpu_testbench/dut/sortInstr/opcode
 add wave -noupdate -group {sort Instr} /cpu_testbench/dut/sortInstr/branchImmediate
 add wave -noupdate -group {sort Instr} /cpu_testbench/dut/sortInstr/shifterVals
@@ -67,15 +70,9 @@ add wave -noupdate -group shifter /cpu_testbench/dut/shifty/shiftedData
 add wave -noupdate -group shifter /cpu_testbench/dut/shifty/rm_shift
 add wave -noupdate -group shifter /cpu_testbench/dut/shifty/shiftType
 add wave -noupdate -group shifter /cpu_testbench/dut/shifty/immediateData
-add wave -noupdate -group condTest /cpu_testbench/dut/condTest/cond
-add wave -noupdate -group condTest /cpu_testbench/dut/condTest/CPSRIn
-add wave -noupdate -group condTest /cpu_testbench/dut/condTest/reset
-add wave -noupdate -group condTest /cpu_testbench/dut/condTest/clk
-add wave -noupdate -group condTest /cpu_testbench/dut/condTest/conditionalExecute
-add wave -noupdate -group condTest /cpu_testbench/dut/condTest/Z
-add wave -noupdate -group condTest /cpu_testbench/dut/condTest/C
-add wave -noupdate -group condTest /cpu_testbench/dut/condTest/N
-add wave -noupdate -group condTest /cpu_testbench/dut/condTest/V
+add wave -noupdate -group noopCheck /cpu_testbench/dut/noopCheck/opcodeIN
+add wave -noupdate -group noopCheck /cpu_testbench/dut/noopCheck/noop
+add wave -noupdate -group noopCheck /cpu_testbench/dut/noopCheck/opcodeOUT
 add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/Data1IN
 add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/Data2IN
 add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/linkBitIN
@@ -106,6 +103,15 @@ add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFet
 add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/rdOUT
 add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/rmOUT
 add wave -noupdate -group {Register Fetch Register --} /cpu_testbench/dut/regFetch/opcodeOUT
+add wave -noupdate -group condTest /cpu_testbench/dut/condTest/cond
+add wave -noupdate -group condTest /cpu_testbench/dut/condTest/CPSRIn
+add wave -noupdate -group condTest /cpu_testbench/dut/condTest/reset
+add wave -noupdate -group condTest /cpu_testbench/dut/condTest/clk
+add wave -noupdate -group condTest /cpu_testbench/dut/condTest/conditionalExecute
+add wave -noupdate -group condTest /cpu_testbench/dut/condTest/Z
+add wave -noupdate -group condTest /cpu_testbench/dut/condTest/C
+add wave -noupdate -group condTest /cpu_testbench/dut/condTest/N
+add wave -noupdate -group condTest /cpu_testbench/dut/condTest/V
 add wave -noupdate -group ALU /cpu_testbench/dut/numberCrunch/data1
 add wave -noupdate -group ALU /cpu_testbench/dut/numberCrunch/data2
 add wave -noupdate -group ALU /cpu_testbench/dut/numberCrunch/operation

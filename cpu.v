@@ -108,9 +108,12 @@ module cpu(
 	wire [31:0] nextInstr_INSTfetch_Wire, pcVal_INST_Wire;
 	wire [3:0] CPSRStatus_INST_Wire;
 	wire writeBackEnable_INST_Wire;
+	wire noopINSTWire;
+	
 	//to reg
 	reg [3:0] CPSRStatus_INST_Reg;
 	reg writeBackEnable_INST_Reg;
+	reg noopINSTReg;
 	//nextInstr in sort Instruction
 	//pcVal_INST_Reg in regFile
 	
@@ -160,6 +163,12 @@ module cpu(
 	//pass to register 
 	reg [31:0] shiftedDataReg;
   
+   //NOOPCHECK variables
+	wire [4:0] noopCheckOpcodeWire;
+   
+	reg [4:0] noopCheckOpcodeReg;
+	
+  
   
   //CONDITIONTEST variables
   		//to
@@ -205,9 +214,11 @@ module cpu(
 	//aluOutputMux variables
 	wire [31:0] ALUMuxWire;
 	wire writebackEnableWire;
+	wire noopWire;
 	//pass to register
 	reg writebackEnableReg;
 	reg [31:0] ALUMuxReg;
+	reg noopReg;
 
 	//addrInputMux variables
 		//to
@@ -311,13 +322,15 @@ module cpu(
 	instructionMemory Memory (.clk(clk), .nreset(nreset), .addr(instrLocWire), .dataOut(nextInstrWire));
 	
 	
-	instructionFetchRegister instFetch (.instructionIN(nextInstrReg), .pcValIN(instrLocReg), .CPSRFlags_In(CPSRStatus_DMR_Reg),
 	
-													.instructionOUT(nextInstr_INSTfetch_Wire), .pcValOUT(pcVal_INST_Wire), .CPSRFlags_INST_OUT(CPSRStatus_INST_Wire),
+	
+	instructionFetchRegister instFetch (.instructionIN(nextInstrReg), .pcValIN(instrLocReg), .CPSRFlags_In(CPSRStatus_DMR_Reg), .noopIN(noopReg),
+	
+													.instructionOUT(nextInstr_INSTfetch_Wire), .pcValOUT(pcVal_INST_Wire), .CPSRFlags_INST_OUT(CPSRStatus_INST_Wire), .noopOUT(noopINSTWire),
 													
 													.reset(nreset || dataResetReg), .clk(clk));////////////////////////////////////////////////////////////////////////
 	
-	sortInstruction sortInstr (.instruction(nextInstr_INSTfetch_Reg), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
+	sortInstruction sortInstr (.instruction(nextInstr_INSTfetch_Reg), .noop(noopINSTReg), .linkBit(linkBitWire), .prePostAddOffset(prePostAddOffsetWire), .upDownOffset(upDownOffsetWire),
   												.byteOrWord(byteOrWordWire), .writeBack(writeBackWire),
 												.loadStore(loadStoreWire), .rd(rdWire), .rn(rnWire), .rm(rmWire), .opcode(opcodeWire),
   												.cond(condWire), .branchImmediate(branchImmediateWire), .reset(nreset || dataResetReg), .clk(clk), .CPSRwrite(CPSRwritewire), 
@@ -335,10 +348,11 @@ module cpu(
 						.shiftedData(shiftedDataWire), .immediateOperand(immediateOperandReg));  
 										
 
+	noopMux noopCheck (.opcodeIN(opcodeReg), .opcodeOUT(noopCheckOpcodeWire), .noop(noopReg));
 	
 	
 	registerFetchRegister regFetch (.Data1IN(rnDataReg), .Data2IN(shiftedDataReg), .linkBitIN(linkBitReg), .prePostAddOffsetIN(prePostAddOffsetReg), .upDownOffsetIN(upDownOffsetReg),
-												.byteOrWordIN(byteOrWordReg), .writeBackIN(writeBackReg), .loadStoreIN(loadStoreReg), .rdIN(rdReg), .rmIN(rm), .opcodeIN(opcodeReg),
+												.byteOrWordIN(byteOrWordReg), .writeBackIN(writeBackReg), .loadStoreIN(loadStoreReg), .rdIN(rdReg), .rmIN(rm), .opcodeIN(noopCheckOpcodeReg),
 												.condIN(condReg),
 												.CPSRwriteIN(CPSRwriteReg), .immediateOperandIN(immediateOperandReg), 
 												
@@ -361,7 +375,7 @@ module cpu(
 	
 	aluOutputMux aluOutMux (.opcode(opcode_RFR_Reg), .ALUresult(ALUResultReg), .branchImmediate(Data2_RFR_Reg), 
 									.aluWritebackTest(AluWritebackTestReg), .conditionalExecute(conditionalExecuteReg),
-									.writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire));
+									.writebackEnable(writebackEnableWire), .aluMuxout(ALUMuxWire), .noop(noopWire));
 
 	
 	addrInputMux addrMux (.preCheck(prePostAddOffset_RFR), .ALUInput(ALUResultReg), .dataOut(addrFinalWire), .d0Input(Data1_RFR));
@@ -427,6 +441,7 @@ always @* begin
 	pcVal_INST_Reg = pcVal_INST_Wire;
 	CPSRStatus_INST_Reg = CPSRStatus_INST_Wire;
 	writeBackEnable_INST_Reg = writeBackEnable_INST_Wire;
+	noopINSTReg = noopINSTWire;
 	
 	linkBitReg = linkBitWire;
 	prePostAddOffsetReg = prePostAddOffsetWire;
@@ -455,6 +470,8 @@ always @* begin
 
 	shiftedDataReg = shiftedDataWire;
 	
+	noopCheckOpcodeReg = noopCheckOpcodeWire;
+	
 	CPSRStatusReg = CPSRStatusWire;
 	
 	conditionalExecuteReg = conditionalExecuteWire;
@@ -479,7 +496,7 @@ always @* begin
 	
 	ALUMuxReg = ALUMuxWire;
 	writebackEnableReg = writebackEnableWire;
-	
+	noopReg =  noopWire;
 	
 	Data1_EX_Reg = Data1_EX_Wire;
 	Data2_EX_Reg = Data2_EX_Wire;

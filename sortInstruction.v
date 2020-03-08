@@ -1,9 +1,9 @@
-module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset, shifterVals,
+module  sortInstruction(instruction, noop,linkBit, prePostAddOffset, upDownOffset, shifterVals,
 												byteOrWord, writeBack, loadStore, rd, rn, rm, opcode,
 												cond, branchImmediate, reset, clk, CPSRwrite, immediateOperand);
 
 	input wire [31:0] instruction;
-	input wire reset, clk;
+	input wire reset, clk, noop;
 
 	output reg linkBit, prePostAddOffset, upDownOffset, byteOrWord, writeBack,
 							 loadStore, CPSRwrite, immediateOperand;
@@ -98,6 +98,11 @@ module  sortInstruction(instruction, linkBit, prePostAddOffset, upDownOffset, sh
 			linkBit = instruction[24];
 			branchImmediate = instruction[23:0];
 			end
+			
+			if (noop == 1)
+				opcode = 5'b11111;
+			
+			
 	end
 
 endmodule

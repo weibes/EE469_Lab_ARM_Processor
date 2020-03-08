@@ -159,7 +159,10 @@ module  ALU(data1, data2, operation, result, flags, AluWritebackTest, reset, clk
 		//	5'b11100:
 		//	5'b11101:
 		//	5'b11110:
-		//	5'b11111:
+			5'b11111: begin
+								AluWritebackTest = 0;
+								unsignedResult = 0;					// No-op  (invalid opcode)
+							end
 			default:
 				begin
 					unsignedResult = 0;
